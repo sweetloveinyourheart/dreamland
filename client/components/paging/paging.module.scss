@@ -1,0 +1,37 @@
+.paging-area {
+    margin: 8px 0;
+
+}
+
+.paging {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+
+    &__prev, &__next, &__number {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        margin: 0 8px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+
+        &--disable {
+            cursor: not-allowed;
+            color: #dcdcdc;
+        }
+    }
+
+    &__number {
+
+        &--active {
+            background-color: #f93707;
+            color: #fff;
+        }
+    }
+}

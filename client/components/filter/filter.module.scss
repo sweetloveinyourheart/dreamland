@@ -1,0 +1,126 @@
+.filter {
+    background-color: #fff;
+    position: sticky;
+    top: 64px;
+    z-index: 9;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+}
+
+.filter-item {
+    margin: 0 6px;
+
+    button {
+        padding: 8px 8px;
+        border-radius: 4px;
+        border: 1px solid #9c9c9cb3;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        color: #222;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            border-color: #f93707;
+            color: #f93707;
+        }
+
+        p {
+            margin: 0 12px 0 4px;
+            font-size: 14px;
+
+            svg {
+                font-size: 13px;
+                margin-right: 2px;
+            }
+        }
+
+        svg {
+            font-size: 10px;
+        }
+    }
+
+    .btn--disable {
+        background-color: #f4f4f4;
+        &:hover {
+            background-color: #f93707;
+            color: #fff;
+        }
+    }
+}
+
+.search {
+    border: 1px solid #9c9c9cb3;
+    display: flex;
+    border-radius: 4px;
+
+    input {
+        padding: 8px 16px;
+        border-radius: 4px;
+        border: none;
+        width: 300px;
+        outline: none;
+    }
+
+    button {
+        border: none;
+        svg {
+            font-size: 16px;
+        }
+        
+    }
+}
+
+.modal {
+    min-width: 500px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    color: #fff;
+    background-color: #d12032;
+
+    h4 {
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    button {
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+        color: #fff;
+    }
+}
+
+.selector {
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #dcdcdc;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        color: #f93707;
+
+        svg {
+            color: #f93707;
+        }
+    }
+
+    svg {
+        font-size: 12px;
+        color: #777;
+    }
+}

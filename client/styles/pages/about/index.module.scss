@@ -1,0 +1,361 @@
+@import "../../responsive";
+
+// header
+.header {
+    padding: 8px 0;
+    position: relative;
+}
+
+.header-area {
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu {
+    @include Responsive(xs sm) {
+        display: flex;
+        align-items: center;
+    }
+
+    ul {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        @include Responsive(xs sm) {
+            position: absolute;
+            width: 100%;
+            display: block;
+            left: 0;
+            top: 70px;
+            background-color: rgba($color: #fff, $alpha: 0.8);
+        }
+
+        li {
+            margin: 0 16px;
+            text-transform: uppercase;
+            cursor: pointer;
+
+            @include Responsive(xs sm) {
+                padding: 12px 0;
+            }
+
+            button {
+                padding: 4px;
+                background-color: #d12032;
+                width: 44px;
+                height: 44px;
+                color: #fff;
+                border-radius: 100%;
+                border: 1px solid #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                cursor: pointer;
+
+                @include Responsive(xs sm) {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    button {
+        display: none;
+
+        @include Responsive(xs sm) {
+            display: block;
+            background-color: #fff;
+            border: none;
+            font-size: 24px;
+        }
+    }
+}
+
+//banner
+.banner {
+    width: 100%;
+    height: 440px;
+    background-position: center;
+    background-size: cover;
+}
+
+//news
+.news {
+    padding: 70px 0;
+}
+
+.news-title {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+
+    
+}
+
+.news-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.list-item {
+    flex: 0 0 50%;
+    padding: 0 15px;
+
+    @include Responsive(xs sm) {
+        flex: 0 0 100%;
+        padding: 0;
+        
+    }
+}
+
+.big-news {
+    position: relative;
+}
+
+.small-news {
+    display: flex;
+    margin-bottom: 24px;
+
+    @include Responsive(xs sm) {
+        display: block;
+        margin-bottom: 32px;
+    }
+}
+
+.news-descr {
+    margin-left: 12px;
+    color: #333333;
+    flex: 0 0 70%;
+
+    @include Responsive(xs sm) {
+        margin-top: 12px;
+        margin-left: 0;
+    }
+}
+
+.news-popup {
+    padding: 12px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    color: #fff;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), #000);
+}
+
+.popup__title {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.popup__detail {
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.popup__timestamp {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+}
+
+// category
+.categories {
+    padding: 70px 0 0 0;
+    background-color: #eee;
+}
+
+.categories-title {
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.categories-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.categories-list__item {
+    flex: 0 0 25%;
+
+    @include Responsive(xs sm) {
+        flex: 0 0 50%;
+    }
+}
+
+.category {
+    position: relative;
+
+    &:hover .category-desc__content {
+        height: 150px;
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.category-desc {
+    position: absolute;
+    bottom: 4px;
+    padding: 20px;
+    color: #fff;
+    background: linear-gradient(0deg, rgba(0, 78, 136, 0.8) 0%, rgba(0, 78, 136, 0) 100%);
+
+    &__title {
+        font-size: 17px;
+        line-height: 25px;
+        text-transform: uppercase;
+        margin: 16px 0;
+        font-weight: 600;
+    }
+
+    &__content {
+        font-size: 14px;
+        height: 0;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.2s;
+    }
+}
+
+// Project
+
+.project {
+    padding: 70px 0;
+}
+
+.project-title {
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.project-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.project-list__item {
+    flex: 0 0 33.33333%;
+    padding: 15px;
+
+    @include Responsive(xs sm) {
+        flex: 0 0 100%;
+        padding: 15px 0;
+    }
+}
+
+.project-item {
+    position: relative;
+
+    &:hover .project-item__name {
+        background-color: unset;
+        svg {
+            visibility: visible;
+        }
+        p {
+            padding-left: 12px;
+        }
+    }
+
+    &__name {
+        position: absolute;
+        top: 0;
+        padding: 20px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        width: 100%;
+        height: 98%;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: flex-end;
+        transition: 0.2s;
+
+        svg {
+            visibility: hidden;
+        }
+
+        p {
+            margin: 0;
+            padding-left: 0px;
+            transition: 0.2s;
+        }
+    }
+}
+
+// footer
+.footer {
+    background-position: bottom;
+}
+
+.footer-bg {
+    background-color: rgba(0, 54, 99, 0.7);
+    padding: 50px 0;
+}
+
+.footer-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ftr-list-col {
+    flex: 0 0 25%;
+    padding: 0 15px;
+
+    @include Responsive(xs sm) {
+        flex: 0 0 100%;
+        padding: 0;
+    }   
+
+    &--big {
+        flex: 0 0 50%;
+
+        @include Responsive(xs sm) {
+            flex: 0 0 100%;
+            padding: 0;
+        }
+    }
+}
+
+.company-info {
+    h5 {
+        text-transform: uppercase;
+        color: #fff;
+        font-size: 16px;
+    }
+
+    p {
+        display: flex;
+        align-items: center;
+        color: #fff;
+
+        svg {
+            margin-right: 12px;
+        }
+    }
+}
