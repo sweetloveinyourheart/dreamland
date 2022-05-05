@@ -86,7 +86,7 @@ export class Overview {
 }
 
 @ObjectType()
-export class Media {
+export class RealEstateMedia {
     @Field(type => [String])
     images: string[]
 
@@ -139,13 +139,16 @@ export class Acreage {
 @ObjectType()
 export class RealEstate {
     @Field(type => String)
+    _id?: string
+    
+    @Field(type => String)
     title: string
 
     @Field(type => String)
     description: string
 
-    @Field(type => Media)
-    media: Media
+    @Field(type => RealEstateMedia)
+    media: RealEstateMedia
 
     @Field(type => Owner)
     owner: Owner

@@ -24,11 +24,6 @@ class ApartmentOverviewInput extends OverviewInput {
     furniture?: Furniture
 }
 
-@InputType()
-class ApartmentAddressInput extends AddressInput {
-    @Field(type => String, { nullable: true })
-    project?: string
-}
 
 @InputType()
 class ApartmentPositionInput extends PositionInput {
@@ -41,11 +36,14 @@ class ApartmentDetailInput extends DetailInput {
     @Field(type => ApartmentPositionInput)
     position: ApartmentPositionInput
 
-    @Field(type => ApartmentAddressInput)
-    address: ApartmentAddressInput
+    @Field(type => AddressInput)
+    address: AddressInput
 
     @Field(type => AcreageInput)
     acreage: AcreageInput
+
+    @Field(type => String, { nullable: true })
+    project?: string
 }
 
 @InputType()
@@ -71,7 +69,7 @@ export class ApartmentFilter extends RealEstateFilter {
     @Field(type => Direction, { nullable: true })
     doorDirection?: Direction
 
-    @Field(type => Direction)
+    @Field(type => Direction, { nullable: true })
     balconyDirection?: Direction
 
     @Field(type => LegalDocuments, { nullable: true })

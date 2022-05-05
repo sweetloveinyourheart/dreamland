@@ -17,7 +17,6 @@ import * as AutoIncrementFactory from 'mongoose-sequence';
         useFactory: async (connection: any) => {
           const schema = ApartmentSchema;
           const AutoIncrement = AutoIncrementFactory(connection);
-          schema.plugin(require('mongoose-autopopulate'));
           schema.plugin(AutoIncrement, { inc_field: 'apartmentID' }) 
           return schema;
         },
@@ -28,7 +27,6 @@ import * as AutoIncrementFactory from 'mongoose-sequence';
         useFactory: async (connection: any) => {
           const schema = HouseSchema;
           const AutoIncrement = AutoIncrementFactory(connection);
-          schema.plugin(require('mongoose-autopopulate'));
           schema.plugin(AutoIncrement, { inc_field: 'houseID' }) 
           return schema;
         },
@@ -39,7 +37,6 @@ import * as AutoIncrementFactory from 'mongoose-sequence';
         useFactory: async (connection: any) => {
           const schema = LandSchema;
           const AutoIncrement = AutoIncrementFactory(connection);
-          schema.plugin(require('mongoose-autopopulate'));
           schema.plugin(AutoIncrement, { inc_field: 'landID' }) 
           return schema;
         },
@@ -50,7 +47,7 @@ import * as AutoIncrementFactory from 'mongoose-sequence';
         useFactory: async (connection: any) => {
           const schema = BusinessPremisesSchema;
           const AutoIncrement = AutoIncrementFactory(connection);
-          schema.plugin(require('mongoose-autopopulate'));
+          schema.plugin(require('mongoose-autopopulate'))
           schema.plugin(AutoIncrement, { inc_field: 'businessPremisesID' }) 
           return schema;
         },
@@ -61,7 +58,6 @@ import * as AutoIncrementFactory from 'mongoose-sequence';
         useFactory: async (connection: any) => {
           const schema = MotalSchema;
           const AutoIncrement = AutoIncrementFactory(connection);
-          schema.plugin(require('mongoose-autopopulate'));
           schema.plugin(AutoIncrement, { inc_field: 'motalID' }) 
           return schema;
         },

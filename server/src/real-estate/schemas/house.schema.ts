@@ -2,20 +2,17 @@ import { HouseType, Furniture, RealEstateCategory } from "../enum/real-estate.en
 import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general.schema"
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Project } from "src/project/schemas/project.schema";
 
 export type  HouseDocument = House & Document;
 
-class HouseAddress extends Address {
-    @Prop({ type: MongooseSchema.Types.ObjectId })
-    project?: string
-}
-
+@Schema({ _id: false, id: false })
 class HousePosition extends Position {
     @Prop()
     blockName?: string
 }
 
-
+@Schema({ _id: false, id: false })
 class HouseAcreage extends Acreage {
     @Prop()
     usedAcreage?: number
@@ -27,19 +24,21 @@ class HouseAcreage extends Acreage {
     width?: number
 }
 
+@Schema({ _id: false, id: false })
 class HouseDetail extends Detail {
     @Prop({ type: HousePosition })
     position: HousePosition
 
-    @Prop({ type: HouseAddress })
-    address: HouseAddress
+    @Prop({ type: Address })
+    address: Address
 
     @Prop({ type: HouseAcreage })
     acreage: HouseAcreage
 }
 
+@Schema({ _id: false, id: false })
 class HouseOverview extends Overview {
-    @Prop({ type: HouseType })
+    @Prop({ enum: HouseType })
     type: HouseType
 
     @Prop()
@@ -60,13 +59,16 @@ class HouseOverview extends Overview {
     @Prop()
     numberOfBathrooms?: number
 
-    @Prop({ type: Furniture })
+    @Prop({ enum: Furniture })
     furniture?: Furniture
 }
 
 @Schema()
 export class House extends RealEstate {
-    @Prop()
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
+    project?: Project
+    
+    @Prop({ enum: RealEstateCategory })
     category: RealEstateCategory
 
     @Prop({ type: HouseDetail })

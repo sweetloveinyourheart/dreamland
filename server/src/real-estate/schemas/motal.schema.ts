@@ -1,10 +1,11 @@
-import { Direction, Furniture, RealEstateCategory, RealEstateStatus } from "../enum/real-estate.enum"
-import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general.schema"
+import { Furniture, RealEstateCategory } from "../enum/real-estate.enum"
+import { Acreage, Address, Detail, Overview,  RealEstate } from "./general.schema"
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 export type  MotalDocument = Motal & Document;
 
+@Schema({ _id: false, id: false })
 class MotalDetail extends Detail {
     @Prop({ type: Address })
     address: Address
@@ -13,8 +14,9 @@ class MotalDetail extends Detail {
     acreage: Acreage
 }
 
+@Schema({ _id: false, id: false })
 class MotalOverview extends Overview {
-    @Prop({ type: Furniture })
+    @Prop({ enum: Furniture })
     furniture?: Furniture
 
     @Prop()

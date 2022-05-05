@@ -2,40 +2,41 @@ import { ApartmentType, Direction, Furniture, RealEstateCategory, RealEstateStat
 import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general.schema"
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Project } from "src/project/schemas/project.schema";
 
 export type ApartmentDocument = Apartment & Document;
 
-class ApartmentAddress extends Address {
-    @Prop({ type: MongooseSchema.Types.ObjectId })
-    project?: string
-}
-
+@Schema({ _id: false, id: false })
 class ApartmentPosition extends Position {
     @Prop()
     blockName?: string
 }
 
-export class ApartmentDetail extends Detail {
-    @Prop({ type: ApartmentPosition })
+@Schema({ _id: false, id: false })
+class ApartmentDetail extends Detail {
+    @Prop(ApartmentPosition)
     position: ApartmentPosition
 
-    @Prop({ type: ApartmentAddress })
-    address: ApartmentAddress
+    @Prop(Address)
+    address: Address
 
-    @Prop({ type: Acreage })
+    @Prop(Acreage)
     acreage: Acreage
+
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
+    project?: Project
 }
 
+@Schema({ _id: false, id: false })
 class ApartmentOverview extends Overview {
-    @Prop({ type: ApartmentType })
+    @Prop({ enum: ApartmentType })
     type: ApartmentType
 
-    @Prop({ type: RealEstateStatus })
+    @Prop({ enum: RealEstateStatus })
     status: RealEstateStatus
 
-    @Prop({ type: Direction })
+    @Prop({ enum: Direction })
     balconyDirection?: Direction
-
 
     @Prop()
     numberOfBedrooms: number
@@ -43,13 +44,13 @@ class ApartmentOverview extends Overview {
     @Prop()
     numberOfBathrooms?: number
 
-    @Prop({ type: Furniture })
+    @Prop({ enum: Furniture })
     furniture?: Furniture
 }
 
 @Schema()
 export class Apartment extends RealEstate {
-    @Prop()
+    @Prop({ enum: RealEstateCategory })
     category: RealEstateCategory
 
     @Prop({ type: ApartmentDetail })

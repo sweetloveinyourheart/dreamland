@@ -1,0 +1,133 @@
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
+import { Address } from "src/real-estate/schemas/general.schema"
+import { ProjectType, ProjectUtilities } from "../enum/pj.enum"
+import { Document } from 'mongoose'
+
+class PurInfo {
+    @Prop()
+    price: number
+
+    @Prop()
+    acreage: number
+}
+
+class RentInfo {
+    @Prop()
+    price: number
+
+    @Prop()
+    acreage: number
+}
+
+class ProjectInformation {
+    @Prop(PurInfo)
+    purchaseInfo: PurInfo
+
+    @Prop(RentInfo)
+    rentInfo: RentInfo
+
+    @Prop()
+    startedAt?: string
+
+    @Prop()
+    handOverYear?: number
+
+    @Prop()
+    investorName: string
+
+    @Prop(ProjectType)
+    type: ProjectType
+
+    @Prop()
+    acreage?: number
+
+    @Prop(type => String)
+    scale?: string
+
+    @Prop(type => String)
+    progressStatus?: string
+
+    @Prop(type => String)
+    status?: string
+}
+
+class ProjectMedia {
+    @Prop(type => [String])
+    images: string[]
+}
+
+class ProjectInvestor {
+    @Prop()
+    logo: string
+
+    @Prop()
+    name: string
+
+    @Prop()
+    establishYear: number
+
+    @Prop()
+    about: string
+}
+
+class ProjectProgress {
+    @Prop()
+    image: string
+
+    @Prop()
+    title: string
+}
+
+class MasterPlan {
+    @Prop()
+    image: string
+    
+    @Prop()
+    title: string
+}
+
+@Schema()
+export class Project {
+    @Prop(ProjectMedia)
+    media: ProjectMedia
+
+    @Prop(String)
+    projectName: string
+
+    @Prop(Address)
+    address: Address
+
+    @Prop(ProjectInformation)
+    information: ProjectInformation
+
+    @Prop()
+    utilities: ProjectUtilities[]
+
+    @Prop(String)
+    description: string
+
+    @Prop(ProjectInvestor)
+    investor: ProjectInvestor
+
+    @Prop([ProjectProgress])
+    progress: ProjectProgress[]
+
+    @Prop([MasterPlan])
+    masterPlan: MasterPlan[]
+
+    @Prop()
+    timeStamp: Date
+
+    @Prop()
+    directLink: string
+
+    @Prop({ default: true })
+    actived: boolean
+
+    @Prop({ index: true })
+    projectID: number
+}
+
+export type ProjectDocument = Project & Document
+
+export const projectSchema = SchemaFactory.createForClass(Project)

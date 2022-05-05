@@ -2,14 +2,11 @@ import { BusinessPremisesType, Direction, Furniture, RealEstateCategory, RealEst
 import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general.schema"
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Project } from "src/project/schemas/project.schema";
 
-export type  BusinessPremisesDocument = BusinessPremises & Document;
+export type BusinessPremisesDocument = BusinessPremises & Document;
 
-class BusinessPremisesAddress extends Address {
-    @Prop({ type: MongooseSchema.Types.ObjectId })
-    project?: string
-}
-
+@Schema({ _id: false, id: false })
 class BusinessPremisesPosition extends Position {
     @Prop()
     blockName?: string
@@ -18,28 +15,33 @@ class BusinessPremisesPosition extends Position {
     floorNumber?: number
 }
 
+@Schema({ _id: false, id: false })
 export class BusinessPremisesDetail extends Detail {
     @Prop({ type: BusinessPremisesPosition })
     position: BusinessPremisesPosition
 
-    @Prop({ type: BusinessPremisesAddress })
-    address: BusinessPremisesAddress
+    @Prop({ type: Address })
+    address: Address
 
     @Prop({ type: Acreage })
     acreage: Acreage
+
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
+    project?: Project
 }
 
+@Schema({ _id: false, id: false })
 class BusinessPremisesOverview extends Overview {
-    @Prop({ type: BusinessPremisesType })
+    @Prop({ enum: BusinessPremisesType })
     type: BusinessPremisesType
 
-    @Prop({ type: Furniture })
+    @Prop({ enum: Furniture })
     furniture?: Furniture
 }
 
 @Schema()
 export class BusinessPremises extends RealEstate {
-    @Prop()
+    @Prop({ enum: RealEstateCategory })
     category: RealEstateCategory
 
     @Prop({ type: BusinessPremisesDetail })

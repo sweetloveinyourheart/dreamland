@@ -3,12 +3,6 @@ import { LandType, Furniture, RealEstateCategory } from '../../enum/real-estate.
 import { AcreageInput, AddressInput, CreateRealEstateInput, DetailInput, OverviewInput, PositionInput } from './general/create.input';
 
 @InputType()
-class LandAddressInput extends AddressInput {
-    @Field(type => String, { nullable: true })
-    project?: string
-}
-
-@InputType()
 class LandPositionInput extends PositionInput {
     @Field(type => String, { nullable: true })
     blockName?: string
@@ -28,8 +22,8 @@ class LandDetailInput extends DetailInput {
     @Field(type => LandPositionInput)
     position: LandPositionInput
 
-    @Field(type => LandAddressInput)
-    address: LandAddressInput
+    @Field(type => AddressInput)
+    address: AddressInput
 
     @Field(type => LandAcreageInput)
     acreage: LandAcreageInput
@@ -61,4 +55,7 @@ export class CreateLandInput extends CreateRealEstateInput {
 
     @Field(type => LandOverviewInput)
     overview: LandOverviewInput
+
+    @Field(type => String, { nullable: true })
+    project?: string
 }

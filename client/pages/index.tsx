@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -9,9 +9,16 @@ import Footer from '../components/footer/footer'
 import Header from '../components/header/header'
 import Items from '../components/items/items'
 import Projects from '../components/projects/projects'
+import { GET_TOP_PROJECTS_QUERY } from '../graphql/queries/project'
+import { initializeApollo } from '../lib/apolloClient'
+import { ProjectInterface } from '../types/interfaces/project'
 import styles from './../styles/pages/index.module.scss'
 
-const Home: NextPage = () => {
+interface HomePageProps {
+  projects: ProjectInterface[]
+}
+
+const Home: NextPage<HomePageProps> = ({ projects }) => {
   return (
     <>
       <Head>
@@ -74,7 +81,7 @@ const Home: NextPage = () => {
             <div className={styles['stall']}>
               <h4> Dự án được quan tâm </h4>
               <div className={styles['stall__items']}>
-                <Projects />
+                <Projects data={projects}/>
               </div>
               <div className={styles['stall__more']}>
                 <Link href={"/"}> Xem thêm dự án </Link>
@@ -104,6 +111,28 @@ const Home: NextPage = () => {
       <Footer />
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  try {
+    const client = initializeApollo()
+    const projectsResult = await client.query<{ getProjects: ProjectInterface[] }>({
+      query: GET_TOP_PROJECTS_QUERY
+    })
+
+    return {
+      props: {
+        projects: projectsResult?.data?.getProjects ?? []
+      },
+      revalidate: 60
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {},
+      revalidate: 60,
+    }
+  }
 }
 
 export default Home

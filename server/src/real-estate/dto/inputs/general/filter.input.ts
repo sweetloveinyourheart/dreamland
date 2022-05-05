@@ -26,7 +26,7 @@ class AddressFilter {
 }
 
 @InputType()
-class PriceFilter {
+export class PriceFilter {
     @Field(type => Float, { defaultValue: 0 })
     min: number
 

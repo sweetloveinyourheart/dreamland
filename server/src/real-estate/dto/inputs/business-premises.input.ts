@@ -3,12 +3,6 @@ import { BusinessPremisesType, Furniture, RealEstateCategory } from '../../enum/
 import { AcreageInput, AddressInput, CreateRealEstateInput, DetailInput, OverviewInput, PositionInput } from './general/create.input';
 
 @InputType()
-class BusinessPremisesAddressInput extends AddressInput {
-    @Field(type => String, { nullable: true })
-    project?: string
-}
-
-@InputType()
 class BusinessPremisesPositionInput extends PositionInput {
     @Field(type => String, { nullable: true })
     blockName?: string
@@ -22,8 +16,8 @@ class BusinessPremisesDetailInput extends DetailInput {
     @Field(type => BusinessPremisesPositionInput)
     position: BusinessPremisesPositionInput
 
-    @Field(type => BusinessPremisesAddressInput)
-    address: BusinessPremisesAddressInput
+    @Field(type => AddressInput)
+    address: AddressInput
 
     @Field(type => AcreageInput)
     acreage: AcreageInput
@@ -49,4 +43,7 @@ export class CreateBusinessPremisesInput extends CreateRealEstateInput {
 
     @Field(type => BusinessPremisesOverviewInput)
     overview: BusinessPremisesOverviewInput
+
+    @Field(type => String, { nullable: true })
+    project?: string
 }

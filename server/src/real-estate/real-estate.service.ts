@@ -8,17 +8,24 @@ import { Apartment } from './models/apartment.model';
 import { House } from './models/house.model';
 import { Apartment as ApartmentModel, ApartmentDocument } from './schemas/apartment.schema';
 import { House as HouseModel, HouseDocument } from './schemas/house.schema';
+import { Land as LandModel, LandDocument } from './schemas/land.schema';
+import { BusinessPremises as BusinessPremisesModel, BusinessPremisesDocument } from './schemas/business-premises.schema';
+import { Motal as MotalModel, MotalDocument } from './schemas/motal.schema';
 
 @Injectable()
 export class RealEstateService {
     constructor(
-        @InjectModel(ApartmentModel.name) private apartmentSchema: Model<ApartmentDocument>,
-        @InjectModel(HouseModel.name) private houseSchema: Model<HouseDocument>,
+        @InjectModel(ApartmentModel.name) private apartmentModel: Model<ApartmentDocument>,
+        @InjectModel(HouseModel.name) private houseModel: Model<HouseDocument>,
+        @InjectModel(LandModel.name) private landModel: Model<LandDocument>,
+        @InjectModel(BusinessPremisesModel.name) private businessPremisesModel: Model<BusinessPremisesDocument>,
+        @InjectModel(MotalModel.name) private motalModel: Model<MotalDocument>,
+
     ) { }
 
     async createApartmentPost(data: CreateApartmentInput): Promise<Apartment> {
         try {
-            const newItem = await this.apartmentSchema.create({
+            const newItem = await this.apartmentModel.create({
                 ...data,
                 timeStamp: new Date()
             })
@@ -31,7 +38,7 @@ export class RealEstateService {
 
     async createHousePost(data: CreateHouseInput): Promise<House> {
         try {
-            const newItem = await this.houseSchema.create({
+            const newItem = await this.houseModel.create({
                 ...data,
                 timeStamp: new Date()
             })
@@ -46,9 +53,9 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                ...(paging.cursor && { apartmentID: { $gte: paging.cursor } }),
-                ...(filter.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
-                ...(filter.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
+                ...(paging?.cursor && { apartmentID: { $gte: paging.cursor } }),
+                ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
+                ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
                 ...(filter?.address?.district && { "detail.address.district": filter.address.district }),
                 ...(filter?.address?.ward && { "detail.address.ward": filter.address.ward }),
@@ -58,11 +65,13 @@ export class RealEstateService {
                 ...(filter?.doorDirection && { "overview.doorDirection": filter.doorDirection }),
                 ...(filter?.legalDocuments && { "overview.legalDocuments": filter.legalDocuments }),
                 ...(filter?.numberOfBedrooms && { "overview.numberOfBedrooms": filter.numberOfBedrooms }),
-                ...(filter.balconyDirection && { "overview.balconyDirection": filter.balconyDirection })
+                ...(filter?.balconyDirection && { "overview.balconyDirection": filter.balconyDirection })
             }
 
-            return await this.apartmentSchema.find(query).limit(paging.limit)
+            return await this.apartmentModel.find(query).limit(paging?.limit).sort({ timeStamp: -1 })
         } catch (error) {
+            console.log(error);
+            
             throw new NotFoundException()
         }
     }
@@ -71,9 +80,9 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                ...(paging.cursor && { apartmentID: { $gte: paging.cursor } }),
-                ...(filter.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
-                ...(filter.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
+                ...(paging?.cursor && { apartmentID: { $gte: paging.cursor } }),
+                ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
+                ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
                 ...(filter?.address?.district && { "detail.address.district": filter.address.district }),
                 ...(filter?.address?.ward && { "detail.address.ward": filter.address.ward }),
@@ -88,7 +97,7 @@ export class RealEstateService {
                 ...(filter?.frontispiece && { "overview.frontispiece": filter.frontispiece })
             }
 
-            return await this.houseSchema.find(query).limit(paging.limit)
+            return await this.houseModel.find(query).limit(paging?.limit).sort({ timeStamp: -1 })
         } catch (error) {
             throw new NotFoundException()
         }

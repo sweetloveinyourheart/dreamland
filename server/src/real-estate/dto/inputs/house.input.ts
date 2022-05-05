@@ -31,12 +31,6 @@ class HouseOverviewInput extends OverviewInput {
 }
 
 @InputType()
-class HouseAddressInput extends AddressInput {
-    @Field(type => String, { nullable: true })
-    project?: string
-}
-
-@InputType()
 class HousePositionInput extends PositionInput {
     @Field(type => String, { nullable: true })
     blockName?: string
@@ -59,8 +53,8 @@ class HouseDetailInput extends DetailInput {
     @Field(type => HousePositionInput)
     position: HousePositionInput
 
-    @Field(type => HouseAddressInput)
-    address: HouseAddressInput
+    @Field(type => AddressInput)
+    address: AddressInput
 
     @Field(type => HouseAcreageInput)
     acreage: HouseAcreageInput
@@ -76,6 +70,9 @@ export class CreateHouseInput extends CreateRealEstateInput {
 
     @Field(type => HouseOverviewInput)
     overview: HouseOverviewInput
+
+    @Field(type => String, { nullable: true })
+    project?: string
 }
 
 @InputType()

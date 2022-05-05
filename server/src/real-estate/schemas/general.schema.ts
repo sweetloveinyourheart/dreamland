@@ -1,6 +1,7 @@
 import { Direction, LegalDocuments, OwnerType } from "../enum/real-estate.enum"
-import { Prop } from '@nestjs/mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 
+@Schema({ _id: false, id: false })
 class UserInfo {
     @Prop(String)
     name: string
@@ -9,14 +10,16 @@ class UserInfo {
     phone: string
 }
 
+@Schema({ _id: false, id: false })
 export class Owner {
-    @Prop({ type: OwnerType })
+    @Prop({ enum: OwnerType })
     type: OwnerType
 
     @Prop({ type: UserInfo })
     user: UserInfo
 }
 
+@Schema({ _id: false, id: false })
 class Pricing {
     @Prop()
     total: number
@@ -25,19 +28,22 @@ class Pricing {
     deposit?: number
 }
 
+@Schema({ _id: false, id: false })
 export class Detail {
     @Prop({ type: Pricing })
     pricing: Pricing
 }
 
+@Schema({ _id: false, id: false })
 export class Overview {
-    @Prop({ type: Direction })
+    @Prop({ enum: Direction })
     doorDirection?: Direction
 
-    @Prop({ type: LegalDocuments })
+    @Prop({ enum: LegalDocuments })
     legalDocuments?: LegalDocuments
 }
 
+@Schema({ _id: false, id: false })
 export class Media {
     @Prop()
     images: string[]
@@ -46,6 +52,7 @@ export class Media {
     videos: string[]
 }
 
+@Schema({ _id: false, id: false })
 export class Address {
     @Prop()
     houseNumber?: string
@@ -66,6 +73,7 @@ export class Address {
     street: string
 }
 
+@Schema({ _id: false, id: false })
 class PositionCode {
     @Prop()
     value: string
@@ -74,16 +82,19 @@ class PositionCode {
     showCode?: boolean
 }
 
+@Schema({ _id: false, id: false })
 export class Position {
     @Prop({ type: PositionCode })
     code?: PositionCode
 }
 
+@Schema({ _id: false, id: false })
 export class Acreage {
     @Prop()
     totalAcreage: number
 }
 
+@Schema()
 export class RealEstate {
     @Prop({ required: true })
     title: string

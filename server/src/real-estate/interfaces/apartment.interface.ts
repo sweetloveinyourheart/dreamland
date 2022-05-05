@@ -10,8 +10,8 @@ import {
 
 export interface Address {
     projectName?: string
-    apartmentNumber?: string
-    showApartmentNumber?: boolean
+    houseNumber?: string
+    showHouseNumber?: boolean
     province: string
     district: string
     ward: string

@@ -22,11 +22,11 @@ export class RealEstateResolver {
   }
 
   @Query(returns => [Apartment])
-  getApartments(
+  async getApartments(
     @Args('filter') filter: ApartmentFilter,
     @Args('paging', { nullable: true }) paging: PaginationArgs
   ) {
-    return;
+    return await this.realEstateService.getApartmentPosts(filter, paging);
   }
 
   @Query(returns => [Land])

@@ -15,12 +15,18 @@ import { MongooseModule } from '@nestjs/mongoose';
       debug: false,
       autoSchemaFile: true
     }),
-    MongooseModule.forRoot('mongodb://localhost/dreamland'),
-    RealEstateModule, 
-    UserModule, 
+    MongooseModule.forRoot('mongodb://localhost/dreamland', {
+      connectionFactory: (connection) => {
+        connection.plugin(require('mongoose-autopopulate'));
+        return connection;
+      }
+    }
+    ),
+    RealEstateModule,
+    UserModule,
     ProjectModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

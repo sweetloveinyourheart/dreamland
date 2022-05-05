@@ -1,12 +1,7 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { Project } from 'src/project/models/project.model';
 import { Furniture, HouseType,  RealEstateCategory } from '../enum/real-estate.enum';
 import { Acreage, Address, Detail, Overview, Position, RealEstate } from './general';
-
-@ObjectType()
-class HouseAddress extends Address {
-    @Field(type => String, { nullable: true })
-    project?: string
-}
 
 @ObjectType()
 class HousePosition extends Position {
@@ -31,11 +26,14 @@ export class HouseDetail extends Detail {
     @Field(type => HousePosition)
     position: HousePosition
 
-    @Field(type => HouseAddress)
-    address: HouseAddress
+    @Field(type => Address)
+    address: Address
 
     @Field(type => HouseAcreage)
     acreage: HouseAcreage
+
+    @Field(type => Project, { nullable: true })
+    project?: Project
 }
 
 @ObjectType()
@@ -75,4 +73,5 @@ export class House extends RealEstate {
 
     @Field(type => HouseOverview)
     overview: HouseOverview
+
 }
