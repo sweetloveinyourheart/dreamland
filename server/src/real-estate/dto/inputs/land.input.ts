@@ -1,6 +1,7 @@
 import { InputType, Field, Int, Float } from '@nestjs/graphql';
-import { LandType, Furniture, RealEstateCategory } from '../../enum/real-estate.enum';
+import { LandType, Furniture, RealEstateCategory, Direction, LegalDocuments } from '../../enum/real-estate.enum';
 import { AcreageInput, AddressInput, CreateRealEstateInput, DetailInput, OverviewInput, PositionInput } from './general/create.input';
+import { RealEstateFilter } from './general/filter.input';
 
 @InputType()
 class LandPositionInput extends PositionInput {
@@ -55,6 +56,30 @@ export class CreateLandInput extends CreateRealEstateInput {
 
     @Field(type => LandOverviewInput)
     overview: LandOverviewInput
+
+    @Field(type => String, { nullable: true })
+    project?: string
+}
+
+@InputType()
+export class LandFilter extends RealEstateFilter {
+    @Field(type => LandType, { nullable: true })
+    type?: LandType
+
+    @Field(type => Direction, { nullable: true })
+    doorDirection?: Direction
+
+    @Field(type => LegalDocuments, { nullable: true })
+    legalDocuments?: LegalDocuments
+
+    @Field(type => Boolean, { nullable: true })
+    carAlley?: boolean
+
+    @Field(type => Boolean, { nullable: true })
+    noHau?: boolean
+
+    @Field(type => Boolean, { nullable: true })
+    frontispiece?: boolean
 
     @Field(type => String, { nullable: true })
     project?: string

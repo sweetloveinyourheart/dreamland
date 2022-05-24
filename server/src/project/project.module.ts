@@ -13,13 +13,14 @@ import * as AutoIncrementFactory from 'mongoose-sequence';
         useFactory: (connection: any) => {
           const schema = projectSchema;
           const AutoIncrement = AutoIncrementFactory(connection);
-          schema.plugin(AutoIncrement, { inc_field: 'projectID' }) 
+          schema.plugin(AutoIncrement, { inc_field: 'index' }) 
           return schema;
         },
         inject: [getConnectionToken()]
       }
     ])
   ],
-  providers: [ProjectResolver, ProjectService]
+  providers: [ProjectResolver, ProjectService],
+  exports: [ProjectService]
 })
 export class ProjectModule {}

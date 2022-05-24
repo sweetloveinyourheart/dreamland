@@ -40,11 +40,11 @@ const Header: FunctionComponent<HeaderProps> = () => {
                                 <FaHome />
                                 <span> Trang chủ </span>
                             </li>
-                            <li onClick={() => router.push("/mua-ban-bat-dong-san")}>
+                            <li onClick={() => router.push("/mua-ban/bat-dong-san")}>
                                 <FaBuilding />
                                 <span> Mua bán </span>
                             </li>
-                            <li>
+                            <li onClick={() => router.push("/cho-thue/bat-dong-san")}>
                                 <FaHandHoldingUsd />
                                 <span> Cho thuê </span>
                             </li>

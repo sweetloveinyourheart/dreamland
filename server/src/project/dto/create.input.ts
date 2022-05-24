@@ -1,33 +1,23 @@
 import { Field, Float, Int, InputType } from "@nestjs/graphql";
 import { AddressInput } from "src/real-estate/dto/inputs/general/create.input";
-import { Address } from "src/real-estate/models/general";
-import { ProjectType, ProjectUtilities } from "../enum/pj.enum";
+import { ProjectType } from "../enum/pj.enum";
 
 @InputType()
-class PurInfoInput {
-    @Field({ nullable: true })
-    price?: number
+class ProjectUtilitiesInput {
+    @Field()
+    image: string
 
-    @Field({ nullable: true })
-    acreage?: number
+    @Field()
+    title: string
 }
 
 @InputType()
-class RentInfoInput  {
-    @Field({ nullable: true })
-    price?: number
+class ProjectInformationInput {
+    @Field(type => Float)
+    purchaseInfo: number
 
-    @Field({ nullable: true })
-    acreage?: number
-}
-
-@InputType()
-class ProjectInformationInput  {
-    @Field(type => PurInfoInput )
-    purchaseInfo: PurInfoInput 
-
-    @Field(type => RentInfoInput )
-    rentInfo: RentInfoInput 
+    @Field(type => Float)
+    rentInfo: number
 
     @Field(type => String, { nullable: true })
     startedAt?: string
@@ -55,13 +45,13 @@ class ProjectInformationInput  {
 }
 
 @InputType()
-class ProjectMediaInput  {
+class ProjectMediaInput {
     @Field(type => [String])
     images: string[]
 }
 
 @InputType()
-class ProjectInvestorInput  {
+class ProjectInvestorInput {
     @Field()
     logo: string
 
@@ -76,7 +66,7 @@ class ProjectInvestorInput  {
 }
 
 @InputType()
-class ProjectProgressInput  {
+class ProjectProgressInput {
     @Field()
     image: string
 
@@ -85,18 +75,18 @@ class ProjectProgressInput  {
 }
 
 @InputType()
-class MasterPlanInput  {
+class MasterPlanInput {
     @Field()
     image: string
-    
+
     @Field()
     title: string
 }
 
 @InputType()
 export class CreateProjectInput {
-    @Field(type => ProjectMediaInput )
-    media: ProjectMediaInput 
+    @Field(type => ProjectMediaInput)
+    media: ProjectMediaInput
 
     @Field(type => String)
     projectName: string
@@ -104,21 +94,21 @@ export class CreateProjectInput {
     @Field(type => AddressInput)
     address: AddressInput
 
-    @Field(type => ProjectInformationInput )
-    information: ProjectInformationInput 
+    @Field(type => ProjectInformationInput)
+    information: ProjectInformationInput
 
-    @Field(type => [ProjectUtilities])
-    utilities: ProjectUtilities[]
+    @Field(type => [ProjectUtilitiesInput])
+    utilities: ProjectUtilitiesInput[]
 
     @Field(type => String)
     description: string
 
-    @Field(type => ProjectInvestorInput )
-    investor: ProjectInvestorInput 
+    @Field(type => ProjectInvestorInput)
+    investor: ProjectInvestorInput
 
-    @Field(type => [ProjectProgressInput ])
-    progress: ProjectProgressInput []
+    @Field(type => [ProjectProgressInput])
+    progress: ProjectProgressInput[]
 
-    @Field(type => [MasterPlanInput] )
+    @Field(type => [MasterPlanInput])
     masterPlan: MasterPlanInput[]
 }

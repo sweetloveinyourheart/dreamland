@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql"
 import { Project } from "src/project/models/project.model"
 import { ApartmentType, Direction, Furniture, RealEstateCategory, RealEstateStatus } from "../enum/real-estate.enum"
-import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general"
+import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./parent-models/general"
 
 @ObjectType()
 class ApartmentPosition extends Position {
@@ -29,10 +29,10 @@ class ApartmentOverview extends Overview{
     @Field(type => ApartmentType)
     type: ApartmentType
 
-    @Field(type => RealEstateStatus)
+    @Field(type => RealEstateStatus, { nullable: true })
     status: RealEstateStatus
 
-    @Field(type => Direction)
+    @Field(type => Direction, { nullable: true })
     balconyDirection?: Direction
 
     @Field(type => Int)
@@ -55,6 +55,4 @@ export class Apartment extends RealEstate {
 
     @Field(type => ApartmentOverview)
     overview: ApartmentOverview
-
-   
 }

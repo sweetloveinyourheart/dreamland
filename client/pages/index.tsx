@@ -9,16 +9,17 @@ import Footer from '../components/footer/footer'
 import Header from '../components/header/header'
 import Items from '../components/items/items'
 import Projects from '../components/projects/projects'
-import { GET_TOP_PROJECTS_QUERY } from '../graphql/queries/project'
+import { GET_TOP_POSTS_QUERY, GET_TOP_PROJECTS_QUERY, TopPostsResult } from '../graphql/queries/homePage'
 import { initializeApollo } from '../lib/apolloClient'
 import { ProjectInterface } from '../types/interfaces/project'
 import styles from './../styles/pages/index.module.scss'
 
 interface HomePageProps {
   projects: ProjectInterface[]
+  posts: TopPostsResult
 }
 
-const Home: NextPage<HomePageProps> = ({ projects }) => {
+const Home: NextPage<HomePageProps> = ({ projects, posts }) => {
   return (
     <>
       <Head>
@@ -26,7 +27,7 @@ const Home: NextPage<HomePageProps> = ({ projects }) => {
         <meta name="description" content="Hệ sinh thái dịch vụ bất động sản số 1 - DreamLand đang ngày càng hoàn thiện dịch vụ môi giới, truyền thông, đầu tư và quản lý bất động sản" />
       </Head>
       <Header />
-      <main style={{ backgroundColor: "#f4f4f4" }}>
+      <main style={{ backgroundColor: 'rgba(244,244,244, 0.8)' }}>
         <MainBanner />
         <MainCategories />
         <section className={styles['items-area']}>
@@ -34,10 +35,10 @@ const Home: NextPage<HomePageProps> = ({ projects }) => {
             <div className={styles['stall']}>
               <h4> Mua bán bất động sản </h4>
               <div className={styles['stall__items']}>
-                <Items />
+                <Items data={[...posts.sellingApartments, ...posts.sellingHouses, ...posts.sellingLands]} />
               </div>
               <div className={styles['stall__more']}>
-                <Link href={"/"}> Xem thêm tin mua bán</Link>
+                <Link href={"/mua-ban/bat-dong-san"}> Xem thêm tin mua bán</Link>
               </div>
             </div>
           </div>
@@ -48,10 +49,10 @@ const Home: NextPage<HomePageProps> = ({ projects }) => {
             <div className={styles['stall']}>
               <h4> Cho thuê bất động sản </h4>
               <div className={styles['stall__items']}>
-                <Items />
+                <Items data={[...posts.rentingApartments, ...posts.rentingHouses, ...posts.rentingLands]} />
               </div>
               <div className={styles['stall__more']}>
-                <Link href={"/"}> Xem thêm tin cho thuê </Link>
+                <Link href={"/cho-thue/bat-dong-san"}> Xem thêm tin cho thuê </Link>
               </div>
             </div>
           </div>
@@ -67,10 +68,10 @@ const Home: NextPage<HomePageProps> = ({ projects }) => {
                 <div className={styles['special-content__txt']}><FaShieldAlt /> Đã xác minh</div>
               </div>
               <div className={styles['stall__items']}>
-                <Items guard />
+                <Items guard data={[...posts.sellingApartments, ...posts.sellingHouses, ...posts.sellingLands]} />
               </div>
               <div className={styles['stall__more']}>
-                <Link href={"/"}> Xem thêm tin cho thuê </Link>
+                <Link href={"/bat-dong-san?category=MuaBan"}> Xem thêm tin từ đối tác </Link>
               </div>
             </div>
           </div>
@@ -81,10 +82,10 @@ const Home: NextPage<HomePageProps> = ({ projects }) => {
             <div className={styles['stall']}>
               <h4> Dự án được quan tâm </h4>
               <div className={styles['stall__items']}>
-                <Projects data={projects}/>
+                <Projects data={projects} />
               </div>
               <div className={styles['stall__more']}>
-                <Link href={"/"}> Xem thêm dự án </Link>
+                <Link href={"/du-an-bat-dong-san"}> Xem thêm dự án </Link>
               </div>
             </div>
           </div>
@@ -93,7 +94,7 @@ const Home: NextPage<HomePageProps> = ({ projects }) => {
         <section className={styles['items-area']}>
           <div className="container">
             <div className={styles['review']}>
-              <h5>BẤT ĐỘNG SẢN THÁNG 04/2022</h5>
+              <h5>BẤT ĐỘNG SẢN ĐIỀN KHÔI</h5>
               <p>Chợ Tốt Nhà (nha.chotot.com) Chuyên trang mua bán và cho thuê bất động sản được ra mắt bởi trang mua bán trực tuyến Chợ Tốt vào đầu năm 2017. Với hơn 5 triệu lượt truy cập và hơn 200.000 tin đăng phân bố khắp các tỉnh thành trong cả nước mỗi tháng, Chợ Tốt Nhà hướng tới là một trang mua bán bất động sản hiệu quả, dễ sử dụng, đa dạng lựa chọn cho người dùng.</p>
               <p>Với Chợ Tốt Nhà, bạn dễ dàng tìm kiếm mua bán/cho thuê với đa dạng loại hình bất động sản, bao gồm:</p>
               <p>Nhà đất: bạn có thể dễ dàng tìm kiếm theo diện tích, vị trí, hướng cửa chính, đáp ứng đầy đủ các nhu cầu từ tìm nhà hẻm, nhà mặt tiền, nhà phố, nhà biệt thự.
@@ -116,18 +117,23 @@ const Home: NextPage<HomePageProps> = ({ projects }) => {
 export const getStaticProps: GetStaticProps = async (context) => {
   try {
     const client = initializeApollo()
+
     const projectsResult = await client.query<{ getProjects: ProjectInterface[] }>({
       query: GET_TOP_PROJECTS_QUERY
     })
 
+    const topPostsResult = await client.query<TopPostsResult>({
+      query: GET_TOP_POSTS_QUERY
+    })
+
     return {
       props: {
-        projects: projectsResult?.data?.getProjects ?? []
+        projects: projectsResult?.data?.getProjects ?? [],
+        posts: topPostsResult.data
       },
       revalidate: 60
     }
   } catch (error) {
-    console.log(error);
     return {
       props: {},
       revalidate: 60,

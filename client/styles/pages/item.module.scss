@@ -125,7 +125,41 @@
 
 .address {
     @extend .installment;
+    align-items: flex-start;
     color: #33659c;
+    cursor: pointer;
+
+    svg {
+        width: 5%;
+    }
+
+    p {
+        margin-left: 0;
+        max-width: 80%;
+        padding: 0 8px;
+    }
+
+    span {
+        width: 15%;
+    }
+}
+
+.project {
+   margin-top: 4px; 
+   display: flex;
+   align-items: center;
+}
+
+.project p {
+    color: #777;
+    margin: 0;
+    margin-left: 8px;
+}
+
+.project span {
+    color: #33659c;
+    font-weight: 600;
+    margin-left: 8px;
     cursor: pointer;
 }
 

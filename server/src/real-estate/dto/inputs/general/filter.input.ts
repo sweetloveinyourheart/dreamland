@@ -1,8 +1,8 @@
 import { ArgsType, Field, Float, InputType, Int } from "@nestjs/graphql";
-import { Direction, Furniture, LegalDocuments, RealEstateCategory } from "src/real-estate/enum/real-estate.enum";
+import { RealEstateCategory } from "src/real-estate/enum/real-estate.enum";
 
 @InputType()
-class AddressFilter {
+export class AddressFilter {
     @Field(type => String, { nullable: true })
     projectName?: string
 
@@ -35,7 +35,7 @@ export class PriceFilter {
 }
 
 @InputType()
-class AcreageFilter {
+export class AcreageFilter {
     @Field(type => Float, { defaultValue: 0 })
     min: number
 

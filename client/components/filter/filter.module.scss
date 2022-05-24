@@ -14,7 +14,7 @@
 .filter-item {
     margin: 0 6px;
 
-    button {
+    button, select {
         padding: 8px 8px;
         border-radius: 4px;
         border: 1px solid #9c9c9cb3;
@@ -24,6 +24,7 @@
         color: #222;
         cursor: pointer;
         transition: 0.2s;
+        font-size: 14px;
 
         &:hover {
             border-color: #f93707;
@@ -32,7 +33,6 @@
 
         p {
             margin: 0 12px 0 4px;
-            font-size: 14px;
 
             svg {
                 font-size: 13px;
@@ -73,54 +73,5 @@
             font-size: 16px;
         }
         
-    }
-}
-
-.modal {
-    min-width: 500px;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
-    color: #fff;
-    background-color: #d12032;
-
-    h4 {
-        margin: 0;
-        display: flex;
-        align-items: center;
-    }
-
-    button {
-        border: none;
-        background-color: transparent;
-        cursor: pointer;
-        color: #fff;
-    }
-}
-
-.selector {
-    padding: 8px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #dcdcdc;
-    cursor: pointer;
-    transition: 0.2s;
-
-    &:hover {
-        color: #f93707;
-
-        svg {
-            color: #f93707;
-        }
-    }
-
-    svg {
-        font-size: 12px;
-        color: #777;
     }
 }

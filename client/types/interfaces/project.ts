@@ -1,5 +1,10 @@
-import { ProjectType, ProjectUtilities } from "../enums/project"
+import { ProjectType} from "../enums/project"
 import { AddressInterface } from "./realEstate"
+
+export interface ProjectUtilities {
+    image: string
+    title: string
+}
 
 export interface ProjectInterface {
     _id?: string
@@ -9,14 +14,8 @@ export interface ProjectInterface {
     projectName: string
     address: AddressInterface
     information: {
-        purchaseInfo: {
-            price?: number
-            acreage?: number
-        }
-        rentInfo: {
-            price?: number
-            acreage?: number
-        }
+        purchaseInfo?: number
+        rentInfo?: number
         startedAt?: string
         handOverYear?: number
         investorName: string

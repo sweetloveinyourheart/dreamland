@@ -1,40 +1,27 @@
 import { Field, Float, Int, ObjectType, registerEnumType } from "@nestjs/graphql";
-import { Address } from "src/real-estate/models/general";
-import { ProjectType, ProjectUtilities } from "../enum/pj.enum";
+import { Address } from "src/real-estate/models/parent-models/general";
+import { ProjectType } from "../enum/pj.enum";
 
 registerEnumType(ProjectType, {
     name: "ProjectType"
 })
 
-registerEnumType(ProjectUtilities, {
-    name: "ProjectUtilities"
-})
-
 @ObjectType()
-class PurInfo {
-    @Field({ nullable: true })
-    price?: number
+class ProjectUtilities {
+    @Field(type => String)
+    image: string
 
-    @Field({ nullable: true })
-    acreage?: number
-}
-
-@ObjectType()
-class RentInfo {
-    @Field({ nullable: true })
-    price?: number
-
-    @Field({ nullable: true })
-    acreage?: number
+    @Field()
+    title: string
 }
 
 @ObjectType()
 class ProjectInformation {
-    @Field(type => PurInfo, { nullable: true })
-    purchaseInfo?: PurInfo
+    @Field(type => Float, { nullable: true })
+    purchaseInfo?: number
 
-    @Field(type => RentInfo, { nullable: true })
-    rentInfo?: RentInfo
+    @Field(type => Float, { nullable: true })
+    rentInfo?: number
 
     @Field(type => String, { nullable: true })
     startedAt?: string
@@ -140,4 +127,7 @@ export class Project {
 
     @Field(type => Boolean)
     actived: boolean
+
+    @Field(type => Int)
+    index: number
 }

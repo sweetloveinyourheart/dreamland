@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql"
 import { Project } from "src/project/models/project.model"
 import { BusinessPremisesType, Furniture, RealEstateCategory } from "../enum/real-estate.enum"
-import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general"
+import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./parent-models/general"
 
 @ObjectType()
 class BusinessPremisesPosition extends Position {

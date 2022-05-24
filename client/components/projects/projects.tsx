@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 import { FaMapMarkedAlt } from "react-icons/fa";
+import { moneyConverter } from "../../lib/converter";
 import { ProjectInterface } from "../../types/interfaces/project";
 import styles from './projects.module.scss'
 
@@ -19,9 +20,9 @@ const Projects: FunctionComponent<ProjectsProps> = ({ vertical, data }) => {
 
         return data.map((el, index) => {
             return (
-                <div className={styles['col']} key={index} onClick={() => router.push(`/du-an/${el.directLink}`)}>
+                <div className={styles['col']} key={index}>
                     <div className={styles['item'] + (vertical ? ` ${styles['item--vertical']}` : "")}>
-                        <div className={styles['item-image']}>
+                        <div className={styles['item-image']} onClick={() => router.push(`/du-an/${el.directLink}`)}>
                             <div className={styles['item-image__main']}>
                                 <Image
                                     width={380}
@@ -36,7 +37,7 @@ const Projects: FunctionComponent<ProjectsProps> = ({ vertical, data }) => {
                             </div>
                         </div>
                         <div className={styles['item-desc']}>
-                            <div className={styles['item-detail']}>
+                            <div className={styles['item-detail']} onClick={() => router.push(`/du-an/${el.directLink}`)}>
                                 <div className={styles['item-detail__name']}>
                                     {el.projectName}
                                 </div>
@@ -44,13 +45,13 @@ const Projects: FunctionComponent<ProjectsProps> = ({ vertical, data }) => {
                                     <FaMapMarkedAlt />
                                     {el.address.district}, {el.address.province}
                                 </div>
-                                <div className={styles['item-detail__price']}>{el.information.purchaseInfo?.acreage} triệu/m²</div>
+                                <div className={styles['item-detail__price']}>{moneyConverter(el.information?.purchaseInfo ?? 0)}/m²</div>
                             </div>
                             {vertical
                                 && (
                                     <div className={styles['actions']}>
-                                        <button>Xem tin mua bán</button>
-                                        <button>Xem tin cho thuê</button>
+                                        <button onClick={() => router.push(`/mua-ban/bat-dong-san?project=${el._id}`)}>Xem tin mua bán</button>
+                                        <button onClick={() => router.push(`/cho-thue/bat-dong-san?project=${el._id}`)}>Xem tin cho thuê</button>
                                     </div>
                                 )
                             }

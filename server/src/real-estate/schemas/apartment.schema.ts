@@ -1,5 +1,5 @@
 import { ApartmentType, Direction, Furniture, RealEstateCategory, RealEstateStatus } from "../enum/real-estate.enum"
-import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general.schema"
+import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./parent-classes/general.schema"
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Project } from "src/project/schemas/project.schema";
@@ -58,9 +58,6 @@ export class Apartment extends RealEstate {
 
     @Prop({ type: ApartmentOverview })
     overview: ApartmentOverview
-
-    @Prop({ index: true })
-    apartmentID: number
 }
 
 const ApartmentSchema = SchemaFactory.createForClass(Apartment)

@@ -1,5 +1,5 @@
 import { BusinessPremisesType, Direction, Furniture, RealEstateCategory, RealEstateStatus } from "../enum/real-estate.enum"
-import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general.schema"
+import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./parent-classes/general.schema"
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Project } from "src/project/schemas/project.schema";
@@ -49,9 +49,6 @@ export class BusinessPremises extends RealEstate {
 
     @Prop({ type: BusinessPremisesOverview })
     overview: BusinessPremisesOverview
-
-    @Prop({ index: true })
-    businessPremisesID: number
 }
 
 export const BusinessPremisesSchema = SchemaFactory.createForClass(BusinessPremises)

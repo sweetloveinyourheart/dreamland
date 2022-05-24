@@ -1,5 +1,5 @@
 import { HouseType, Furniture, RealEstateCategory } from "../enum/real-estate.enum"
-import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general.schema"
+import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./parent-classes/general.schema"
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Project } from "src/project/schemas/project.schema";
@@ -34,6 +34,9 @@ class HouseDetail extends Detail {
 
     @Prop({ type: HouseAcreage })
     acreage: HouseAcreage
+
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
+    project?: Project
 }
 
 @Schema({ _id: false, id: false })
@@ -65,9 +68,6 @@ class HouseOverview extends Overview {
 
 @Schema()
 export class House extends RealEstate {
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
-    project?: Project
-    
     @Prop({ enum: RealEstateCategory })
     category: RealEstateCategory
 
@@ -76,9 +76,6 @@ export class House extends RealEstate {
 
     @Prop({ type: HouseOverview })
     overview: HouseOverview
-
-    @Prop({ index: true })
-    houseID: number
 }
 
 export const HouseSchema = SchemaFactory.createForClass(House)

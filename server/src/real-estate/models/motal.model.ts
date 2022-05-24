@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Furniture, RealEstateCategory } from '../enum/real-estate.enum';
-import { Acreage, Address, Detail, Overview, RealEstate } from './general';
+import { Acreage, Address, Detail, Overview, RealEstate } from './parent-models/general';
 
 @ObjectType()
 export class MotalDetail extends Detail {
@@ -27,7 +27,4 @@ export class Motal extends RealEstate {
 
     @Field(type => MotalDetail)
     detail: MotalDetail
-
-    @Field(type => MotalOverview)
-    overview: MotalOverview
 }

@@ -1,75 +1,62 @@
 import Head from "next/head"
 import Image from "next/image"
-import { FaAngleDoubleRight, FaCameraRetro, FaChild, FaDrumstickBite, FaDumbbell, FaHouseDamage, FaMapMarkedAlt, FaParking, FaSpa } from "react-icons/fa"
-import { BiCctv, BiFootball, BiShieldAlt, BiSpa, BiStoreAlt, BiSwim } from 'react-icons/bi'
+import { FaMapMarkedAlt } from "react-icons/fa"
 import { Carousel } from "react-responsive-carousel"
 import Header from "../../components/header/header"
 import styles from '../../styles/pages/du-an/index.module.scss'
 import Footer from "../../components/footer/footer"
 import Items from "../../components/items/items"
-import Link from "next/link"
 import { GetServerSideProps, NextPage } from "next"
 import { ProjectInterface } from "../../types/interfaces/project"
 import { initializeApollo } from "../../lib/apolloClient"
-import { getProjectByDirectLinkVars, GET_PROJECT_BY_DIRECT_LINK } from "../../graphql/queries/project"
+import { getProjectByDirectLinkVars, GET_PROJECT_BY_DIRECT_LINK, GET_RELATIVE_POSTS_BY_PROJECT, RelativePostsByProjectResult, RelativePostsByProjectVars } from "../../graphql/queries/projectPage"
 import { ProjectTypeTranslate, ProjectUtilities, ProjectUtilitiesTranslate } from "../../types/enums/project"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+import { useQuery } from "@apollo/client"
+import { RealEstateCategory } from "../../types/enums/realEstate"
 
 interface RealEstateProjectPageProps {
     project: ProjectInterface | null
 }
 
+
 const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) => {
     const [currentMasterPlanId, setMasterPlanId] = useState<number>(0)
+    // const [relativePosts, setRelativePosts] = useState<RelativePostsByProjectResult>({
+    //     sellingApartments: [],
+    //     sellingHouses: [],
+    //     sellingLands: [],
+    //     rentingApartments: [],
+    //     rentingHouses: [],
+    //     rentingLands: []
+    // })
+
+
+    // const { data, error } = useQuery<RelativePostsByProjectResult, RelativePostsByProjectVars>(
+    //     GET_RELATIVE_POSTS_BY_PROJECT,
+    //     { variables: { projectId: project?._id ?? "" } }
+    // )
+
+    // useEffect(() => {
+    //     if (data && !error) {
+    //         return setRelativePosts({
+    //             sellingApartments: data.sellingApartments,
+    //             sellingHouses: data.sellingHouses,
+    //             sellingLands: data.sellingLands,
+    //             rentingApartments: data.rentingApartments,
+    //             rentingHouses: data.rentingHouses,
+    //             rentingLands: data.rentingLands
+    //         })
+    //     }
+    // }, [data, error])
 
     if (!project) return null
-
-    const projectUtilitiesIcon = useCallback((name: ProjectUtilities): JSX.Element => {
-        switch (name) {
-            case ProjectUtilities.BBQ:
-                return <FaDrumstickBite />
-            
-            case ProjectUtilities.BaiDauXe: 
-                return <FaParking />
-            
-            case ProjectUtilities.BaoVe24:
-                return <BiShieldAlt />
-            
-            case ProjectUtilities.Camera:
-                return <FaCameraRetro />
-    
-            case ProjectUtilities.HoBoi:
-                return <BiSwim />
-            
-            case ProjectUtilities.KhuTheThao:
-                return < BiFootball />
-    
-            case ProjectUtilities.KhuVuiChoiTreEm:
-                return <FaChild />
-            
-            case ProjectUtilities.NhaThongMinh:
-                return <FaHouseDamage />
-    
-            case ProjectUtilities.PhongGYM:
-                return <FaDumbbell />
-    
-            case ProjectUtilities.SPA:
-                return <FaSpa />
-    
-            case ProjectUtilities.TrungTamThuongMai:
-                return <BiStoreAlt />
-    
-            default:
-                return <FaDumbbell />
-        }
-    }, [])
 
     const renderImage = (): JSX.Element[] => {
         return project.media.images.map((el, id, arr) => {
             return (
                 <div className={styles["image"]} key={id}>
                     <img src={el} />
-                    {arr[id + 1] ? <img src={arr[id + 1]} /> : <img src={arr[0]} />}
                 </div>
             )
         })
@@ -81,6 +68,7 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                 <h5
                     style={{ backgroundColor: id === currentMasterPlanId ? "#f4f4f4" : "#fff" }}
                     onClick={e => setMasterPlanId(id)}
+                    key={id}
                 >
                     {el.title}
                 </h5>
@@ -93,8 +81,8 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
             return (
                 <div className={styles['pj-utilities__col']} key={id}>
                     <div className={styles['pj-utilities-item']}>
-                        {projectUtilitiesIcon(el)}
-                        <span>{ProjectUtilitiesTranslate(el)}</span>
+                        <img className={styles['utilities-image']} src={el.image} alt={el.title} />
+                        <div className={styles['utilities-title']}>{el.title}</div>
                     </div>
                 </div>
             )
@@ -108,17 +96,6 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
             </Head>
             <Header />
             <main style={{ backgroundColor: "#fff", padding: '64px 0' }}>
-                <div className={styles['link-area']}>
-                    <div className="container">
-                        <div className={styles['link']}>
-                            <ol>
-                                <li><span>Trang chủ</span> <FaAngleDoubleRight /></li>
-                                <li><span>Dự án</span> <FaAngleDoubleRight /></li>
-                                <li><span>{project.projectName}</span></li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
                 <div className={styles['images']}>
                     <Carousel showThumbs={false} showIndicators={false}>
                         {renderImage()}
@@ -130,7 +107,11 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                         <div className={styles['project-header__address']}>
                             <FaMapMarkedAlt />
                             <p>
-                                {project.address.showHouseNumber ? project.address.houseNumber : ""} {project.address.street}, {project.address.ward}, {project.address.district}, {project.address.province},
+                                {project.address.showHouseNumber ? project.address?.houseNumber : ""}
+                                {project.address.street},
+                                {project.address.ward},
+                                {project.address.district},
+                                {project.address.province},
                                 <span>Xem bản đồ</span>
                             </p>
                         </div>
@@ -143,20 +124,40 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                         <nav className={styles['content-navigator']}>
                             <a className={styles['content-navigator__item'] + ` ${styles['content-navigator__item--active']}`} href="#thongtin">Thông tin</a>
                             <a className={styles['content-navigator__item']} href="#tienich">Tiện ích</a>
-                            <a className={styles['content-navigator__item']} href="#tindangban">Tin đăng bán</a>
-                            <a className={styles['content-navigator__item']} href="#tinchothue">Tin cho thuê</a>
+                            {/* <a className={styles['content-navigator__item']} href="#tindangban">Tin đăng bán</a>
+                            <a className={styles['content-navigator__item']} href="#tinchothue">Tin cho thuê</a> */}
                             <a className={styles['content-navigator__item']} href="#chudautu">Chủ đầu tư</a>
                             <a className={styles['content-navigator__item']} href="#gioithieu">Giới thiệu</a>
                             <a className={styles['content-navigator__item']} href="#matbang">Mặt bằng</a>
                         </nav>
+                        <div className={styles['pj-desr']} id="gioithieu">
+                            <div className={styles["content-title"]}>
+                                <h3>Giới thiệu dự án</h3>
+                                <h4>{project.projectName} {project.address.province}</h4>
+                                <div className={styles["hr"]}>
+                                    <img src="https://batdongsanexpress.vn/template/detail/images/line.gif" alt="#" />
+                                </div>
+                            </div>
+                            <div className={styles['pj-desr__content']}>
+                                {project.description}
+                            </div>
+                        </div>
                         <div className={styles['pj-info']} id="thongtin">
-                            <h3> Thông tin dự án </h3>
+                            <div className={styles["content-title"]}>
+                                <h3> Thông tin dự án </h3>
+                                <h4>{project.projectName}  {project.address.province}</h4>
+                                <div className={styles["hr"]}>
+                                    <img src="https://batdongsanexpress.vn/template/detail/images/line.gif" alt="#" />
+                                </div>
+                            </div>
                             <div className={styles['pj-info__row']}>
                                 <div className={styles['pj-info__col']}>
-                                    <div className={`${styles['pj-info-item']} ${styles['pj-info-item--block']}`}>
+                                    <img src={project.media.images[0]} alt="" />
+                                </div>
+                                <div className={styles['pj-info__col']}>
+                                    <div className={`${styles['pj-info-item']} `}>
                                         <h5>Giá mua bán</h5>
-                                        <p>{project.information.purchaseInfo?.price ?? "---"}</p>
-                                        <p>{project.information.purchaseInfo?.acreage ? `Từ ${project.information.purchaseInfo.acreage} tr/m²` : "---"}</p>
+                                        <p>{project.information?.purchaseInfo ? `Từ ${project.information.purchaseInfo} tr/m²` : "---"}</p>
                                     </div>
                                     <div className={styles['pj-info-item']}>
                                         <h5>Khởi công</h5>
@@ -174,12 +175,9 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                         <h5>Tiến độ</h5>
                                         <p>{project.information?.progressStatus ?? "---"}</p>
                                     </div>
-                                </div>
-                                <div className={styles['pj-info__col']}>
-                                    <div className={`${styles['pj-info-item']} ${styles['pj-info-item--block']}`}>
+                                    <div className={`${styles['pj-info-item']} `}>
                                         <h5>Giá cho thuê</h5>
-                                        <p>{project.information.rentInfo?.price ?? "---"}</p>
-                                        <p>{project.information.rentInfo?.acreage ? `Từ ${project.information.rentInfo.acreage} tr/m²` : "---"}</p>
+                                        <p>{project.information?.rentInfo ? `Từ ${project.information.rentInfo} tr/m²` : "---"}</p>
                                     </div>
                                     <div className={styles['pj-info-item']}>
                                         <h5>Năm bàn giao</h5>
@@ -201,13 +199,25 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                             </div>
                         </div>
                         <div className={styles['pj-utilities']} id="tienich">
-                            <h3> Tiện ích sử dụng </h3>
+                            <div className={styles["content-title"]}>
+                                <h3> Tiện ích nổi bật </h3>
+                                <h4>{project.projectName}  {project.address.province}</h4>
+                                <div className={styles["hr"]}>
+                                    <img src="https://batdongsanexpress.vn/template/detail/images/line.gif" alt="#" />
+                                </div>
+                            </div>
                             <div className={styles['pj-utilities__row']}>
                                 {renderProjectUtilities()}
                             </div>
                         </div>
                         <div className={styles['pj-plan']} id="matbang">
-                            <h3>Mặt bằng dự án</h3>
+                            <div className={styles["content-title"]}>
+                                <h3>Mặt bằng dự án</h3>
+                                <h4>{project.projectName} {project.address.province}</h4>
+                                <div className={styles["hr"]}>
+                                    <img src="https://batdongsanexpress.vn/template/detail/images/line.gif" alt="#" />
+                                </div>
+                            </div>
                             <div className={styles['pj-plan-track']}>
                                 <div className={styles['pj-plan-track__selector']}>
                                     {renderProjectPlan()}
@@ -215,41 +225,29 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                 <div className={styles['pj-plan-track__img']}>
                                     <Image
                                         src={project.masterPlan[currentMasterPlanId].image}
-                                        width={439}
-                                        height={439}
+                                        width={800}
+                                        height={600}
                                         alt=""
                                     />
                                 </div>
                             </div>
                         </div>
-                        <div className={styles['pj-items']} id="tindangban">
-                            <h3>Tin đăng bán dự án Vinhomes Grand Park (Vincity Quận 9)</h3>
-                            <Items />
-                            <div className={styles['pj-items__more']}>
-                                <Link href={"/"}> Xem thêm tin cho thuê </Link>
-                            </div>
-                        </div>
-                        <div className={styles['pj-items']} id="tinchothue">
-                            <h3>Tin cho thuê dự án Vinhomes Grand Park (Vincity Quận 9)</h3>
-                            <Items />
-                            <div className={styles['pj-items__more']}>
-                                <Link href={"/"}> Xem thêm tin cho thuê </Link>
-                            </div>
-                        </div>
-                        <div className={styles['pj-desr']} id="gioithieu">
-                            <h3>Giới thiệu dự án</h3>
-                            <div className={styles['pj-desr__content']}>
-                                {project.description}
-                            </div>
-                        </div>
+
                         <div className={styles['pj-owner']} id="chudautu">
+                            
+                            <div className={styles["content-title"]}>
                             <h3>Chủ đầu tư dự án</h3>
+                                <h4>{project.projectName}  {project.address.province}</h4>
+                                <div className={styles["hr"]}>
+                                    <img src="https://batdongsanexpress.vn/template/detail/images/line.gif" alt="#" />
+                                </div>
+                            </div>
                             <div className={styles['owner']}>
                                 <div className={styles['owner__img']}>
                                     <Image
                                         src={project.investor.logo}
-                                        width={50}
-                                        height={50}
+                                        width={75}
+                                        height={75}
                                         alt="#"
                                     />
                                 </div>
@@ -258,10 +256,25 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                     <span>Thành lập từ năm: 2019</span>
                                 </div>
                             </div>
-                            <div className={styles['owner-decr']}>
+                            {/* <div className={styles['owner-decr']}>
                                 {project?.investor.about}
+                            </div> */}
+                        </div>
+
+                        {/* <div className={styles['pj-items']} id="tindangban">
+                            <h3>Tin đăng bán dự án Vinhomes Grand Park (Vincity Quận 9)</h3>
+                            <Items data={[...relativePosts.sellingApartments, ...relativePosts.sellingHouses, ...relativePosts.sellingLands]} />
+                            <div className={styles['pj-items__more']}>
+                                <Link href={"/"}> Xem thêm tin cho thuê </Link>
                             </div>
                         </div>
+                        <div className={styles['pj-items']} id="tinchothue">
+                            <h3>Tin cho thuê dự án Vinhomes Grand Park (Vincity Quận 9)</h3>
+                            <Items data={[...relativePosts.rentingApartments, ...relativePosts.rentingHouses, ...relativePosts.rentingLands]} />
+                            <div className={styles['pj-items__more']}>
+                                <Link href={"/"}> Xem thêm tin cho thuê </Link>
+                            </div>
+                        </div> */}
                     </div>
                 </div>
             </main>

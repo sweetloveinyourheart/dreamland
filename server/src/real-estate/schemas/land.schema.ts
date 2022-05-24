@@ -1,5 +1,5 @@
 import { LandType, Direction, Furniture, RealEstateCategory, RealEstateStatus } from "../enum/real-estate.enum"
-import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./general.schema"
+import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./parent-classes/general.schema"
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Project } from "src/project/schemas/project.schema";
@@ -31,6 +31,9 @@ class LandDetail extends Detail {
 
     @Prop({ type: LandAcreage })
     acreage: LandAcreage
+
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
+    project?: Project
 }
 
 @Schema({ _id: false, id: false })
@@ -49,10 +52,7 @@ class LandOverview extends Overview {
 }
 
 @Schema()
-export class Land extends RealEstate {
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
-    project?: Project
-    
+export class Land extends RealEstate {    
     @Prop()
     category: RealEstateCategory
 
@@ -61,9 +61,6 @@ export class Land extends RealEstate {
 
     @Prop({ type: LandOverview })
     overview: LandOverview
-
-    @Prop({ index: true })
-    landID: number
 }
 
 export const LandSchema = SchemaFactory.createForClass(Land)

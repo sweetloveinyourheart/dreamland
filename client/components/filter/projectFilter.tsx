@@ -1,17 +1,41 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useCallback, useState } from "react";
 import { FaChevronDown, FaChevronRight, FaMapMarkerAlt, FaSearch, FaTimes } from "react-icons/fa";
 import styles from './filter.module.scss'
 import Modal from 'react-modal';
 import { customStyles } from "./filter";
+import { FilterState } from "../../lib/guardFilter";
+import AddressFilter from "./items/address";
+import PricingFilter from "./items/pricing";
 
 interface ProjectFilterProps {
-
+    filter: any
 }
 
 Modal.setAppElement('#__next');
 
-const ProjectFilter: FunctionComponent<ProjectFilterProps> = () => {
+const ProjectFilter: FunctionComponent<ProjectFilterProps> = ({ filter }) => {
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [modalType, setModalType] = useState<FilterState>(FilterState.Address)
+
+    const onActiveModal = useCallback((selected?: FilterState) => {
+        setIsOpen(s => !s)
+        if (selected) setModalType(selected)
+    }, [modalIsOpen, modalType])
+
+    const renderModalByType = () => {
+        switch (modalType) {
+            case FilterState.Address:
+                return <AddressFilter onActive={onActiveModal} />
+
+            case FilterState.Pricing:
+                return <PricingFilter config={{min: 0, max: 300000000}} price={filter?.price} onActive={onActiveModal} />
+
+
+            default:
+                return <AddressFilter onActive={onActiveModal} />
+
+        }
+    }
 
     return (
         <div className={styles['filter']}>
@@ -25,13 +49,13 @@ const ProjectFilter: FunctionComponent<ProjectFilterProps> = () => {
                     </div>
                 </div>
                 <div className={styles['filter-item']}>
-                    <button onClick={() => setIsOpen(true)}>
+                    <button onClick={() => onActiveModal(FilterState.Address)}>
                         <p><FaMapMarkerAlt /> Toàn quốc </p>
                         <FaChevronDown />
                     </button>
                 </div>
                 <div className={styles['filter-item']}>
-                    <button>
+                    <button onClick={() => onActiveModal(FilterState.Pricing)}>
                         <p>Khoảng giá </p>
                         <FaChevronDown />
                     </button>
@@ -43,37 +67,16 @@ const ProjectFilter: FunctionComponent<ProjectFilterProps> = () => {
                     </button>
                 </div>
             </div>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={() => setIsOpen(false)}
-                style={customStyles}
-                contentLabel="Example Modal"
-            >
-                <div className={styles['modal']}>
-                    <div className={styles['modal-header']}>
-                        <h4><FaMapMarkerAlt />&nbsp; Chọn khu vực</h4>
-                        <button onClick={() => setIsOpen(false)}>
-                            <FaTimes />
-                        </button>
-                    </div>
-                    <div className={styles['modal-content']}>
-                        <div className={styles['selectors']}>
-                            <div className={styles['selector']}>
-                                <span>Toàn quốc</span>
-                                <FaChevronRight />
-                            </div>
-                            <div className={styles['selector']}>
-                                <span>TP. Hồ Chí Minh</span>
-                                <FaChevronRight />
-                            </div>
-                            <div className={styles['selector']}>
-                                <span>Hà Nội</span>
-                                <FaChevronRight />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Modal>
+            <div className={styles['filter-modal']}>
+                <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={() => setIsOpen(false)}
+                    style={customStyles}
+                    contentLabel="Example Modal"
+                >
+                    {renderModalByType()}
+                </Modal>
+            </div>
         </div>
     );
 }

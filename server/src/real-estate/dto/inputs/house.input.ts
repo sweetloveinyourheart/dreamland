@@ -100,4 +100,7 @@ export class HouseFilter extends RealEstateFilter {
 
     @Field(type => Boolean, { nullable: true })
     frontispiece?: boolean
+
+    @Field(type => String, { nullable: true })
+    project?: string
 }

@@ -8,10 +8,10 @@ class ApartmentOverviewInput extends OverviewInput {
     @Field(type => ApartmentType)
     type: ApartmentType
 
-    @Field(type => RealEstateStatus)
+    @Field(type => RealEstateStatus, { nullable: true })
     status: RealEstateStatus
 
-    @Field(type => Direction)
+    @Field(type => Direction, { nullable: true })
     balconyDirection?: Direction
 
     @Field(type => Int)
@@ -77,4 +77,7 @@ export class ApartmentFilter extends RealEstateFilter {
 
     @Field(type => Furniture, { nullable: true })
     furniture?: Furniture
+
+    @Field(type => String, { nullable: true })
+    project?: string
 }

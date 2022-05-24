@@ -17,7 +17,7 @@ const MainCategories: FunctionComponent<MainCategoriesProps> = () => {
                 <div className={styles['categories-area']}>
                     <h4> Danh mục bất động sản </h4>
                     <div className={styles['categories-list']}>
-                        <div className={styles["category"]} onClick={() => router.push("/mua-ban-bat-dong-san")}>
+                        <div className={styles["category"]} onClick={() => router.push("/mua-ban/bat-dong-san")}>
                             <div className={styles['category__image']}>
                                 <Image
                                     src={"/categories/buildings.png"}
@@ -31,7 +31,7 @@ const MainCategories: FunctionComponent<MainCategoriesProps> = () => {
                                 <span>{Intl.NumberFormat().format(66825)} tin mua bán</span>
                             </div>
                         </div>
-                        <div className={styles["category"]}>
+                        <div className={styles["category"]} onClick={() => router.push("/cho-thue/bat-dong-san")}>
                             <div className={styles['category__image']}>
                                 <Image
                                     src={"/categories/creditor.png"}

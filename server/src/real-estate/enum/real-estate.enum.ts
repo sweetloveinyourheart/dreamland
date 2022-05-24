@@ -3,6 +3,14 @@ export enum RealEstateCategory {
     ChoThue = 'cho-thue-bat-dong-san'
 }
 
+export enum RealEstateType {
+    CanHo = 'can-ho-chung-cu',
+    NhaO = 'nha-o',
+    Dat = 'dat',
+    VanPhong = 'van-phong-mat-bang',
+    PhongTro = 'phong-tro'
+}
+
 export enum RealEstateStatus {
     DaBanGiao = 'da-ban-giao',
     ChuaBanGiao = 'chua-ban-giao'

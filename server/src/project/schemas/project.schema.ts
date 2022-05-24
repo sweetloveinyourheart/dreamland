@@ -1,30 +1,22 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
-import { Address } from "src/real-estate/schemas/general.schema"
-import { ProjectType, ProjectUtilities } from "../enum/pj.enum"
+import { Address } from "src/real-estate/schemas/parent-classes/general.schema"
+import { ProjectType } from "../enum/pj.enum"
 import { Document } from 'mongoose'
 
-class PurInfo {
+class ProjectUtilities {
     @Prop()
-    price: number
+    image: string
 
     @Prop()
-    acreage: number
-}
-
-class RentInfo {
-    @Prop()
-    price: number
-
-    @Prop()
-    acreage: number
+    title: string
 }
 
 class ProjectInformation {
-    @Prop(PurInfo)
-    purchaseInfo: PurInfo
+    @Prop()
+    purchaseInfo: number
 
-    @Prop(RentInfo)
-    rentInfo: RentInfo
+    @Prop()
+    rentInfo: number
 
     @Prop()
     startedAt?: string
@@ -100,7 +92,7 @@ export class Project {
     @Prop(ProjectInformation)
     information: ProjectInformation
 
-    @Prop()
+    @Prop([ProjectUtilities])
     utilities: ProjectUtilities[]
 
     @Prop(String)
@@ -125,7 +117,7 @@ export class Project {
     actived: boolean
 
     @Prop({ index: true })
-    projectID: number
+    index: number
 }
 
 export type ProjectDocument = Project & Document

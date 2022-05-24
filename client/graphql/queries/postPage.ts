@@ -1,0 +1,247 @@
+import { gql } from "@apollo/client";
+
+export const GET_APARTMENT_POST_BY_DIRECT_LINK = gql`
+    query Apartment($link: String!) {
+        getApartmentPostByLink(link: $link) {
+            title
+            description
+            category
+            media {
+                images
+                videos
+            }
+            detail {
+                address {
+                    province
+                    district
+                    ward
+                    street
+                    houseNumber
+                    showHouseNumber
+                }
+                pricing {
+                    total
+                    deposit
+                }
+                acreage {
+                    totalAcreage
+                }
+                project {
+                    directLink
+                    projectName
+                }
+            }
+            owner {
+                type
+                user {
+                    name
+                    phone
+                }
+            }
+            overview {
+                doorDirection
+                legalDocuments
+                type
+                status
+                balconyDirection
+                numberOfBedrooms
+                numberOfBathrooms
+                furniture
+            }
+        }
+    }
+`
+
+export const GET_HOUSE_POST_BY_DIRECT_LINK = gql`
+    query House($link: String!) {
+        getHousePostByLink(link: $link) {
+            title
+            description
+            category
+            media {
+                images
+                videos
+            }
+            detail {
+                address {
+                    province
+                    district
+                    ward
+                    street
+                    houseNumber
+                    showHouseNumber
+                }
+                pricing {
+                    total
+                    deposit
+                }
+                acreage {
+                    totalAcreage
+                }
+                project {
+                    directLink
+                    projectName
+                }
+            }
+            owner {
+                type
+                user {
+                    name
+                    phone
+                }
+            }
+            overview {
+                doorDirection
+                legalDocuments
+                type
+                numberOfBedrooms
+                numberOfBathrooms
+                furniture
+                numberOfFloors
+            }
+        }
+    }
+`
+
+export const GET_LAND_POST_BY_DIRECT_LINK = gql`
+    query Land($link: String!) {
+        land: getLandPostByLink(link: $link) {
+            title
+            description
+            category
+            media {
+                images
+                videos
+            }
+            detail {
+                address {
+                    province
+                    district
+                    ward
+                    street
+                    houseNumber
+                    showHouseNumber
+                }
+                pricing {
+                    total
+                    deposit
+                }
+                acreage {
+                    totalAcreage
+                    width
+                    height
+                }
+                project {
+                    directLink
+                    projectName
+                }
+            }
+            owner {
+                type
+                user {
+                    name
+                    phone
+                }
+            }
+            overview {
+                doorDirection
+                legalDocuments
+                type
+                carAlley
+              	noHau
+              	frontispiece
+            }
+        }
+    }
+`
+
+export const GET_BUSINESS_PREMISES_POST_BY_DIRECT_LINK = gql`
+    query Premises($link: String!) {
+        businessPremises: getBusinessPremisesPostByLink(link: $link) {
+            title
+            description
+            category
+            media {
+                images
+                videos
+            }
+            detail {
+                address {
+                    province
+                    district
+                    ward
+                    street
+                    houseNumber
+                    showHouseNumber
+                }
+                pricing {
+                    total
+                }
+                acreage {
+                    totalAcreage
+                }
+                project {
+                    directLink
+                    projectName
+                }
+            }
+            owner {
+                type
+                user {
+                    name
+                    phone
+                }
+            }
+            overview {
+                doorDirection
+                legalDocuments
+                type
+                furniture
+            }
+        }
+    }
+`
+
+export const GET_MOTAL_POST_BY_DIRECT_LINK = gql`
+    query Motal($link: String!) {
+        motal: getMotalPostByLink(link: $link) {
+            title
+            description
+            category
+            media {
+                images
+                videos
+            }
+            detail {
+                address {
+                    province
+                    district
+                    ward
+                    street
+                    houseNumber
+                    showHouseNumber
+                }
+                pricing {
+                    total
+                    deposit
+                }
+                acreage {
+                    totalAcreage
+                }
+            }
+            owner {
+                type
+                user {
+                    name
+                    phone
+                }
+            }
+            overview {
+                doorDirection
+                legalDocuments
+                furniture
+                numberOfFloors
+            }
+        }
+    }
+`
