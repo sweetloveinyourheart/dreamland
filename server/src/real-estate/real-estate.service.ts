@@ -21,6 +21,9 @@ import { BusinessPremises } from './models/business-premises.model';
 import { RealEstateCategory } from './enum/real-estate.enum';
 import { RealEstateStats } from 'src/stats/models/stats.model';
 import { Cache } from 'cache-manager';
+import { UpdateStatusInput } from 'src/project/dto/edit.input';
+import { RealEstatePosts } from './models/parent-models/top';
+import { RealEstateFilter } from './dto/inputs/general/filter.input';
 
 @Injectable()
 export class RealEstateService {
@@ -43,7 +46,11 @@ export class RealEstateService {
             })
 
             // Clear current stats cache
-            await this.cacheManager.del('apartmentStats');
+            if (data.category === RealEstateCategory.MuaBan) {
+                await this.cacheManager.del('sellingApartmentStats');
+            } else {
+                await this.cacheManager.del('rentingApartmentStats');
+            }
 
             return await newItem.save()
         } catch (error) {
@@ -60,7 +67,11 @@ export class RealEstateService {
                 index: await this.houseModel.countDocuments({ category: data.category }) + 1
             })
             // Clear current stats cache
-            await this.cacheManager.del('houseStats');
+            if (data.category === RealEstateCategory.MuaBan) {
+                await this.cacheManager.del('sellingHouseStats');
+            } else {
+                await this.cacheManager.del('rentingHouseStats');
+            }
 
             return await newItem.save()
         } catch (error) {
@@ -78,7 +89,11 @@ export class RealEstateService {
             })
 
             // Clear current stats cache
-            await this.cacheManager.del('landStats');
+            if (data.category === RealEstateCategory.MuaBan) {
+                await this.cacheManager.del('sellingLandStats');
+            } else {
+                await this.cacheManager.del('rentingLandStats');
+            }
 
             return await newItem.save()
         } catch (error) {
@@ -95,7 +110,11 @@ export class RealEstateService {
                 index: await this.businessPremisesModel.countDocuments({ category: data.category }) + 1
             })
             // Clear current stats cache
-            await this.cacheManager.del('businessPremisesStats');
+            if (data.category === RealEstateCategory.MuaBan) {
+                await this.cacheManager.del('sellingBusinessPremisesStats');
+            } else {
+                await this.cacheManager.del('rentingBusinessPremisesStats');
+            }
 
             return await newItem.save()
         } catch (error) {
@@ -112,9 +131,68 @@ export class RealEstateService {
                 index: await this.motalModel.countDocuments({ category: data.category }) + 1
             })
             // Clear current stats cache
-            await this.cacheManager.del('motalStats');
+            if (data.category === RealEstateCategory.MuaBan) {
+                await this.cacheManager.del('sellingMotalStats');
+            } else {
+                await this.cacheManager.del('rentingMotalStats');
+            }
 
             return await newItem.save()
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async updateApartmentPost(postId: string, data: CreateApartmentInput, updateStatus: UpdateStatusInput): Promise<Apartment> {
+        try {
+            return await this.apartmentModel.findByIdAndUpdate(postId, {
+                ...data,
+                ...updateStatus
+            })
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async updateHousePost(postId: string, data: CreateHouseInput, updateStatus: UpdateStatusInput): Promise<House> {
+        try {
+            return await this.houseModel.findByIdAndUpdate(postId, {
+                ...data,
+                ...updateStatus
+            })
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async updateLandPost(postId: string, data: CreateLandInput, updateStatus: UpdateStatusInput): Promise<Land> {
+        try {
+            return await this.landModel.findByIdAndUpdate(postId, {
+                ...data,
+                ...updateStatus
+            })
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async updateBusinessPremisesPost(postId: string, data: CreateBusinessPremisesInput, updateStatus: UpdateStatusInput): Promise<BusinessPremises> {
+        try {
+            return await this.businessPremisesModel.findByIdAndUpdate(postId, {
+                ...data,
+                ...updateStatus
+            })
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async updateMotalPost(postId: string, data: CreateMotalInput, updateStatus: UpdateStatusInput): Promise<Motal> {
+        try {
+            return await this.motalModel.findByIdAndUpdate(postId, {
+                ...data,
+                ...updateStatus
+            })
         } catch (error) {
             throw new BadRequestException()
         }
@@ -124,7 +202,9 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                ...(paging?.cursor && { index: { $gte: paging.cursor } }),
+                actived: true,
+                // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
+                ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
                 ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
@@ -140,7 +220,25 @@ export class RealEstateService {
                 ...(filter?.project && { "detail.project": filter.project })
             }
 
-            return await this.apartmentModel.find(query).limit(paging?.limit).sort({ timeStamp: paging ? 1 : -1 })
+            return await this.apartmentModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getAllApartments(filter: ApartmentFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<Apartment[]> {
+        try {
+            let searchQuery = undefined
+            if(search) {
+                searchQuery = new RegExp(search, 'ig')
+            }
+            
+            let query = {
+                category: filter.category,
+                ...(searchQuery && { title: { $regex: searchQuery } })
+            }
+
+            return await this.apartmentModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
         } catch (error) {
             throw new NotFoundException()
         }
@@ -150,7 +248,9 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                ...(paging?.cursor && { index: { $gte: paging.cursor } }),
+                // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
+                actived: true,
+                ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
                 ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
@@ -168,7 +268,25 @@ export class RealEstateService {
                 ...(filter?.project && { "detail.project": filter.project })
             }
 
-            return await this.houseModel.find(query).limit(paging?.limit).sort({ timeStamp: paging ? 1 : -1 })
+            return await this.houseModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getAllHouses(filter: HouseFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<House[]> {
+        try {
+            let searchQuery = undefined
+            if(search) {
+                searchQuery = new RegExp(search, 'ig')
+            }
+
+            let query = {
+                category: filter.category,
+                ...(searchQuery && { title: { $regex: searchQuery } })
+            }
+
+            return await this.houseModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
         } catch (error) {
             throw new NotFoundException()
         }
@@ -178,7 +296,9 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                ...(paging?.cursor && { index: { $gte: paging.cursor } }),
+                actived: true,
+                // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
+                ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
                 ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
@@ -194,7 +314,25 @@ export class RealEstateService {
                 ...(filter?.project && { "detail.project": filter.project })
             }
 
-            return await this.landModel.find(query).limit(paging?.limit).sort({ timeStamp: paging ? 1 : -1 })
+            return await this.landModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getAllLands(filter: LandFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<Land[]> {
+        try {
+            let searchQuery = undefined
+            if(search) {
+                searchQuery = new RegExp(search, 'ig')
+            }
+
+            let query = {
+                category: filter.category,
+                ...(searchQuery && { title: { $regex: searchQuery } })
+            }
+
+            return await this.landModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
         } catch (error) {
             throw new NotFoundException()
         }
@@ -204,7 +342,9 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                ...(paging?.cursor && { index: { $gte: paging.cursor } }),
+                actived: true,
+                ...(filter?.outstanding && { outstanding: filter.outstanding }),
+                // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
                 ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
@@ -217,7 +357,25 @@ export class RealEstateService {
                 ...(filter?.project && { "detail.project": filter.project })
             }
 
-            return await this.businessPremisesModel.find(query).limit(paging?.limit).sort({ timeStamp: paging ? 1 : -1 })
+            return await this.businessPremisesModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getAllBusinessPremises(filter: BusinessPremisesFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<BusinessPremisesModel[]> {
+        try {
+            let searchQuery = undefined
+            if(search) {
+                searchQuery = new RegExp(search, 'ig')
+            }
+
+            let query = {
+                category: filter.category,
+                ...(searchQuery && { title: { $regex: searchQuery } })
+            }
+
+            return await this.businessPremisesModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
         } catch (error) {
             throw new NotFoundException()
         }
@@ -227,7 +385,9 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                ...(paging?.cursor && { index: { $gte: paging.cursor } }),
+                actived: true,
+                // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
+                ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
                 ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
@@ -236,10 +396,28 @@ export class RealEstateService {
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
                 ...(filter?.doorDirection && { "overview.doorDirection": filter.doorDirection }),
                 ...(filter?.legalDocuments && { "overview.legalDocuments": filter.legalDocuments }),
-                ...(filter?.numberOfBedrooms && { "overview.numberOfBedrooms": filter.numberOfBedrooms > 10 ? { $gte: filter.numberOfBedrooms } : filter.numberOfBedrooms }),
+                ...(filter?.numberOfBedrooms && { "overview.numberOfBedrooms": filter.numberOfBedrooms > 10 ? { $gte: filter.numberOfBedrooms } : filter.numberOfBedrooms })
             }
 
-            return await this.motalModel.find(query).limit(paging?.limit).sort({ timeStamp: paging ? 1 : -1 })
+            return await this.motalModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getAllMotals(filter: MotalFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<Motal[]> {
+        try {
+            let searchQuery = undefined
+            if(search) {
+                searchQuery = new RegExp(search, 'ig')
+            }
+
+            let query = {
+                category: filter.category,
+                ...(searchQuery && { title: { $regex: searchQuery } })
+            }
+
+            return await this.motalModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
         } catch (error) {
             throw new NotFoundException()
         }
@@ -293,6 +471,50 @@ export class RealEstateService {
                 lands: await this.landModel.countDocuments({ category }),
                 businessPremises: await this.businessPremisesModel.countDocuments({ category }),
                 motals: await this.motalModel.countDocuments({ category }),
+            }
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getOutstandingPosts(): Promise<RealEstatePosts> {
+        return {
+            apartments: await this.apartmentModel.find({ actived: true, outstanding: true }),
+            houses: await this.houseModel.find({ actived: true, outstanding: true }),
+            lands: await this.landModel.find({ actived: true, outstanding: true }),
+            businessPremises: await this.businessPremisesModel.find({ actived: true, outstanding: true }),
+            motals: await this.motalModel.find({ actived: true, outstanding: true })
+        }
+    }
+
+    async getRealEstatePosts(filter: RealEstateFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<RealEstatePosts> {
+        try {
+            let searchQuery = undefined
+            if(search) {
+                searchQuery = new RegExp(search, 'ig')
+            }
+
+            let query = {
+                category: filter.category,
+                actived: true,
+                // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
+                ...(filter?.outstanding && { outstanding: filter.outstanding }),
+                ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
+                ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
+                ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
+                ...(filter?.address?.district && { "detail.address.district": filter.address.district }),
+                ...(filter?.address?.ward && { "detail.address.ward": filter.address.ward }),
+                ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
+                ...(filter?.project && { "detail.project": filter.project }),
+                ...(searchQuery && { title: { $regex: searchQuery } })
+            }
+
+            return {
+                apartments: await this.apartmentModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }),
+                houses: await this.houseModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }),
+                lands: await this.landModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }),
+                businessPremises: await this.businessPremisesModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }),
+                motals: await this.motalModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
             }
         } catch (error) {
             throw new NotFoundException()

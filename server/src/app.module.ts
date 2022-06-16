@@ -8,9 +8,16 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StatsModule } from './stats/stats.module';
+import { BlogModule } from './blog/blog.module';
+import { PageTemplateModule } from './page-template/page-template.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     CacheModule.register({
       isGlobal: true
     }),
@@ -29,7 +36,10 @@ import { StatsModule } from './stats/stats.module';
     RealEstateModule,
     UserModule,
     ProjectModule,
-    StatsModule
+    StatsModule,
+    BlogModule,
+    PageTemplateModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

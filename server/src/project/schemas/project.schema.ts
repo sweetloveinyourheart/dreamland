@@ -24,9 +24,6 @@ class ProjectInformation {
     @Prop()
     handOverYear?: number
 
-    @Prop()
-    investorName: string
-
     @Prop(ProjectType)
     type: ProjectType
 
@@ -50,9 +47,6 @@ class ProjectMedia {
 
 class ProjectInvestor {
     @Prop()
-    logo: string
-
-    @Prop()
     name: string
 
     @Prop()
@@ -62,13 +56,6 @@ class ProjectInvestor {
     about: string
 }
 
-class ProjectProgress {
-    @Prop()
-    image: string
-
-    @Prop()
-    title: string
-}
 
 class MasterPlan {
     @Prop()
@@ -101,9 +88,6 @@ export class Project {
     @Prop(ProjectInvestor)
     investor: ProjectInvestor
 
-    @Prop([ProjectProgress])
-    progress: ProjectProgress[]
-
     @Prop([MasterPlan])
     masterPlan: MasterPlan[]
 
@@ -113,8 +97,14 @@ export class Project {
     @Prop()
     directLink: string
 
+    @Prop()
+    virtual3DLink?: string
+
     @Prop({ default: true })
     actived: boolean
+
+    @Prop({ default: false })
+    outstanding: boolean
 
     @Prop({ index: true })
     index: number

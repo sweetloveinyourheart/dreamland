@@ -7,6 +7,7 @@ import { Project } from './models/project.model';
 import { ProjectFilter } from './dto/filter.input';
 import { PaginationArgs } from 'src/real-estate/dto/inputs/general/paging.input';
 import { nonAccentVietnamese } from './utils/vietnamese-accent';
+import { UpdateStatusInput } from './dto/edit.input';
 
 @Injectable()
 export class ProjectService {
@@ -19,7 +20,7 @@ export class ProjectService {
             const newPj = await this.projectModel.create({
                 ...data,
                 timeStamp: new Date(),
-                directLink: nonAccentVietnamese(data.projectName+" "+data.address.province+" "+data.address.district).replace(/\s/g,"-")
+                directLink: nonAccentVietnamese(data.projectName + " " + data.address.province + " " + data.address.district).replace(/\s/g, "-")
             })
 
             return await newPj.save()
@@ -27,6 +28,20 @@ export class ProjectService {
             throw new BadRequestException({
                 message: error
             })
+        }
+    }
+
+    async editProject(projectId: string, updateData?: CreateProjectInput, updateState?: UpdateStatusInput): Promise<Project> {
+        try {
+            return await this.projectModel.findByIdAndUpdate(projectId, {
+                ...updateData,
+                ...updateState
+            })
+        } catch (error) {
+            throw new BadRequestException(err => ({
+                ...err,
+                message: "Update failed !"
+            }))
         }
     }
 
@@ -41,6 +56,7 @@ export class ProjectService {
     async getProjects(filter: ProjectFilter, paging: PaginationArgs): Promise<Project[]> {
         try {
             let query = {
+                actived: true,
                 ...(paging?.cursor && { index: { $gte: paging.cursor } }),
                 ...(filter?.price?.max && { "information.purchaseInfo": { $gte: filter.price.min, $lte: filter.price.max } }),
                 ...(filter?.address?.province && { "address.province": filter.address.province }),
@@ -58,6 +74,27 @@ export class ProjectService {
             }))
         }
     }
+
+    async getAllProjects(): Promise<Project[]> {
+        try {
+            return await this.projectModel.find()
+        } catch (error) {
+            throw new NotFoundException(err => ({
+                ...err,
+                message: "Not found any projects !"
+            }))
+        }
+    }
+
+    async getOutstandingProjects(paging: PaginationArgs): Promise<Project[]> {
+        try {
+            return await this.projectModel.find({ actived: true, outstanding: true }).limit(paging?.limit).skip(paging?.cursor)
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+
 
     async projectStats() {
         try {

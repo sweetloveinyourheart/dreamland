@@ -10,6 +10,9 @@ export type ApartmentDocument = Apartment & Document;
 class ApartmentPosition extends Position {
     @Prop()
     blockName?: string
+
+    @Prop()
+    floorNumber?: string
 }
 
 @Schema({ _id: false, id: false })

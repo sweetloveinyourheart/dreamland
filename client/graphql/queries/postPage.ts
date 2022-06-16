@@ -48,6 +48,7 @@ export const GET_APARTMENT_POST_BY_DIRECT_LINK = gql`
                 numberOfBathrooms
                 furniture
             }
+            index
         }
     }
 `
@@ -99,6 +100,7 @@ export const GET_HOUSE_POST_BY_DIRECT_LINK = gql`
                 furniture
                 numberOfFloors
             }
+            index
         }
     }
 `
@@ -151,6 +153,7 @@ export const GET_LAND_POST_BY_DIRECT_LINK = gql`
               	noHau
               	frontispiece
             }
+            index
         }
     }
 `
@@ -198,6 +201,7 @@ export const GET_BUSINESS_PREMISES_POST_BY_DIRECT_LINK = gql`
                 type
                 furniture
             }
+            index
         }
     }
 `
@@ -242,6 +246,7 @@ export const GET_MOTAL_POST_BY_DIRECT_LINK = gql`
                 furniture
                 numberOfFloors
             }
+            index
         }
     }
 `

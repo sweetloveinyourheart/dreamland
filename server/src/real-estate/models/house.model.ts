@@ -23,7 +23,7 @@ class HouseAcreage extends Acreage {
 
 @ObjectType()
 export class HouseDetail extends Detail {
-    @Field(type => HousePosition)
+    @Field(type => HousePosition, { nullable: true })
     position: HousePosition
 
     @Field(type => Address)

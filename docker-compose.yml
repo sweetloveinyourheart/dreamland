@@ -1,0 +1,53 @@
+version: '3.8'
+services:
+  app:
+    image: app
+    container_name: app
+    build:
+      context: client
+      dockerfile: Dockerfile
+      target: runner
+    environment:
+      - SERVER_SIDE_API=http://localhost:9000/graphql
+      - CLIENT_SIDE_API=http://localhost:9000/graphql
+      - MAPS_API_KEY=AIzaSyDgRxBunKDKbtQaZvzaTEoaFY558i-8WJE
+
+    ports:
+      - 3000:3000
+
+    networks:
+      - shared-network
+
+  api:
+    image: api
+    container_name: api
+    build: 
+      context: server
+      dockerfile: Dockerfile
+      target: production
+    environment:
+      - JWT_SECRET=dienkhoilandserct
+      - REFRESH_TOKEN_SECRET=dienkhoirfsecrt
+      - ROLES_KEY=dienkhoiapproles
+
+    ports:
+      - 9000:9000
+
+    networks:
+      - shared-network
+
+  manager: 
+    image: manager
+    container_name: manager
+    build:
+      context: admin
+      dockerfile: Dockerfile
+
+    ports:
+      - 3001:3001
+
+    networks:
+      - shared-network
+
+networks:
+  shared-network:

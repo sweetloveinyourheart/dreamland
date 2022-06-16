@@ -1,0 +1,207 @@
+@import "../responsive";
+
+// Header
+
+.header {
+    padding: 8px 0;
+    position: relative;
+    // background-color: #ffb41f;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.header-area {
+    display: flex;
+    justify-content: space-between;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+
+    ul {
+        display: flex;
+        align-items: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        @include Responsive(xs sm) {
+            position: absolute;
+            width: 100%;
+            display: block;
+            left: 0;
+            top: 70px;
+            background-color: rgba($color: #000, $alpha: 0.8);
+            z-index: 999;
+        }
+
+        li {
+            margin: 0 16px;
+            text-transform: uppercase;
+            font-weight: 600;
+            cursor: pointer;
+
+            @include Responsive(xs sm) {
+                padding: 12px 0;
+            }
+
+            button {
+                padding: 4px;
+                background-color: #ffb41f;
+                width: 44px;
+                height: 44px;
+                color: #fff;
+                border-radius: 100%;
+                border: 1px solid #ffb41f;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 20px;
+                cursor: pointer;
+
+                @include Responsive(xs sm) {
+                    display: none;
+                }
+            }
+        }
+    }
+
+    button {
+        display: none;
+
+        @include Responsive(xs sm) {
+            display: block;
+            background-color: transparent;
+            color: #fff;
+            border: none;
+            font-size: 24px;
+        }
+    }
+}
+
+// Divider
+.divider {
+    width: 100%;
+    height: 1px;
+    position: relative;
+    margin: 14px 0;
+
+    &::before {
+        position: absolute;
+        content: "";
+        background-color: #26b3ef;
+        width: 200px;
+        height: 3px;
+    }
+
+    &--center {
+        &::before {
+            left: calc(50% - 50px);
+        }
+    }
+}
+
+// --- HEAD ---
+
+.blog-head {
+    padding: 20px 0 0 0;
+   
+}
+
+// Link
+.direct-link {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+
+    span {
+        display: flex;
+        align-items: center;
+        margin-right: 12px;
+        font-size: 16px;
+        color: #666;
+
+        svg {
+            font-size: 20px;
+        }
+    }
+}
+
+// image
+.image {
+    margin-bottom: 12px;
+}
+
+
+// --- BODY ---
+
+.title {
+    h1 {
+        font-size: 24px;
+        margin: 12px 0;
+        color: #f93707;
+    }
+
+    &__timestamp {
+        color: #a7a7a7;
+    }
+}
+
+.content {
+    padding: 20px 0;
+    white-space: pre-wrap;
+    margin-bottom: 24px;
+}
+
+// footer
+.footer {
+    background-position: bottom;
+}
+
+.footer-bg {
+    background-color: rgba(0, 54, 99, 0.7);
+    padding: 50px 0;
+}
+
+.footer-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ftr-list-col {
+    flex: 0 0 25%;
+    padding: 0 15px;
+
+    @include Responsive(xs sm) {
+        flex: 0 0 100%;
+        padding: 0;
+    }
+
+    &--big {
+        flex: 0 0 50%;
+
+        @include Responsive(xs sm) {
+            flex: 0 0 100%;
+            padding: 0;
+        }
+    }
+}
+
+.company-info {
+    h5 {
+        text-transform: uppercase;
+        color: #fff;
+        font-size: 16px;
+    }
+
+    p {
+        display: flex;
+        align-items: center;
+        color: #fff;
+
+        svg {
+            margin-right: 12px;
+        }
+    }
+}

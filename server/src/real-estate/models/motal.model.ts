@@ -27,4 +27,7 @@ export class Motal extends RealEstate {
 
     @Field(type => MotalDetail)
     detail: MotalDetail
+
+    @Field(type => MotalOverview, { nullable: true })
+    overview: MotalOverview
 }

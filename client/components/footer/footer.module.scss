@@ -1,24 +1,18 @@
+@import "../../styles/responsive";
+
 .footer {
     padding: 28px 0;
     background-color: #fff;
 }
 
-.footer-row {
-    display: flex;
-    flex-wrap: wrap;
-    padding-bottom: 8px;
-}
-
-.footer-col {
-    flex: 0 0 25%;
-    padding: 0 15px;
+.footer-item {
+    width: 100%;
     display: flex;
     justify-content: center;
 
-    h4 {
-        margin: 0;
-        margin-bottom: 16px;
-        text-transform: uppercase;
+    @include Responsive(xs sm) {
+        display: block;
+        padding: 0 28px;
     }
 }
 

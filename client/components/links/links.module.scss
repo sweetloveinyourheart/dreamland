@@ -1,0 +1,50 @@
+@import "../../styles/responsive";
+
+.link {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 24px;
+
+    ol {
+        margin: 0;
+        display: flex;
+        list-style: none;
+        padding: 0;
+
+        li {
+            display: flex;
+            align-items: center;
+            margin-right: 6px;
+            font-size: 14px;
+            color: #33659c;
+
+            @include Responsive(xs sm) {
+                display: none;
+
+                &:last-child {
+                    display: flex;
+                }
+            }
+
+            span {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+
+            svg {
+                margin-left: 6px;
+                font-size: 10px;
+            }
+        }
+    }
+
+    button {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: 1px solid #ffb41f;
+        background-color: #fff;
+        color: #ffb41f;
+    }
+}

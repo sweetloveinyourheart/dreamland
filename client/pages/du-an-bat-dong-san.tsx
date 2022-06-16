@@ -13,7 +13,7 @@ import { useAddress } from "../contexts/address";
 import { GetAllProjectsData, GetAllProjectsVars, GET_ALL_PROJECT_POSTS } from "../graphql/queries/browsingProject";
 import { ProjectStatsData, PROJECT_STATS } from "../graphql/queries/paging";
 import { initializeApollo } from "../lib/apolloClient";
-import styles from '../styles/pages/duan.module.scss'
+import styles from '../styles/pages/du-an-bat-dong-san.module.scss'
 import { ProjectInterface } from "../types/interfaces/project";
 import { PaginationFilter } from "../types/interfaces/realEstate";
 
@@ -101,13 +101,11 @@ const RealEstateProjectPage: NextPage<ProjectPage> = ({ data, pagingData }) => {
             </Head>
             <Header />
             <main style={{ backgroundColor: "#f4f4f4", padding: '64px 0' }}>
+                <ProjectFilter filter={filter} />
                 <div className="container">
-                    <div className={styles['filter-area']}>
-                        <ProjectFilter filter={filter} />
-                    </div>
                     <div className={styles['project-area']}>
                         <h4>
-                            <p>Dự án tại Quận 3 Thành Phố Hồ Chí Minh</p>
+                            <p>Tất cả dự án</p>
                             <button onClick={() => setVerticalDisplay(s => !s)}><FaGripHorizontal /></button>
                         </h4>
                         <Projects data={projects} vertical={isVerticalDisplay} />
@@ -137,14 +135,17 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
         return {
             props: {
-                data: result.data.getProjects,
-                pagingData: paging.data.projectStats
+                data: result?.data.getProjects ?? [],
+                pagingData: paging?.data.projectStats ?? { projects: 0 }
             },
             revalidate: 60
         }
     } catch (error) {
         return {
-            props: {},
+            props: {
+                data: [],
+                pagingData: { projects: 0 }
+            },
             revalidate: 60,
         }
     }

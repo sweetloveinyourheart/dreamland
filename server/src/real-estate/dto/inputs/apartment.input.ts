@@ -29,11 +29,14 @@ class ApartmentOverviewInput extends OverviewInput {
 class ApartmentPositionInput extends PositionInput {
     @Field(type => String, { nullable: true })
     blockName?: string
+
+    @Field(type => String, { nullable: true })
+    floorNumber?: string
 }
 
 @InputType()
 class ApartmentDetailInput extends DetailInput {
-    @Field(type => ApartmentPositionInput)
+    @Field(type => ApartmentPositionInput, { nullable: true })
     position: ApartmentPositionInput
 
     @Field(type => AddressInput)

@@ -4,11 +4,7 @@ export interface UserInterface {
     phone: string
     email?: string
     password: string
-    name: {
-        firstName: string
-        lastName: string
-        fullName: string
-    }
+    name: string
     avatar?: string
     birthday?: Date
     sex?: Sex

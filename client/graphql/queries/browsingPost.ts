@@ -24,171 +24,171 @@ export interface GetProjectsListData {
 }
 
 export const GET_ALL_POSTS = gql`
-    query Posts(
-        $category: RealEstateCategory!, 
-        $address: AddressFilter, 
-        $price: PriceFilter, 
-        $acreage: AcreageFilter, 
-        $project: String,
-        $paging: PaginationArgs
-    ) {
-        apartments: getApartments(filter: { category: $category, address: $address, price: $price, acreage: $acreage, project: $project }, paging: $paging) {
-            __typename
-            title
-            media {
-                images
+    query Posts($filter: RealEstateFilter!, $paging: PaginationArgs, $search: String) {
+        posts: getRealEstatePosts(filter: $filter, paging: $paging, search: $search) {
+            apartments {
+                __typename
+                title
+                media {
+                    images
+                }
+                detail {
+                    acreage {
+                        totalAcreage
+                    }
+                    pricing {
+                        total
+                    }
+                    address {
+                        province
+                    }
+                    project {
+                        projectName
+                    }
+                }
+                
+                overview {
+                    numberOfBedrooms
+                }
+
+                timeStamp
+                category
+                directLink
+                index
             }
-            detail {
-                acreage {
-                    totalAcreage
+
+            houses {
+                __typename
+                title
+                media {
+                    images
                 }
-                pricing {
-                    total
+                detail {
+                    acreage {
+                        totalAcreage
+                    }
+                    pricing {
+                        total
+                    }
+                    address {
+                        province
+                    }
+                    project {
+                        projectName
+                    }
                 }
-                address {
-                    province
+                
+                overview {
+                    numberOfBedrooms
                 }
-                project {
-                    projectName
-                }
+
+                timeStamp
+                category
+                directLink
+                index
             }
+
             
-            overview {
-                numberOfBedrooms
+            lands {
+                __typename
+                title
+                media {
+                    images
+                }
+                detail {
+                    acreage {
+                        totalAcreage
+                    }
+                    pricing {
+                        total
+                    }
+                    address {
+                        province
+                    }
+                    project {
+                        projectName
+                    }
+                }
+
+                timeStamp
+                category
+                directLink
+                index
             }
 
-            timeStamp
-            category
-            directLink
-            index
-        }
+            businessPremises {
+                __typename
+                title
+                media {
+                    images
+                }
+                detail {
+                    acreage {
+                        totalAcreage
+                    }
+                    pricing {
+                        total
+                    }
+                    address {
+                        province
+                    }
+                    project {
+                        projectName
+                    }
+                }
 
-        houses: getHouses(filter: { category: $category, address: $address, price: $price, acreage: $acreage, project: $project }, paging: $paging) {
-            __typename
-            title
-            media {
-                images
-            }
-            detail {
-                acreage {
-                    totalAcreage
-                }
-                pricing {
-                    total
-                }
-                address {
-                    province
-                }
-                project {
-                    projectName
-                }
-            }
-            
-            overview {
-                numberOfBedrooms
+                timeStamp
+                category
+                directLink
+                index
             }
 
-            timeStamp
-            category
-            directLink
-            index
-        }
+            motals {
+                __typename
+                title
+                media {
+                    images
+                }
+                detail {
+                    acreage {
+                        totalAcreage
+                    }
+                    pricing {
+                        total
+                    }
+                    address {
+                        province
+                    }
+                }
 
-        
-        lands: getLands(filter: { category: $category, address: $address, price: $price, acreage: $acreage, project: $project }, paging: $paging) {
-            __typename
-            title
-            media {
-                images
+                timeStamp
+                category
+                directLink
+                index
             }
-            detail {
-                acreage {
-                    totalAcreage
-                }
-                pricing {
-                    total
-                }
-                address {
-                    province
-                }
-                project {
-                    projectName
-                }
-            }
-
-            timeStamp
-            category
-            directLink
-            index
-        }
-
-        businessPremises: getBusinessPremises(filter: { category: $category, address: $address, price: $price, acreage: $acreage, project: $project }, paging: $paging) {
-            __typename
-            title
-            media {
-                images
-            }
-            detail {
-                acreage {
-                    totalAcreage
-                }
-                pricing {
-                    total
-                }
-                address {
-                    province
-                }
-                project {
-                    projectName
-                }
-            }
-
-            timeStamp
-            category
-            directLink
-            index
-        }
-
-        motals: getMotals(filter: { category: ChoThue, address: $address, price: $price, acreage: $acreage }, paging: $paging) {
-            __typename
-            title
-            media {
-                images
-            }
-            detail {
-                acreage {
-                    totalAcreage
-                }
-                pricing {
-                    total
-                }
-                address {
-                    province
-                }
-            }
-
-            timeStamp
-            category
-            directLink
-            index
         }
     }
 `
 export interface AllPostsVars {
-    category: RealEstateCategory | string
-    address?: AddressFilter
-    price?: PriceFilter
-    acreage?: AcreageFilter
-    project?: string
+    filter: {
+        category: RealEstateCategory | string
+        address?: AddressFilter
+        price?: PriceFilter
+        acreage?: AcreageFilter
+        project?: string
+    }
     paging?: PaginationFilter
+    search?: string
 }
 
 export interface AllPostsResult {
-    apartments: (ApartmentInterface & { __typename: string })[]
-    houses: (HouseInterface & { __typename: string })[]
-    lands: (LandInterface & { __typename: string })[]
-    businessPremises: (BusinessPremisesInterface & { __typename: string })[]
-    motals: (MotalInterface & { __typename: string })[]
+    posts: {
+        apartments: (ApartmentInterface & { __typename: string })[]
+        houses: (HouseInterface & { __typename: string })[]
+        lands: (LandInterface & { __typename: string })[]
+        businessPremises: (BusinessPremisesInterface & { __typename: string })[]
+        motals: (MotalInterface & { __typename: string })[]
+    }
 }
 
 export const GET_APARTMENT_POSTS = gql`
@@ -263,6 +263,7 @@ export const GET_HOUSE_POSTS = gql`
             timeStamp
             category
             directLink
+            index
         }
     }
 `
@@ -301,6 +302,7 @@ export const GET_LAND_POSTS = gql`
             timeStamp
             category
             directLink
+            index
         }
     }
 `
@@ -340,6 +342,7 @@ export const GET_BUSINESS_PREMISES_POSTS = gql`
             timeStamp
             category
             directLink
+            index
         }
     }
 `
@@ -376,6 +379,7 @@ export const GET_MOTAL_POSTS = gql`
             timeStamp
             category
             directLink
+            index
         }
     }
 `

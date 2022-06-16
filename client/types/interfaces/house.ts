@@ -74,6 +74,8 @@ export interface HouseInterface {
     timeStamp: Date
     actived: boolean
     directLink: string
+    index: number
+
 }
 
 export type HouseFilter = RealEstateFilter & {

@@ -14,7 +14,7 @@ class BusinessPremisesPositionInput extends PositionInput {
 
 @InputType()
 class BusinessPremisesDetailInput extends DetailInput {
-    @Field(type => BusinessPremisesPositionInput)
+    @Field(type => BusinessPremisesPositionInput, { nullable: true })
     position: BusinessPremisesPositionInput
 
     @Field(type => AddressInput)

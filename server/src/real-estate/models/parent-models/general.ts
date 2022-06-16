@@ -159,6 +159,12 @@ export class RealEstate {
     @Field(type => String)
     directLink: string
 
+    @Field(type => String, { nullable: true })
+    virtual3DLink?: string 
+
+    @Field(type => Boolean)
+    outstanding: boolean
+
     @Field(type => Boolean)
     actived: boolean
 

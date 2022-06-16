@@ -14,7 +14,7 @@ class BusinessPremisesPosition extends Position {
 
 @ObjectType()
 export class BusinessPremisesDetail extends Detail {
-    @Field(type => BusinessPremisesPosition)
+    @Field(type => BusinessPremisesPosition, { nullable: true })
     position: BusinessPremisesPosition
 
     @Field(type => Address)

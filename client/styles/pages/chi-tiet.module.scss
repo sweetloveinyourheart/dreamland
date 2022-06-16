@@ -1,0 +1,285 @@
+@import "../responsive";
+
+.realestate {
+    background-color: #f4f4f4;
+    padding: 64px 0;
+
+    @include Responsive(xs sm) {
+        padding: 125px 0;
+    }
+}
+
+.area {
+    margin: 12px 0;
+    padding: 24px;
+    background-color: #fff;
+    width: 100%;
+}
+
+.information {
+    display: flex;
+
+    @include Responsive(xs sm) {
+        display: block;
+    }
+
+    &__media {
+        flex: 0 0 auto;
+        width: 65%;
+
+        @include Responsive(xs sm) {
+            width: 100%;
+        }
+
+        ul {
+            padding: 0;
+        }
+    }
+
+    &__quick-info {
+        flex: 0 0 auto;
+        width: 35%;
+
+        @include Responsive(xs sm) {
+            width: 100%;
+        }
+    }
+}
+
+// Content
+
+.content {
+    @include Responsive(xs sm) {
+        padding-top: 24px;
+    }
+}
+
+.image {
+    position: relative;
+    & > img {
+        width: 0;
+        height: 0;
+    }
+
+    span {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        z-index: -1;
+    }
+
+    &__abs {
+        bottom: 0;
+        left: 0;
+        outline: 0;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        top: 0;
+        background-color: #f4f4f4;
+        z-index: 1;
+
+        img {
+            height: 100%;
+            width: auto !important;
+        }
+    }
+}
+
+.name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.price {
+    font-weight: 600;
+
+    span {
+        &:first-child {
+            color: #f93707;
+        }
+
+        &:last-child {
+            color: #777;
+        }
+    }
+}
+
+.installment {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+
+    p {
+        margin: 0;
+        margin-left: 8px;
+    }
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.address {
+    @extend .installment;
+    align-items: flex-start;
+    color: #33659c;
+    cursor: pointer;
+
+    svg {
+        width: 5%;
+    }
+
+    p {
+        margin-left: 0;
+        max-width: 80%;
+        padding: 0 8px;
+    }
+
+    span {
+        width: 15%;
+    }
+}
+
+.project {
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.project p {
+    color: #777;
+    margin: 0;
+    margin-left: 8px;
+}
+
+.project span {
+    color: #33659c;
+    font-weight: 600;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+.description {
+    margin-top: 12px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    line-height: 24px;
+}
+
+.stall {
+    background-color: #fff;
+
+    h4 {
+        margin: 0;
+        margin-bottom: 8px;
+        padding: 12px 24px;
+        border-bottom: 1px solid #eee;
+        text-transform: uppercase;
+    }
+
+    &__items {
+        padding: 12px 9px;
+        margin-bottom: 8px;
+    }
+
+    &__more {
+        padding: 12px 24px;
+        border-top: 1px solid #eee;
+        text-align: center;
+
+        a {
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            color: #d12032;
+        }
+    }
+}
+
+// Contact
+
+.contact {
+    padding: 0 24px;
+
+    @include Responsive(xs sm) {
+        padding: 0;
+    }
+}
+
+.contact-owner {
+    display: flex;
+    align-items: center;
+
+    &__info {
+        margin-left: 12px;
+        h5 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        span {
+            font-size: 14px;
+        }
+    }
+}
+
+.contact-phone {
+    margin-top: 12px;
+
+    &__guard {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #06e763;
+        padding: 8px 16px;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            background-color: #05d85c;
+        }
+    }
+
+    .phone {
+        &--hidden {
+            display: flex;
+            align-items: center;
+            svg {
+                font-size: 20px;
+            }
+
+            span {
+                margin-left: 8px;
+            }
+        }
+    }
+}
+
+.overview {
+    margin-top: 12px;
+    // display: flex;
+
+    // &__col {
+    //     width: 50%;
+    // }
+}
+
+.overview-item {
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+
+    &__image {
+        margin-right: 12px;
+    }
+
+    span {
+        margin-right: 4px;
+    }
+}

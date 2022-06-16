@@ -1,15 +1,26 @@
+@import "../../styles/responsive";
+
 .items {
     display: flex;
     flex-wrap: wrap;
 
     &--vertical {
         display: block;
+
+        .col {
+            width: 100%;
+        }
     }
 }
 
 .col {
-    flex: 0 0 20%;
+    flex: 0 0 auto;
+    width: 20%;
     padding: 0 12px;
+    @include Responsive(xs sm) {
+        width: 50%;
+        padding: 0 6px;
+    }
 }
 
 .item {
@@ -35,17 +46,30 @@
     }
 
     &--vertical {
-        display: flex;   
+        display: flex;
 
         .item__image {
-            flex: 0 0 10%;
-            margin-right: 12px;
+            flex: 0 0 auto;
+            width: 15%;
+            padding-right: 12px;
+            @include Responsive(xs sm) {
+                width: 50%;
+                padding: 0 6px;
+            }
+        }
+
+        .item-desc {
+            flex: 0 0 auto;
+            width: 85%;
+            @include Responsive(xs sm) {
+                width: 50%;
+                padding: 0 6px;
+            }
         }
     }
 }
 
 .item-desc {
-
     &__name {
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -88,7 +112,6 @@
         font-weight: 600;
         font-size: 16px;
     }
-
 }
 
 .item-detail {
@@ -128,7 +151,8 @@
     }
 
     &--vertical {
-        .item-detail__address, .item-detail__timestamp {
+        .item-detail__address,
+        .item-detail__timestamp {
             flex: unset;
             margin-right: 12px;
         }

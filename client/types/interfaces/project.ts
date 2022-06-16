@@ -42,6 +42,7 @@ export interface ProjectInterface {
         title: string
     }[]
     directLink: string
+    virtual3DLink?: string
     timeStamp: Date
     actived: boolean
 }

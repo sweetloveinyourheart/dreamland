@@ -16,7 +16,7 @@ class ProjectInformationInput {
     @Field(type => Float)
     purchaseInfo: number
 
-    @Field(type => Float)
+    @Field(type => Float, { nullable: true })
     rentInfo: number
 
     @Field(type => String, { nullable: true })
@@ -24,9 +24,6 @@ class ProjectInformationInput {
 
     @Field(type => Number, { nullable: true })
     handOverYear?: number
-
-    @Field()
-    investorName: string
 
     @Field(type => ProjectType)
     type: ProjectType
@@ -53,9 +50,6 @@ class ProjectMediaInput {
 @InputType()
 class ProjectInvestorInput {
     @Field()
-    logo: string
-
-    @Field()
     name: string
 
     @Field(type => Int, { nullable: true })
@@ -63,15 +57,6 @@ class ProjectInvestorInput {
 
     @Field()
     about: string
-}
-
-@InputType()
-class ProjectProgressInput {
-    @Field()
-    image: string
-
-    @Field()
-    title: string
 }
 
 @InputType()
@@ -106,9 +91,9 @@ export class CreateProjectInput {
     @Field(type => ProjectInvestorInput)
     investor: ProjectInvestorInput
 
-    @Field(type => [ProjectProgressInput])
-    progress: ProjectProgressInput[]
-
     @Field(type => [MasterPlanInput])
     masterPlan: MasterPlanInput[]
+
+    @Field(type => String, { nullable: true })
+    virtual3DLink?: string
 }

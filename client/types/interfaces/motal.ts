@@ -46,7 +46,7 @@ export interface MotalInterface {
 
     }
 
-    overview: {
+    overview?: {
         doorDirection?: Direction
         legalDocuments?: LegalDocuments
         numberOfFloors?: number 
@@ -61,6 +61,8 @@ export interface MotalInterface {
     timeStamp: Date
     actived: boolean
     directLink: string
+    index: number
+
 }
 
 export type MotalFilter = RealEstateFilter & {

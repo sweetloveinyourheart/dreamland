@@ -1,144 +1,344 @@
-import type { GetStaticProps, NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import Link from 'next/link'
-import { FaShieldAlt } from 'react-icons/fa'
-import MainBanner from '../components/banner/banner'
-import MainCategories from '../components/categories/categories'
-import Footer from '../components/footer/footer'
-import Header from '../components/header/header'
-import Items from '../components/items/items'
-import Projects from '../components/projects/projects'
-import { GET_TOP_POSTS_QUERY, GET_TOP_PROJECTS_QUERY, TopPostsResult } from '../graphql/queries/homePage'
-import { initializeApollo } from '../lib/apolloClient'
-import { ProjectInterface } from '../types/interfaces/project'
-import styles from './../styles/pages/index.module.scss'
+import { GetStaticProps, NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from '../styles/pages/index.module.scss'
+import { FaHome, FaClock, FaChevronRight, FaLocationArrow, FaPhoneAlt, FaFax, FaEnvelope, FaBars, FaArrowRight, FaArrowDown, FaGlobe } from 'react-icons/fa';
+import { CgArrowLongDown } from 'react-icons/cg'
+import { useRouter } from "next/router";
+import { Col, Row, SpecialContainer } from "../UI/gridSystem";
+//@ts-ignore
+import { Zoom, Fade } from 'react-reveal';
+import { BlogInterface } from "../types/interfaces/blog";
+import { initializeApollo } from "../lib/apolloClient";
+import { GET_BLOGS, GET_PAGE_TEMPLATE } from "../graphql/queries/introPage";
+import Link from "next/link";
+import { GET_TOP_PROJECTS_QUERY } from "../graphql/queries/homePage";
+import { ProjectInterface } from "../types/interfaces/project";
+import { useEffect, useState } from "react";
+import Moment from "react-moment";
 
-interface HomePageProps {
-  projects: ProjectInterface[]
-  posts: TopPostsResult
-}
-
-const Home: NextPage<HomePageProps> = ({ projects, posts }) => {
-  return (
-    <>
-      <Head>
-        <title> DreamLand Group </title>
-        <meta name="description" content="Hệ sinh thái dịch vụ bất động sản số 1 - DreamLand đang ngày càng hoàn thiện dịch vụ môi giới, truyền thông, đầu tư và quản lý bất động sản" />
-      </Head>
-      <Header />
-      <main style={{ backgroundColor: 'rgba(244,244,244, 0.8)' }}>
-        <MainBanner />
-        <MainCategories />
-        <section className={styles['items-area']}>
-          <div className="container">
-            <div className={styles['stall']}>
-              <h4> Mua bán bất động sản </h4>
-              <div className={styles['stall__items']}>
-                <Items data={[...posts.sellingApartments, ...posts.sellingHouses, ...posts.sellingLands]} />
-              </div>
-              <div className={styles['stall__more']}>
-                <Link href={"/mua-ban/bat-dong-san"}> Xem thêm tin mua bán</Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles['items-area']}>
-          <div className="container">
-            <div className={styles['stall']}>
-              <h4> Cho thuê bất động sản </h4>
-              <div className={styles['stall__items']}>
-                <Items data={[...posts.rentingApartments, ...posts.rentingHouses, ...posts.rentingLands]} />
-              </div>
-              <div className={styles['stall__more']}>
-                <Link href={"/cho-thue/bat-dong-san"}> Xem thêm tin cho thuê </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles['items-area']}>
-          <div className="container">
-            <div className={styles['stall']}>
-              <h4> Bất động sản từ đối tác </h4>
-              <div className={styles['special-content']}>
-                <div className={styles['special-content__title']}>Đối tác tin cậy</div>
-                <div className={styles['special-content__txt']}><FaShieldAlt /> Thông tin BĐS chính xác</div>
-                <div className={styles['special-content__txt']}><FaShieldAlt /> Đã xác minh</div>
-              </div>
-              <div className={styles['stall__items']}>
-                <Items guard data={[...posts.sellingApartments, ...posts.sellingHouses, ...posts.sellingLands]} />
-              </div>
-              <div className={styles['stall__more']}>
-                <Link href={"/bat-dong-san?category=MuaBan"}> Xem thêm tin từ đối tác </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles['items-area']}>
-          <div className="container">
-            <div className={styles['stall']}>
-              <h4> Dự án được quan tâm </h4>
-              <div className={styles['stall__items']}>
-                <Projects data={projects} />
-              </div>
-              <div className={styles['stall__more']}>
-                <Link href={"/du-an-bat-dong-san"}> Xem thêm dự án </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className={styles['items-area']}>
-          <div className="container">
-            <div className={styles['review']}>
-              <h5>BẤT ĐỘNG SẢN ĐIỀN KHÔI</h5>
-              <p>Chợ Tốt Nhà (nha.chotot.com) Chuyên trang mua bán và cho thuê bất động sản được ra mắt bởi trang mua bán trực tuyến Chợ Tốt vào đầu năm 2017. Với hơn 5 triệu lượt truy cập và hơn 200.000 tin đăng phân bố khắp các tỉnh thành trong cả nước mỗi tháng, Chợ Tốt Nhà hướng tới là một trang mua bán bất động sản hiệu quả, dễ sử dụng, đa dạng lựa chọn cho người dùng.</p>
-              <p>Với Chợ Tốt Nhà, bạn dễ dàng tìm kiếm mua bán/cho thuê với đa dạng loại hình bất động sản, bao gồm:</p>
-              <p>Nhà đất: bạn có thể dễ dàng tìm kiếm theo diện tích, vị trí, hướng cửa chính, đáp ứng đầy đủ các nhu cầu từ tìm nhà hẻm, nhà mặt tiền, nhà phố, nhà biệt thự.
-                Căn hộ chung cư: đa dạng các loại hình căn hộ từ chung cư, duplex, penthouse, căn hộ dịch vụ, căn hộ mini, tập thể, cư xá với đầy đủ tiện ích xung quanh.
-                Đất: tùy vào mục đích sử dụng, vị trí và diện tích mong muốn, bạn có thể dễ dàng chọn lựa giữa hàng nghìn tin đăng đáp ứng theo nhu cầu.
-                Văn phòng, mặt bằng kinh doanh: nếu bạn muốn bắt đầu kinh doanh từ việc mở quán cafe, quán ăn, kinh doanh quần áo, tiệm in ấn, sửa chữa,... thì hoàn toàn có thể tìm kiếm mặt bằng phù hợp. Nếu bạn đang tìm kiếm văn phòng làm việc thì hãy lên Chợ Tốt Nhà để tìm kiếm vị trí hợp phong thủy, diện tích sử dụng rộng rãi,... giúp việc kinh doanh trở nên thuận lợi hơn.
-              </p>
-              <p>Phòng trọ: dễ dàng tìm kiếm phòng trọ gần khu vực văn phòng, trường học với không gian thoáng mát, tiện di chuyển đến khu vực trung tâm.
-                Mua bán và cho thuê bất động sản trên Chợ Tốt Nhà trở nên dễ dàng hơn khi bạn có thể tìm kiếm dựa trên nhu cầu cá nhân với những tin đăng mới nhất, được cập nhật thường xuyên, liên tục.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
-  )
-}
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  try {
-    const client = initializeApollo()
-
-    const projectsResult = await client.query<{ getProjects: ProjectInterface[] }>({
-      query: GET_TOP_PROJECTS_QUERY
-    })
-
-    const topPostsResult = await client.query<TopPostsResult>({
-      query: GET_TOP_POSTS_QUERY
-    })
-
-    return {
-      props: {
-        projects: projectsResult?.data?.getProjects ?? [],
-        posts: topPostsResult.data
-      },
-      revalidate: 60
+interface AboutPageProps {
+    template: {
+        banner: string | null
     }
-  } catch (error) {
-    return {
-      props: {},
-      revalidate: 60,
-    }
-  }
+    blogs: BlogInterface[]
+    projects: ProjectInterface[]
 }
 
-export default Home
+const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
+    const [selectedProject, setSelectedProject] = useState<ProjectInterface | undefined>()
+    const [isNavActive, setNavActive] = useState<boolean>(false)
+
+    const router = useRouter()
+
+    useEffect(() => {
+        if (projects.length !== 0) {
+            setSelectedProject(projects[0])
+        }
+    }, [projects])
+
+    const renderProjects = (): JSX.Element[] => {
+        return projects.map((project, index) => {
+            return (
+                <Col xl={6} key={index}>
+                    <div className={`${styles['project-name']} ${project._id === selectedProject?._id ? styles['project-name--active'] : ''}`} onClick={() => setSelectedProject(project)}>
+                        <FaArrowRight />
+                        {project.projectName}
+                    </div>
+                </Col>
+            )
+        })
+    }
+
+    const renderBlogs = (): JSX.Element[] => {
+        return blogs.map((blog, index) => {
+            return (
+                <Col md={6} lg={4} xl={3} key={index}>
+                    <Zoom >
+                        <div className={`${styles['list-item']}`}>
+                            <div>
+                                <Image
+                                    src={blog.image}
+                                    width={592}
+                                    height={420}
+                                    alt="#"
+                                />
+                            </div>
+                            <div className={styles['news-descr']}>
+                                <div className={styles['popup__title']}>{blog.title}</div>
+                                <div className={styles['popup__timestamp']}><FaClock style={{ marginRight: 4 }} />
+                                    <Moment format="DD/MM/yyyy">
+                                        {blog.timeStamp}
+                                    </Moment>
+                                </div>
+                                <div className={styles['popup__detail']}>{blog.content.slice(0, blog.content.length >= 150 ? 150 : blog.content.length - 2)} ........</div>
+                                <div className={styles['popup__btn']}>
+                                    <button onClick={() => router.push(`/blog/${blog.link}`)}> Xem thêm </button>
+                                </div>
+                            </div>
+                        </div>
+                    </Zoom>
+                </Col>
+            )
+        })
+    }
+
+    return (
+        <>
+            <Head>
+                <title> DreamLand Group </title>
+                <meta name="description" content="Hệ sinh thái dịch vụ bất động sản số 1 - DreamLand đang ngày càng hoàn thiện dịch vụ môi giới, truyền thông, đầu tư và quản lý bất động sản" />
+            </Head>
+            {/* Header  */}
+            <header className={styles["header"]}>
+                <SpecialContainer>
+                    <div className={styles['header-area']}>
+                        <div className={styles["logo"]} onClick={() => router.push("/")}>
+                            <Image
+                                src={"/logo/logo.png"}
+                                alt="#"
+                                width={275}
+                                height={50}
+                            />
+                        </div>
+                        <nav className={`${styles['menu']} ${isNavActive ? styles['menu--active'] : ''}`}>
+                            <ul>
+                                <li> {isNavActive ? <Link href={'/home'}> Bất động sản </Link> : <button onClick={() => router.push("/home")}> <FaHome /></button>} </li>
+                                <li> <Link href={"/"}>Giới thiệu</Link> </li>
+                                <li>  <Link href={"/#tin-tuc"}>Tin tức</Link> </li>
+                                <li> <Link href={"/#linh-vuc-hoat-dong"}>Lĩnh vực hoạt động</Link> </li>
+                                <li> <Link href={"/#du-an-noi-bat"}>Dự án</Link> </li>
+                                <li> <Link href={"/#lien-he"}>Liên hệ</Link> </li>
+                            </ul>
+                            <button onClick={() => setNavActive(s => !s)}> <FaBars /> </button>
+                        </nav>
+                    </div>
+                </SpecialContainer>
+            </header>
+            {/* Banner  */}
+            <section>
+                {template.banner
+                    && (
+                        <div className={styles['banner']} style={{ backgroundImage: `url(${template.banner})` }}>
+                            <div className={styles['scroll-down']}>
+                                <div className={styles['scroll-down__item']} onClick={() => router.push('/#tin-tuc')}>
+                                    <span>Khám phá</span>
+                                    <div className={styles['arrow']}>
+                                        <CgArrowLongDown />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )
+                }
+            </section>
+
+            {/* News */}
+            <section className={styles["news"]} id="tin-tuc">
+                <SpecialContainer>
+                    <Row>
+                        <Col xl={12}>
+                            <div className={styles['news-title']}>
+                                Tin tức và sự kiện
+                                <div className={`${styles['divider']}`}></div>
+                            </div>
+                        </Col>
+                    </Row>
+                    <div className={styles['news-list']}>
+                        <Row>
+                            {renderBlogs()}
+                        </Row>
+                    </div>
+                </SpecialContainer>
+            </section>
+            {/* Category  */}
+            <section className={styles['categories']} id="linh-vuc-hoat-dong">
+                <div className={styles['categories-title']}>LĨNH VỰC HOẠT ĐỘNG</div>
+                <Fade left>
+                    <div className={styles['categories-list']}>
+                        <div className={styles['categories-list__item']}>
+                            <div className={styles['category']}>
+                                <Image
+                                    width={500}
+                                    height={853}
+                                    src={"/img/xay-dung.jpg"}
+                                    alt="#"
+                                />
+                                <div className={styles["category-desc"]}>
+                                    <div className={styles["category-desc__title"]}>Phát triển<br />bất động sản</div>
+                                    <div className={styles["category-desc__content"]}>Là một trong những nhà phát triển dự án hàng đầu Việt Nam, Tập đoàn Đất Xanh tự hào mang đến những dự án chất lượng cao, mang đến những trải nghiệm hoàn hảo cho khách hàng</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles['categories-list__item']}>
+                            <div className={styles['category']}>
+                                <Image
+                                    width={500}
+                                    height={853}
+                                    src={"/img/phat-trien-bds.jpg"}
+                                    alt="#"
+                                />
+                                <div className={styles["category-desc"]}>
+                                    <div className={styles["category-desc__title"]}>Phát triển<br />bất động sản</div>
+                                    <div className={styles["category-desc__content"]}>Là một trong những nhà phát triển dự án hàng đầu Việt Nam, Tập đoàn Đất Xanh tự hào mang đến những dự án chất lượng cao, mang đến những trải nghiệm hoàn hảo cho khách hàng</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles['categories-list__item']}>
+                            <div className={styles['category']}>
+                                <Image
+                                    width={500}
+                                    height={853}
+                                    src={"/img/khu-cong-nghiep-home2.jpg"}
+                                    alt="#"
+                                />
+                                <div className={styles["category-desc"]}>
+                                    <div className={styles["category-desc__title"]}>Phát triển<br />bất động sản</div>
+                                    <div className={styles["category-desc__content"]}>Là một trong những nhà phát triển dự án hàng đầu Việt Nam, Tập đoàn Đất Xanh tự hào mang đến những dự án chất lượng cao, mang đến những trải nghiệm hoàn hảo cho khách hàng</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={styles['categories-list__item']}>
+                            <div className={styles['category']}>
+                                <Image
+                                    width={500}
+                                    height={853}
+                                    src={"/img/HSS_6331_resize.jpg"}
+                                    alt="#"
+                                />
+                                <div className={styles["category-desc"]}>
+                                    <div className={styles["category-desc__title"]}>Phát triển<br />bất động sản</div>
+                                    <div className={styles["category-desc__content"]}>Là một trong những nhà phát triển dự án hàng đầu Việt Nam, Tập đoàn Đất Xanh tự hào mang đến những dự án chất lượng cao, mang đến những trải nghiệm hoàn hảo cho khách hàng</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </Fade>
+            </section>
+
+            {/* Project */}
+            <section className={styles['project']} id="du-an-noi-bat">
+                <div className={styles['project-list']}>
+                    <div className={styles['project-list__item']}>
+                        <Fade left>
+                            <div className={styles['project-info']}>
+                                <div className={styles['project-title']}>DỰ ÁN NỔI BẬT
+                                    <div className={styles['divider']}></div>
+                                </div>
+                                <Row>
+                                    {renderProjects()}
+                                </Row>
+                            </div>
+                        </Fade>
+                    </div>
+                    <div className={styles['project-list__item']}>
+                        <div className={styles['project-item']}>
+                            <Image
+                                width={1200}
+                                height={900}
+                                src={selectedProject?.media.images[0] ?? '/img/327128795_Cen Ocean Park 1-min.jpg'}
+                                alt="#"
+                            />
+                            <div className={styles['project-item__name']}>
+                                <FaChevronRight />
+                                <p>{selectedProject?.projectName}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            {/* footer */}
+            <footer className={styles['footer']} style={{ backgroundImage: "url('https://www.datxanh.vn/template/tint/images/bgFooter.jpg')" }} id="lien-he">
+                <div className={styles['footer-bg']}>
+                    <SpecialContainer>
+                        <div className={styles["footer-list"]}>
+                            <div className={styles["ftr-list-col--big"]}>
+                                <Image
+                                    src={"/logo/logo.png"}
+                                    alt="#"
+                                    width={275}
+                                    height={50}
+                                />
+                                <div className={styles['company-info']}>
+                                    <p>
+                                        <FaLocationArrow />
+                                        Trụ sở chính: 89 Lý Thái Tổ, Tân Lợi, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk
+                                    </p>
+                                    <p>
+                                        <FaPhoneAlt />
+                                        Điện thoại: 0262 223 8888
+                                    </p>
+                                    <p>
+                                        <FaEnvelope />
+                                        Email: info@dienkhoigroup.vn
+                                    </p>
+                                    <p>
+                                        <FaGlobe />
+                                        Website: www.dienkhoigroup.vn
+                                    </p>
+                                </div>
+                            </div>
+                            <div className={styles['ftr-list-col']}>
+                                <div className={styles['company-info']}>
+                                    <h5>VĂN PHÒNG GIAO DỊCH</h5>
+                                    <p>Văn phòng tại Hà Nội :
+                                        <br />-Tầng 1, Số 137 Nguyễn Ngọc Vũ, Trung Hòa, Cầu Giấy, Hà Nội.
+                                        <br /><br />Văn phòng tại TP. Hồ Chí Minh:
+                                        <br />-Tầng 8-9, Tòa nhà Cen Group, 91A Cao Thắng, phường 3, quận 3, TP.HCM.</p>
+                                </div>
+                            </div>
+                            <div className={styles['ftr-list-col']}>
+                                <div className={styles['company-info']}>
+                                    <h5>Công ty Cổ phần Bất động sản Thế Kỷ</h5>
+                                    <p>ĐKKD 0101160306 Do Sở Kế Hoạch Và Đầu Tư Thành Phố Hà Nội cấp ngày 20 tháng 08 năm 2001</p>
+                                </div>
+                            </div>
+                        </div>
+                    </SpecialContainer>
+                </div>
+            </footer>
+        </>
+    )
+}
+
+export const getStaticProps: GetStaticProps = async () => {
+    try {
+        const client = initializeApollo()
+
+        const blogResult = await client.query({
+            query: GET_BLOGS
+        })
+
+        const templateResult = await client.query({
+            query: GET_PAGE_TEMPLATE,
+            variables: {
+                pageName: "introduction"
+            }
+        })
+
+        const projectsResult = await client.query<{ projects: ProjectInterface[] }>({
+            query: GET_TOP_PROJECTS_QUERY
+        })
+
+        return {
+            props: {
+                template: templateResult?.data.template || { banner: null },
+                blogs: blogResult?.data.blogs || [],
+                projects: projectsResult?.data.projects || []
+            }
+        }
+
+    } catch (error) {
+        return {
+            props: {
+                template: { banner: null },
+                blogs: [],
+                projects: []
+            }
+        }
+    }
+}
+
+export default AboutPage

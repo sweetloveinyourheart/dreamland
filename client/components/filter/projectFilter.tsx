@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback, useState } from "react";
-import { FaChevronDown, FaChevronRight, FaMapMarkerAlt, FaSearch, FaTimes } from "react-icons/fa";
+import { FaChevronDown, FaChevronRight, FaFilter, FaMapMarkerAlt, FaSearch, FaTimes } from "react-icons/fa";
 import styles from './filter.module.scss'
 import Modal from 'react-modal';
 import { customStyles } from "./filter";
@@ -16,6 +16,8 @@ Modal.setAppElement('#__next');
 const ProjectFilter: FunctionComponent<ProjectFilterProps> = ({ filter }) => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [modalType, setModalType] = useState<FilterState>(FilterState.Address)
+    const [isMobileActive, setMobileActive] = useState<boolean>(false)
+
 
     const onActiveModal = useCallback((selected?: FilterState) => {
         setIsOpen(s => !s)
@@ -28,7 +30,7 @@ const ProjectFilter: FunctionComponent<ProjectFilterProps> = ({ filter }) => {
                 return <AddressFilter onActive={onActiveModal} />
 
             case FilterState.Pricing:
-                return <PricingFilter config={{min: 0, max: 300000000}} price={filter?.price} onActive={onActiveModal} />
+                return <PricingFilter config={{ min: 0, max: 300000000 }} price={filter?.price} onActive={onActiveModal} />
 
 
             default:
@@ -39,43 +41,53 @@ const ProjectFilter: FunctionComponent<ProjectFilterProps> = ({ filter }) => {
 
     return (
         <div className={styles['filter']}>
-            <div className={styles['filter-row']}>
-                <div className={styles['filter-item']}>
-                    <div className={styles['search']}>
-                        <input placeholder="Nhập tên dự án" />
-                        <button className={styles['search__btn']}>
-                            <FaSearch />
+            <div className="container">
+                <div className={styles['toggle']}>
+                    <div className={styles['toggle__title']}>
+                        Bộ lọc
+                    </div>
+                    <div className={styles['toggle__btn']} onClick={() => setMobileActive(s => !s)}>
+                        <FaFilter />
+                    </div>
+                </div>
+                <div className={`${styles['filter-items']} ${isMobileActive ? styles['filter-items--active'] : ''}`}>
+                    <div className={styles['filter-item']}>
+                        <div className={styles['search']}>
+                            <input placeholder="Nhập tên dự án" />
+                            <button className={styles['search__btn']}>
+                                <FaSearch />
+                            </button>
+                        </div>
+                    </div>
+                    <div className={styles['filter-item']}>
+                        <button onClick={() => onActiveModal(FilterState.Address)}>
+                            <p><FaMapMarkerAlt /> Toàn quốc </p>
+                            <FaChevronDown />
+                        </button>
+                    </div>
+                    <div className={styles['filter-item']}>
+                        <button onClick={() => onActiveModal(FilterState.Pricing)}>
+                            <p>Khoảng giá </p>
+                            <FaChevronDown />
+                        </button>
+                    </div>
+                    <div className={styles['filter-item']}>
+                        <button>
+                            <p>Năm bàn giao </p>
+                            <FaChevronDown />
                         </button>
                     </div>
                 </div>
-                <div className={styles['filter-item']}>
-                    <button onClick={() => onActiveModal(FilterState.Address)}>
-                        <p><FaMapMarkerAlt /> Toàn quốc </p>
-                        <FaChevronDown />
-                    </button>
+                <div className={styles['filter-modal']}>
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={() => setIsOpen(false)}
+                        style={customStyles}
+                        contentLabel="Example Modal"
+                    >
+                        {renderModalByType()}
+                    </Modal>
                 </div>
-                <div className={styles['filter-item']}>
-                    <button onClick={() => onActiveModal(FilterState.Pricing)}>
-                        <p>Khoảng giá </p>
-                        <FaChevronDown />
-                    </button>
-                </div>
-                <div className={styles['filter-item']}>
-                    <button>
-                        <p>Năm bàn giao </p>
-                        <FaChevronDown />
-                    </button>
-                </div>
-            </div>
-            <div className={styles['filter-modal']}>
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={() => setIsOpen(false)}
-                    style={customStyles}
-                    contentLabel="Example Modal"
-                >
-                    {renderModalByType()}
-                </Modal>
             </div>
         </div>
     );

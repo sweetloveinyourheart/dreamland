@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { FunctionComponent, useCallback } from "react";
 import { FaClock, FaShieldAlt } from "react-icons/fa";
+import Moment from "react-moment";
 import { moneyConverter } from "../../lib/converter";
 import { RealEstateCategory, RealEstateType } from "../../types/enums/realEstate";
 import styles from './items.module.scss'
@@ -23,7 +24,7 @@ export interface ItemDataDisplay {
             province: string
         }
     }
-    overview: any
+    overview?: any
     timeStamp: Date
     directLink: string
     category: RealEstateCategory
@@ -62,8 +63,8 @@ const Items: FunctionComponent<ItemsProps> = ({ guard, vertical, data }) => {
                     <div className={styles['item'] + (vertical ? ` ${styles['item--vertical']}` : "")}>
                         <div className={styles['item__image']}>
                             <Image
-                                width={200}
-                                height={200}
+                                width={800}
+                                height={600}
                                 alt=""
                                 src={el.media.images[0]}
                             />
@@ -83,7 +84,7 @@ const Items: FunctionComponent<ItemsProps> = ({ guard, vertical, data }) => {
                                 <div className={styles['item-detail__timestamp']}>
                                     <FaClock />
                                     &nbsp;
-                                    <p>1 ngày</p>
+                                    <p><Moment format="DD/MM/yyyy">{el.timeStamp}</Moment></p>
                                 </div>
                                 <div className={styles['item-detail__address']}>
                                     {el.detail.address.province} 

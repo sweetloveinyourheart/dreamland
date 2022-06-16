@@ -1,5 +1,5 @@
 import { FunctionComponent, useCallback, useState } from "react";
-import { FaCheck, FaChevronDown, FaMapMarkerAlt, FaPlus } from "react-icons/fa";
+import { FaCheck, FaChevronDown, FaFilter, FaMapMarkerAlt, FaPlus } from "react-icons/fa";
 import styles from './filter.module.scss'
 import Modal from 'react-modal';
 import { RealEstateType } from "../../types/enums/realEstate";
@@ -44,6 +44,7 @@ Modal.setAppElement('#__next');
 
 const Filter: FunctionComponent<FilterProps> = ({ filter, type }) => {
     const [modalIsOpen, setIsOpen] = useState(false);
+    const [isMobileActive, setMobileActive] = useState<boolean>(false)
     const [modalType, setModalType] = useState<FilterState>(FilterState.Address)
 
     const onActiveModal = useCallback((selected?: FilterState) => {
@@ -70,7 +71,7 @@ const Filter: FunctionComponent<FilterProps> = ({ filter, type }) => {
                 return <TypeFilter category={filter?.category} type={type} onActive={onActiveModal} />
 
             case FilterState.Pricing:
-                return <PricingFilter config={{min: 0, max: 30000000000}} price={filter?.price} onActive={onActiveModal} />
+                return <PricingFilter config={{ min: 0, max: 30000000000 }} price={filter?.price} onActive={onActiveModal} />
 
             case FilterState.Project:
                 return <ProjectFilter project={filter?.project} onActive={onActiveModal} />
@@ -96,7 +97,15 @@ const Filter: FunctionComponent<FilterProps> = ({ filter, type }) => {
     return (
         <div className={styles['filter']}>
             <div className="container">
-                <div className={styles['filter-row']}>
+                <div className={styles['toggle']}>
+                    <div className={styles['toggle__title']}>
+                        Bộ lọc
+                    </div>
+                    <div className={styles['toggle__btn']} onClick={() => setMobileActive(s => !s)}>
+                        <FaFilter />
+                    </div>
+                </div>
+                <div className={`${styles['filter-items']} ${isMobileActive ? styles['filter-items--active'] : ''}`}>
                     <div className={styles['filter-item']}>
                         <button onClick={() => onActiveModal(FilterState.Address)}>
                             <p><FaMapMarkerAlt /> {addressDisplay()} </p>
@@ -140,9 +149,9 @@ const Filter: FunctionComponent<FilterProps> = ({ filter, type }) => {
                     {GuardFilter(FilterState.SpecialType, type)
                         && (
                             <div className={styles['filter-item']}>
-                                <button className={filter?.specialType ? "" : styles['btn--disable']} onClick={() => onActiveModal(FilterState.SpecialType)}>
+                                <button className={filter?.type ? "" : styles['btn--disable']} onClick={() => onActiveModal(FilterState.SpecialType)}>
                                     <p>Loại hình </p>
-                                    {filter?.specialType ? <FaCheck /> : <FaPlus />}
+                                    {filter?.type ? <FaCheck /> : <FaPlus />}
                                 </button>
                             </div>
                         )

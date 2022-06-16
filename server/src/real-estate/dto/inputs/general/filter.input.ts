@@ -48,6 +48,9 @@ export class RealEstateFilter {
     @Field(type => RealEstateCategory)
     category: RealEstateCategory
 
+    @Field(type => Boolean, { nullable: true })
+    outstanding?: boolean
+
     @Field(type => AddressFilter, { nullable: true })
     address?: AddressFilter
 

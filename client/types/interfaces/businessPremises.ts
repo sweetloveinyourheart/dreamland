@@ -61,6 +61,7 @@ export interface BusinessPremisesInterface {
     timeStamp: Date
     actived: boolean
     directLink: string
+    index: number
 }
 
 export type BusinessPremisesFilter = RealEstateFilter & {

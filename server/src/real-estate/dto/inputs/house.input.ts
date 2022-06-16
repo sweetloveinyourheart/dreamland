@@ -50,7 +50,7 @@ class HouseAcreageInput extends AcreageInput {
 
 @InputType()
 class HouseDetailInput extends DetailInput {
-    @Field(type => HousePositionInput)
+    @Field(type => HousePositionInput, { nullable: true })
     position: HousePositionInput
 
     @Field(type => AddressInput)

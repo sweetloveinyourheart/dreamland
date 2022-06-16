@@ -1,20 +1,55 @@
+@import "../../styles/responsive";
+
 .filter {
     background-color: #fff;
     position: sticky;
-    top: 64px;
+    top: 56px;
     z-index: 9;
+
+    @include Responsive(xs sm) {
+        top: 110px;
+        display: block;
+    }
 }
 
-.filter-row {
+.toggle {
+    display: none;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #dcdcdc;
+
+    @include Responsive(xs sm) {
+        display: flex;
+
+        &__title {
+            font-weight: 600;
+        }
+    }
+}
+
+.filter-items {
     display: flex;
     align-items: center;
     padding: 12px 0;
+
+    @include Responsive(xs sm) {
+        display: none;
+    }
+
+    &--active {
+        display: block;
+    }
 }
 
 .filter-item {
     margin: 0 6px;
 
-    button, select {
+    @include Responsive(xs sm) {
+        margin: 6px;
+    }
+
+    button,
+    select {
         padding: 8px 8px;
         border-radius: 4px;
         border: 1px solid #9c9c9cb3;
@@ -72,6 +107,5 @@
         svg {
             font-size: 16px;
         }
-        
     }
 }

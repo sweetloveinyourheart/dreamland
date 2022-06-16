@@ -1,4 +1,5 @@
 import { FunctionComponent } from "react";
+import { Container } from "../../UI/gridSystem";
 import styles from './banner.module.scss'
 
 interface MainBannerProps {
@@ -8,9 +9,9 @@ interface MainBannerProps {
 const MainBanner: FunctionComponent<MainBannerProps> = () => {
     return (
         <section className={styles.banner}>
-            <div className="container">
-                <div className={styles['banner-bg']} style={{ backgroundImage: 'url(/logo/banner.jpg)' }}></div>
-            </div>
+            <Container>
+                <div className={styles['banner-bg']} style={{ backgroundImage: 'url(/banner/landmark81banner.jpg)' }}></div>
+            </Container>
         </section>
     );
 }

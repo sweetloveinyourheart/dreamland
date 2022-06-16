@@ -28,10 +28,7 @@ class ProjectInformation {
 
     @Field(type => Number, { nullable: true })
     handOverYear?: number
-
-    @Field()
-    investorName: string
-
+    
     @Field(type => ProjectType)
     type: ProjectType
 
@@ -57,9 +54,6 @@ class ProjectMedia {
 @ObjectType()
 class ProjectInvestor {
     @Field()
-    logo: string
-
-    @Field()
     name: string
 
     @Field(type => Int, { nullable: true })
@@ -67,15 +61,6 @@ class ProjectInvestor {
 
     @Field({ nullable: true })
     about: string
-}
-
-@ObjectType()
-class ProjectProgress {
-    @Field()
-    image: string
-
-    @Field()
-    title: string
 }
 
 @ObjectType()
@@ -113,14 +98,17 @@ export class Project {
     @Field(type => ProjectInvestor)
     investor: ProjectInvestor
 
-    @Field(type => [ProjectProgress])
-    progress: ProjectProgress[]
-
     @Field(type => [MasterPlan])
     masterPlan: MasterPlan[]
 
     @Field(type => String)
     directLink: string
+
+    @Field(type => String, { nullable: true })
+    virtual3DLink?: string
+
+    @Field(type => Boolean)
+    outstanding: boolean
     
     @Field(type => Date)
     timeStamp: Date

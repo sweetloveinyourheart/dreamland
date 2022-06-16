@@ -1,0 +1,21 @@
+html,
+body {
+  &:root {
+    --gutter-width: 1rem;
+    --outer-margin: 2rem;
+    --gutter-compensation: calc((var(--gutter-width) * 0.5) * -1);
+    --half-gutter-width: calc((var(--gutter-width) * 0.5));
+    --xs-max: 575px;
+    --sm-min: 576px;
+    --md-min: 768px;
+    --lg-min: 992px;
+    --xl-min: 1200px;
+    --xxl-min: 1400px;
+    --container-xs: 100%;
+    --container-sm: 540px;
+    --container-md: 720px;
+    --container-lg: 960px;
+    --container-xl: 1140px;
+    --container-xxl: 1320px;
+  }
+}

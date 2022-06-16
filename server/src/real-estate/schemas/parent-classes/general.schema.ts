@@ -118,5 +118,11 @@ export class RealEstate {
     directLink: string
 
     @Prop()
+    virtual3DLink?: string
+
+    @Prop({ default: false })
+    outstanding: boolean
+
+    @Prop()
     index: number
 }

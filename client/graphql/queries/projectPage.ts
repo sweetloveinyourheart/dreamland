@@ -39,9 +39,9 @@ export const GET_PROJECT_BY_DIRECT_LINK = gql`
             investor {
                 about
                 name
-                logo
             }
             directLink
+            virtual3DLink
         }
     }
 `

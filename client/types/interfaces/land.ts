@@ -68,6 +68,8 @@ export interface LandInterface {
     timeStamp: Date
     actived: boolean
     directLink: string
+    index: number
+
 }
 
 export type LandFilter = RealEstateFilter & {

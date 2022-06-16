@@ -7,11 +7,14 @@ import { Acreage, Address, Detail, Overview, Position, RealEstate } from "./pare
 class ApartmentPosition extends Position {
     @Field(type => String, { nullable: true })
     blockName?: string
+
+    @Field(type => String, { nullable: true })
+    floorNumber?: string
 }
 
 @ObjectType()
 export class ApartmentDetail extends Detail {
-    @Field(type => ApartmentPosition)
+    @Field(type => ApartmentPosition, { nullable: true })
     position: ApartmentPosition
 
     @Field(type => Address)

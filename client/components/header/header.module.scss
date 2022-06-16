@@ -1,6 +1,8 @@
+@import "../../styles/responsive";
+
 .header {
     padding: 8px 0;
-    background-color: #d12032;
+    background-color: #ffb41f;
     color: #fff;
     position: fixed;
     width: 100%;
@@ -17,19 +19,41 @@
     }
 }
 
+.logo-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .logo {
-    margin-right: 40px;
     cursor: pointer;
+}
+
+.toggle {
+    display: none;
+    button {
+        background: transparent;
+        font-size: 20px;
+        color: #fff;
+        border: none;
+    }
+
+    @include Responsive(xs sm) {
+        display: block;
+    }
 }
 
 .nav-menu {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    height: 100%;
 
     ul {
         display: flex;
         list-style: none;
         margin: 0;
+        padding: 0;
 
         li {
             margin: 0 16px;
@@ -39,7 +63,7 @@
             transition: 0.2s;
 
             &:hover {
-                color: #ffb41f;
+                color: #f93707;
             }
 
             svg {
@@ -52,6 +76,23 @@
             }
         }
     }
+
+    @include Responsive(xs sm) {
+        display: none;
+        &--active {
+            display: block;
+
+            ul {
+                display: block;
+                
+                li {
+                    padding: 8px 0;
+                }
+            }
+        }
+    }
+
+    
 }
 
 .search {
@@ -72,7 +113,7 @@
         border: none;
         height: 40px;
         outline: none;
-        width: 300px;
+        width: 100%;
         border-left: 1px solid #eee;
         font-size: 16px;
     }
@@ -89,7 +130,7 @@
 
         svg {
             font-size: 18px;
-            color: #d12032;
+            color: #ffb41f;
         }
     }
 }

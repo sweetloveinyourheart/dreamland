@@ -35,19 +35,19 @@ import { GET_REAL_ESTATE_PAGING_DATA, RealEstatePagingVars, RealEstatePagingData
 import { initializeApollo } from "../../lib/apolloClient";
 import { categorySpeaker } from "../../lib/converter";
 import { FilterState, GuardFilter } from "../../lib/guardFilter";
-import styles from '../../styles/pages/muaban.module.scss'
+import styles from '../../styles/pages/bat-dong-san.module.scss'
 import { RealEstateCategory, RealEstateType } from "../../types/enums/realEstate";
 import { PaginationFilter } from "../../types/interfaces/realEstate";
 
 interface BrowsingPageProps {
     data: ItemDataDisplay[]
-    category: RealEstateCategory
-    pagingData: RealEstatePaging
+    category: RealEstateCategory | null
+    pagingData: RealEstatePaging | null
 }
 
 export const INIT_CURSOR = 0
-export const INIT_LIMIT = 10
-export const STEP = 10
+export const INIT_LIMIT = 2
+export const STEP = 2
 
 const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, pagingData }) => {
     const [posts, setPosts] = useState<ItemDataDisplay[]>([])
@@ -58,6 +58,7 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
         limit: INIT_LIMIT,
         cursor: INIT_CURSOR
     })
+    const [search, setSearch] = useState<string | undefined>()
 
     let router = useRouter()
     const { getAddress } = useAddress()
@@ -65,7 +66,11 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
     const [getAllPosts, { data: allPostsData, error: allPostsErr }] =
         useLazyQuery<AllPostsResult, AllPostsVars>(GET_ALL_POSTS, {
             notifyOnNetworkStatusChange: true,
-            variables: { ...filter, paging: { cursor: paging.cursor, limit: Math.ceil(INIT_LIMIT / 5) } }
+            variables: {
+                filter,
+                paging: { cursor: paging.cursor, limit: Math.ceil(INIT_LIMIT / 1) },
+                search
+            }
         })
 
     const [getApartments, { data: apartmentsData, error: apartmentsErr }] =
@@ -146,7 +151,8 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                 ...(query?.project && { project: query.project }),
                 ...(Object.keys(acreage).length !== 0 && { acreage }),
                 ...(query?.rooms && { numberOfBedrooms: Number(query.rooms) }),
-                ...(Object.keys(direction) && { ...direction })
+                ...(Object.keys(direction) && { ...direction }),
+                ...(query?.special && { type: query.special }),
             }
 
             setFilter(newFilter)
@@ -155,6 +161,12 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
             let page = query?.page
             if (page) {
                 setPaging(s => ({ ...s, cursor: (Number(page) - 1) * STEP }))
+            }
+
+            // collect search data
+            let search = query?.search
+            if (search) {
+                setSearch(String(search))
             }
 
             // set type
@@ -197,17 +209,17 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                 return;
         }
 
-    }, [type, filter, paging])
+    }, [type, filter, paging, search])
 
     // collect data
     useEffect(() => {
         if (type === "All" && allPostsData) {
             return setPosts([
-                ...allPostsData.apartments,
-                ...allPostsData.houses,
-                ...allPostsData.lands,
-                ...allPostsData.businessPremises,
-                ...((category === RealEstateCategory.ChoThue) ? allPostsData.motals : [])
+                ...allPostsData.posts.apartments,
+                ...allPostsData.posts.houses,
+                ...allPostsData.posts.lands,
+                ...allPostsData.posts.businessPremises,
+                ...((category === RealEstateCategory.ChoThue) ? allPostsData.posts.motals : [])
             ])
         }
 
@@ -242,7 +254,7 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
         })
     }, [router.query])
 
-
+    if (!category || !pagingData) return <></>
 
     return (
         <>
@@ -309,8 +321,8 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                     <div className={styles['filter-area']}>
                         <div className={styles['filter']}>
                             <div className={`${styles['filter__item']} ${styles['filter__item--active']}`}>Tất cả</div>
-                            <div className={styles['filter__item']}>Cá nhân</div>
-                            <div className={styles['filter__item']}>Môi giới</div>
+                            {/* <div className={styles['filter__item']}>Cá nhân</div>
+                            <div className={styles['filter__item']}>Môi giới</div> */}
                         </div>
                         <div className={styles['display']}>
                             <button onClick={() => setVerticalDisplay(s => !s)}><FaGripHorizontal /></button>
@@ -346,8 +358,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
         const result = await client.query<AllPostsResult, AllPostsVars>({
             query: GET_ALL_POSTS,
             variables: {
-                category: category === "cho-thue" ? "ChoThue" : "MuaBan",
-                paging: { cursor: INIT_CURSOR, limit: Math.ceil(INIT_LIMIT / 5) }
+                filter: {
+                    category: category === "cho-thue" ? "ChoThue" : "MuaBan"
+                },
+                paging: { cursor: INIT_CURSOR, limit: Math.ceil(INIT_LIMIT / 1) }
             }
         })
 
@@ -361,11 +375,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
         return {
             props: {
                 data: [
-                    ...result.data.apartments,
-                    ...result.data.houses,
-                    ...result.data.lands,
-                    ...result.data.businessPremises,
-                    ...((category === "cho-thue") ? result.data.motals : [])
+                    ...result.data?.posts.apartments,
+                    ...result.data?.posts.houses,
+                    ...result.data?.posts.lands,
+                    ...result.data?.posts.businessPremises,
+                    ...((category === "cho-thue") ? result.data?.posts.motals : [])
                 ],
                 category: category === "cho-thue" ? "ChoThue" : "MuaBan",
                 pagingData: paging.data.stats
@@ -374,7 +388,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
         }
     } catch (error) {
         return {
-            props: {},
+            props: {
+                data: [],
+                category: null,
+                pagingData: null
+            },
             revalidate: 60,
         }
     }
