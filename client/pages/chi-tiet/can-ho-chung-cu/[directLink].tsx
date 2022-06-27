@@ -15,7 +15,7 @@ import { GET_APARTMENT_POST_BY_DIRECT_LINK } from "../../../graphql/queries/post
 import { RealEstateCategory } from "../../../types/enums/realEstate";
 import { directionSpeaker, furnitureSpeaker, legalDocumentsSpeaker, moneyConverter, userTypeSpeaker } from "../../../lib/converter";
 import { useRouter } from "next/router";
-import Maps from "../../../components/maps/maps";
+// import Maps from "../../../components/maps/maps";
 import { useQuery } from "@apollo/client";
 import { ApartmentPostResult, ApartmentPostVars, GET_APARTMENT_POSTS } from "../../../graphql/queries/browsingPost";
 import Items from "../../../components/items/items";
@@ -27,7 +27,7 @@ interface ApartmentPageProps {
 
 const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
     const [showPhoneNumber, setShowPhoneNumber] = useState<boolean>(false)
-    const [showMaps, setShowMaps] = useState<boolean>(false)
+    // const [showMaps, setShowMaps] = useState<boolean>(false)
 
     const router = useRouter()
     const { data: relativePosts } = useQuery<ApartmentPostResult, ApartmentPostVars>(GET_APARTMENT_POSTS, {
@@ -91,7 +91,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                             <div className={styles['information__quick-info']}>
                                 <div className={styles['contact']}>
                                     <div className={styles['contact-owner']}>
-                                        <Image src={'/logo/profile.png'} width={50} height={50} />
+                                        <Image src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656326293/icons/profile_om2daw.png'} width={50} height={50} />
                                         <div className={styles['contact-owner__info']}>
                                             <h5>{data.owner.user.name}</h5>
                                             <span>{userTypeSpeaker(data.owner.type)}</span>
@@ -116,14 +116,14 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                                         <div className={styles['overview__col']}>
                                             <div className={styles['overview-item']}>
                                                 <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/dien-tich.png"} width={25} height={25} alt="dien-tich" />
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/dien-tich_ys076w.png"} width={25} height={25} alt="dien-tich" />
                                                 </div>
                                                 <span>Diện tích: </span>
                                                 <span>{data.detail.acreage.totalAcreage} m²</span>
                                             </div>
                                             <div className={styles['overview-item']}>
                                                 <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/double-bed.png"} width={25} height={25} alt="dien-tich" />
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/double-bed_e32ctb.png"} width={25} height={25} alt="dien-tich" />
                                                 </div>
                                                 <span>Phòng ngủ: </span>
                                                 <span>{data.overview.numberOfBedrooms} phòng</span>
@@ -132,7 +132,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/toilet.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/toilet_yo0nkp.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Phòng vệ sinh: </span>
                                                         <span>{data.overview.numberOfBathrooms} phòng</span>
@@ -143,7 +143,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/contract.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/contract_stctxg.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Giấy tờ pháp lý: </span>
                                                         <span>{legalDocumentsSpeaker(data.overview.legalDocuments)}</span>
@@ -154,7 +154,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/sofa.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/sofa_yfy1ep.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Tình trạng nội thất: </span>
                                                         <span>{furnitureSpeaker(data.overview.furniture)}</span>
@@ -168,7 +168,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/money.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/money_sbwwui.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Giá/m2: </span>
                                                         <span>{moneyConverter(Math.round(data.detail.pricing.total / data.detail.acreage.totalAcreage))}/m²</span>
@@ -179,7 +179,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/north.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/north_q8ugah.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Hướng cửa chính: </span>
                                                         <span>{directionSpeaker(data.overview.doorDirection)}</span>
@@ -190,7 +190,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/north.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/north_q8ugah.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Hướng ban công: </span>
                                                         <span>{directionSpeaker(data.overview.balconyDirection)}</span>
@@ -221,7 +221,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                                     , {data.detail.address.district}
                                     , {data.detail.address.province}
                                 </p>
-                                <span onClick={() => setShowMaps(true)}>Xem bản đồ</span>
+                                <a href={data.googleMapsLink} target="_blank" rel="noreferrer">Xem bản đồ</a>
                             </div>
                             {data.detail.project
                                 &&
@@ -252,7 +252,7 @@ const ApartmentPage: FunctionComponent<ApartmentPageProps> = ({ data }) => {
                     </div>
                 </div>
             </main>
-            <Maps show={showMaps} handleShow={setShowMaps} address={data.detail.address} />
+            {/* <Maps show={showMaps} handleShow={setShowMaps} address={data.detail.address} /> */}
             <Footer />
         </>
     );

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { FunctionComponent, useState } from "react";
-import { FaAngleDoubleRight, FaMapMarkedAlt } from "react-icons/fa";
+import { FaMapMarkedAlt } from "react-icons/fa";
 import { BiPhone } from "react-icons/bi"
 import Header from "../../../components/header/header";
 import styles from '../../../styles/pages/chi-tiet.module.scss'
@@ -11,7 +11,6 @@ import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { initializeApollo } from "../../../lib/apolloClient";
 import { GET_LAND_POST_BY_DIRECT_LINK } from "../../../graphql/queries/postPage";
-import { RealEstateCategory } from "../../../types/enums/realEstate";
 import {
     directionSpeaker,
     landTypeSpeaker,
@@ -19,7 +18,6 @@ import {
     moneyConverter,
     userTypeSpeaker
 } from "../../../lib/converter";
-import Maps from "../../../components/maps/maps";
 import { LandInterface } from "../../../types/interfaces/land";
 import PageLinks from "../../../components/links/links";
 import { useQuery } from "@apollo/client";
@@ -32,7 +30,7 @@ interface LandPageProps {
 
 const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
     const [showPhoneNumber, setShowPhoneNumber] = useState<boolean>(false)
-    const [showMaps, setShowMaps] = useState<boolean>(false)
+    // const [showMaps, setShowMaps] = useState<boolean>(false)
 
     const { data: relativePosts } = useQuery<LandPostResult, LandPostVars>(GET_LAND_POSTS, {
         variables: {
@@ -94,7 +92,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                             <div className={styles['information__quick-info']}>
                                 <div className={styles['contact']}>
                                     <div className={styles['contact-owner']}>
-                                        <Image src={'/logo/profile.png'} width={50} height={50} />
+                                        <Image src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656326293/icons/profile_om2daw.png'} width={50} height={50} />
                                         <div className={styles['contact-owner__info']}>
                                             <h5>{data.owner.user.name}</h5>
                                             <span>{userTypeSpeaker(data.owner.type)}</span>
@@ -119,7 +117,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                                         <div className={styles['overview__col']}>
                                             <div className={styles['overview-item']}>
                                                 <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/dien-tich.png"} width={25} height={25} alt="dien-tich" />
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/dien-tich_ys076w.png"} width={25} height={25} alt="dien-tich" />
                                                 </div>
                                                 <span>Diện tích: </span>
                                                 <span>{data.detail.acreage.totalAcreage} m²</span>
@@ -128,7 +126,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/contract.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/contract_stctxg.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Giấy tờ pháp lý: </span>
                                                         <span>{legalDocumentsSpeaker(data.overview.legalDocuments)}</span>
@@ -139,7 +137,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                                         <div className={styles['overview__col']}>
                                             <div className={styles['overview-item']}>
                                                 <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/double-arrow-horizontal-symbol.png"} width={25} height={25} alt="dien-tich" />
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/double-arrow-horizontal-symbol_opescy.png"} width={25} height={25} alt="dien-tich" />
 
                                                 </div>
                                                 <span>Chiều ngang: </span>
@@ -147,7 +145,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                                             </div>
                                             <div className={styles['overview-item']}>
                                                 <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/double-arrow-vertical-symbol.png"} width={25} height={25} alt="dien-tich" />
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/double-arrow-vertical-symbol_bvcd84.png"} width={25} height={25} alt="dien-tich" />
 
                                                 </div>
                                                 <span>Chiều dọc: </span>
@@ -156,7 +154,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
 
                                             <div className={styles['overview-item']}>
                                                 <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/money.png"} width={25} height={25} alt="dien-tich" />
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/double-arrow-vertical-symbol_bvcd84.png"} width={25} height={25} alt="dien-tich" />
                                                 </div>
                                                 <span>Giá/m2: </span>
                                                 <span>{moneyConverter(data.detail.pricing.total / data.detail.acreage.totalAcreage)}/m²</span>
@@ -165,7 +163,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/north.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/north_q8ugah.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Hướng cửa chính: </span>
                                                         <span>{directionSpeaker(data.overview.doorDirection)}</span>
@@ -174,7 +172,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                                             }
                                             <div className={styles['overview-item']}>
                                                 <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/smart-home.png"} width={25} height={25} alt="dien-tich" />
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/smart-home_vijqkt.png"} width={25} height={25} alt="dien-tich" />
                                                 </div>
                                                 <span>Loại hình đất: </span>
                                                 <span>{landTypeSpeaker(data.overview.type)}</span>
@@ -204,7 +202,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                                     , {data.detail.address.district}
                                     , {data.detail.address.province}
                                 </p>
-                                <span onClick={() => setShowMaps(true)}>Xem bản đồ</span>
+                                <a href={data.googleMapsLink} target="_blank" rel="noreferrer">Xem bản đồ</a>
                             </div>
                             <div className={styles['description']}>
                                 {data.description}
@@ -223,7 +221,7 @@ const LandPage: FunctionComponent<LandPageProps> = ({ data }) => {
                     </div>
                 </div>
             </main>
-            <Maps show={showMaps} handleShow={setShowMaps} address={data.detail.address} />
+            {/* <Maps show={showMaps} handleShow={setShowMaps} address={data.detail.address} /> */}
             <Footer />
         </>
     );

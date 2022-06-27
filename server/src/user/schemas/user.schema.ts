@@ -28,7 +28,7 @@ export class User {
     sex?: Sex
 
     @Prop()
-    address: string
+    address?: string
 
     @Prop()
     createdAt: Date

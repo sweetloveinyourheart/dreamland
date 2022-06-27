@@ -24,7 +24,7 @@ export class CreateUserInput {
     @Field(type => Sex, { nullable: true })
     sex?: Sex
 
-    @Field()
+    @Field({ nullable: true })
     address: string
 
 }

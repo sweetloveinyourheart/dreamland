@@ -12,8 +12,8 @@ import { CreateLandInput, LandFilter } from './dto/inputs/land.input';
 import { Motal } from './models/motal.model';
 import { BusinessPremisesFilter, CreateBusinessPremisesInput } from './dto/inputs/business-premises.input';
 import { CreateMotalInput, MotalFilter } from './dto/inputs/motal.input';
-import { UpdateStatusInput } from 'src/project/dto/edit.input';
 import { RealEstatePosts } from './models/parent-models/top';
+import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
 
 @Resolver()
 export class RealEstateResolver {
@@ -172,7 +172,7 @@ export class RealEstateResolver {
   async updateApartmentPost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateApartmentInput,
-    @Args('status', { nullable: true }) updateStatus: UpdateStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
   ): Promise<Apartment> {
     return await this.realEstateService.updateApartmentPost(postId, data, updateStatus);
   }
@@ -181,7 +181,7 @@ export class RealEstateResolver {
   async updateHousePost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateHouseInput,
-    @Args('status', { nullable: true }) updateStatus: UpdateStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
   ): Promise<House> {
     return await this.realEstateService.updateHousePost(postId, data, updateStatus);
   }
@@ -190,7 +190,7 @@ export class RealEstateResolver {
   async updateLandPost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateLandInput,
-    @Args('status', { nullable: true }) updateStatus: UpdateStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
   ): Promise<Land> {
     return await this.realEstateService.updateLandPost(postId, data, updateStatus);
   }
@@ -199,7 +199,7 @@ export class RealEstateResolver {
   async updateBusinessPremisesPost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateBusinessPremisesInput,
-    @Args('status', { nullable: true }) updateStatus: UpdateStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
   ): Promise<BusinessPremises> {
     return await this.realEstateService.updateBusinessPremisesPost(postId, data, updateStatus);
   }
@@ -208,7 +208,7 @@ export class RealEstateResolver {
   async updateMotalPost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateMotalInput,
-    @Args('status', { nullable: true }) updateStatus: UpdateStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
   ): Promise<Motal> {
     return await this.realEstateService.updateMotalPost(postId, data, updateStatus);
   }

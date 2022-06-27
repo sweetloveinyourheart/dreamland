@@ -4,6 +4,7 @@ import {
     HouseType,
     LegalDocuments,
     OwnerType,
+    PostStatus,
     RealEstateCategory
 } from "../enums/realEstate"
 import { ProjectInterface } from "./project"
@@ -72,7 +73,8 @@ export interface HouseInterface {
     }
 
     timeStamp: Date
-    actived: boolean
+    postStatus: PostStatus
+    googleMapsLink: string
     directLink: string
     index: number
 

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { FunctionComponent, useState } from "react";
-import { FaAngleDoubleRight, FaMapMarkedAlt, FaUniversity } from "react-icons/fa";
+import { FaMapMarkedAlt } from "react-icons/fa";
 import { BiPhone } from "react-icons/bi"
 import Header from "../../../components/header/header";
 import styles from '../../../styles/pages/chi-tiet.module.scss'
@@ -11,9 +11,7 @@ import Link from "next/link";
 import { GetServerSideProps } from "next";
 import { initializeApollo } from "../../../lib/apolloClient";
 import { GET_MOTAL_POST_BY_DIRECT_LINK } from "../../../graphql/queries/postPage";
-import { RealEstateCategory } from "../../../types/enums/realEstate";
-import { directionSpeaker, furnitureSpeaker, houseTypeSpeaker, legalDocumentsSpeaker, moneyConverter, userTypeSpeaker } from "../../../lib/converter";
-import Maps from "../../../components/maps/maps";
+import { directionSpeaker, furnitureSpeaker, legalDocumentsSpeaker, moneyConverter, userTypeSpeaker } from "../../../lib/converter";
 import { MotalInterface } from "../../../types/interfaces/motal";
 import { useQuery } from "@apollo/client";
 import { GET_MOTAL_POSTS, MotalPostsResult, MotalPostsVars } from "../../../graphql/queries/browsingPost";
@@ -26,8 +24,7 @@ interface HousePageProps {
 
 const HousePage: FunctionComponent<HousePageProps> = ({ data }) => {
     const [showPhoneNumber, setShowPhoneNumber] = useState<boolean>(false)
-    const [showMaps, setShowMaps] = useState<boolean>(false)
-
+    // const [showMaps, setShowMaps] = useState<boolean>(false)
 
     const { data: relativePosts } = useQuery<MotalPostsResult, MotalPostsVars>(GET_MOTAL_POSTS, {
         variables: {
@@ -79,104 +76,105 @@ const HousePage: FunctionComponent<HousePageProps> = ({ data }) => {
             <main style={{ backgroundColor: "#f4f4f4", padding: '64px 0' }}>
                 <div className="container">
                     <PageLinks category={data.category} title={data.title} />
-                    <div className={styles['information']}>
-                        <div className={styles['information__media']}>
-                            <Carousel>
-                                {renderMedia()}
-                            </Carousel>
-                        </div>
-                        <div className={styles['information__quick-info']}>
-                            <div className={styles['contact']}>
-                                <div className={styles['contact-owner']}>
-                                    <Image src={'/logo/profile.png'} width={50} height={50} />
-                                    <div className={styles['contact-owner__info']}>
-                                        <h5>{data.owner.user.name}</h5>
-                                        <span>{userTypeSpeaker(data.owner.type)}</span>
-                                    </div>
-                                </div>
-                                <div className={styles['contact-phone']}>
-                                    <div className={styles['contact-phone__guard']} onClick={() => setShowPhoneNumber(s => !s)}>
-                                        <div className={`${styles['phone--hidden']}`}>
-                                            <BiPhone />
-                                            <span>
-                                                {showPhoneNumber
-                                                    ? (data.owner.user.phone)
-                                                    : (`${data.owner.user.phone.slice(0, 4)}******`)
-                                                }
-                                            </span>
+
+                    <div className={styles['area']}>
+                        <div className={styles['information']}>
+                            <div className={styles['information__media']}>
+                                <Carousel>
+                                    {renderMedia()}
+                                </Carousel>
+                            </div>
+                            <div className={styles['information__quick-info']}>
+                                <div className={styles['contact']}>
+                                    <div className={styles['contact-owner']}>
+                                        <Image src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656326293/icons/profile_om2daw.png'} width={50} height={50} />
+                                        <div className={styles['contact-owner__info']}>
+                                            <h5>{data.owner.user.name}</h5>
+                                            <span>{userTypeSpeaker(data.owner.type)}</span>
                                         </div>
-                                        <div>Bấm để hiện số</div>
                                     </div>
-                                </div>
-                                <div className={styles['overview']}>
-                                    <h4> Thông tin cơ bản </h4>
-                                    <div className={styles['overview__col']}>
-                                        <div className={styles['overview-item']}>
-                                            <div className={styles['overview-item__image']}>
-                                                <Image src={"/desc/dien-tich.png"} width={25} height={25} alt="dien-tich" />
+                                    <div className={styles['contact-phone']}>
+                                        <div className={styles['contact-phone__guard']} onClick={() => setShowPhoneNumber(s => !s)}>
+                                            <div className={`${styles['phone--hidden']}`}>
+                                                <BiPhone />
+                                                <span>
+                                                    {showPhoneNumber
+                                                        ? (data.owner.user.phone)
+                                                        : (`${data.owner.user.phone.slice(0, 4)}******`)
+                                                    }
+                                                </span>
                                             </div>
-                                            <span>Diện tích: </span>
-                                            <span>{data.detail.acreage.totalAcreage} m²</span>
+                                            <div>Bấm để hiện số</div>
                                         </div>
-                                        {data.overview?.legalDocuments
-                                            && (
-                                                <div className={styles['overview-item']}>
-                                                    <div className={styles['overview-item__image']}>
-                                                        <Image src={"/desc/contract.png"} width={25} height={25} alt="dien-tich" />
-                                                    </div>
-                                                    <span>Giấy tờ pháp lý: </span>
-                                                    <span>{legalDocumentsSpeaker(data.overview.legalDocuments)}</span>
-                                                </div>
-                                            )
-                                        }
-                                        {data.overview?.furniture
-                                            && (
-                                                <div className={styles['overview-item']}>
-                                                    <div className={styles['overview-item__image']}>
-                                                        <Image src={"/desc/sofa.png"} width={25} height={25} alt="dien-tich" />
-                                                    </div>
-                                                    <span>Tình trạng nội thất: </span>
-                                                    <span>{furnitureSpeaker(data.overview.furniture)}</span>
-                                                </div>
-                                            )
-                                        }
                                     </div>
-                                    <div className={styles['overview__col']}>
-                                        <div className={styles['overview-item']}>
-                                            <div className={styles['overview-item__image']}>
-                                                <Image src={"/desc/money.png"} width={25} height={25} alt="dien-tich" />
+                                    <div className={styles['overview']}>
+                                        <h4> Thông tin cơ bản </h4>
+                                        <div className={styles['overview__col']}>
+                                            <div className={styles['overview-item']}>
+                                                <div className={styles['overview-item__image']}>
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/dien-tich_ys076w.png"} width={25} height={25} alt="dien-tich" />
+                                                </div>
+                                                <span>Diện tích: </span>
+                                                <span>{data.detail.acreage.totalAcreage} m²</span>
                                             </div>
-                                            <span>Giá/m2: </span>
-                                            <span>{moneyConverter(data.detail.pricing.total / data.detail.acreage.totalAcreage)}/m²</span>
+                                            {data.overview?.legalDocuments
+                                                && (
+                                                    <div className={styles['overview-item']}>
+                                                        <div className={styles['overview-item__image']}>
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/contract_stctxg.png"} width={25} height={25} alt="dien-tich" />
+                                                        </div>
+                                                        <span>Giấy tờ pháp lý: </span>
+                                                        <span>{legalDocumentsSpeaker(data.overview.legalDocuments)}</span>
+                                                    </div>
+                                                )
+                                            }
+                                            {data.overview?.furniture
+                                                && (
+                                                    <div className={styles['overview-item']}>
+                                                        <div className={styles['overview-item__image']}>
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/sofa_yfy1ep.png"} width={25} height={25} alt="dien-tich" />
+                                                        </div>
+                                                        <span>Tình trạng nội thất: </span>
+                                                        <span>{furnitureSpeaker(data.overview.furniture)}</span>
+                                                    </div>
+                                                )
+                                            }
                                         </div>
-                                        {data.overview?.doorDirection
-                                            && (
-                                                <div className={styles['overview-item']}>
-                                                    <div className={styles['overview-item__image']}>
-                                                        <Image src={"/desc/north.png"} width={25} height={25} alt="dien-tich" />
-                                                    </div>
-                                                    <span>Hướng cửa chính: </span>
-                                                    <span>{directionSpeaker(data.overview.doorDirection)}</span>
+                                        <div className={styles['overview__col']}>
+                                            <div className={styles['overview-item']}>
+                                                <div className={styles['overview-item__image']}>
+                                                    <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/money_sbwwui.png"} width={25} height={25} alt="dien-tich" />
                                                 </div>
-                                            )
-                                        }
-                                        {data.overview?.numberOfFloors
-                                            && (
-                                                <div className={styles['overview-item']}>
-                                                    <div className={styles['overview-item__image']}>
-                                                        <Image src={"/desc/numfloor.png"} width={25} height={25} alt="dien-tich" />
+                                                <span>Giá/m2: </span>
+                                                <span>{moneyConverter(data.detail.pricing.total / data.detail.acreage.totalAcreage)}/m²</span>
+                                            </div>
+                                            {data.overview?.doorDirection
+                                                && (
+                                                    <div className={styles['overview-item']}>
+                                                        <div className={styles['overview-item__image']}>
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/north_q8ugah.png"} width={25} height={25} alt="dien-tich" />
+                                                        </div>
+                                                        <span>Hướng cửa chính: </span>
+                                                        <span>{directionSpeaker(data.overview.doorDirection)}</span>
                                                     </div>
-                                                    <span>Tổng số tầng: </span>
-                                                    <span>{data.overview.numberOfFloors}</span>
-                                                </div>
-                                            )
-                                        }
+                                                )
+                                            }
+                                            {data.overview?.numberOfFloors
+                                                && (
+                                                    <div className={styles['overview-item']}>
+                                                        <div className={styles['overview-item__image']}>
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/numfloor_vcimfk.png"} width={25} height={25} alt="dien-tich" />
+                                                        </div>
+                                                        <span>Tổng số tầng: </span>
+                                                        <span>{data.overview.numberOfFloors}</span>
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className={styles['area']}>
                         <div className={styles['content']}>
                             <div className={styles['name']}>
                                 {data.title}
@@ -193,98 +191,10 @@ const HousePage: FunctionComponent<HousePageProps> = ({ data }) => {
                                     , {data.detail.address.district}
                                     , {data.detail.address.province}
                                 </p>
-                                <span onClick={() => setShowMaps(true)}>Xem bản đồ</span>
+                                <a href={data.googleMapsLink} target="_blank" rel="noreferrer">Xem bản đồ</a>
                             </div>
                             <div className={styles['description']}>
                                 {data.description}
-                            </div>
-                        </div>
-                        <div className={styles['contact']}>
-                            <div className={styles['contact-owner']}>
-                                <Image src={'/logo/profile.png'} width={50} height={50} />
-                                <div className={styles['contact-owner__info']}>
-                                    <h5>{data.owner.user.name}</h5>
-                                    <span>{userTypeSpeaker(data.owner.type)}</span>
-                                </div>
-                            </div>
-                            <div className={styles['contact-phone']}>
-                                <div className={styles['contact-phone__guard']} onClick={() => setShowPhoneNumber(s => !s)}>
-                                    <div className={`${styles['phone--hidden']}`}>
-                                        <BiPhone />
-                                        <span>
-                                            {showPhoneNumber
-                                                ? (data.owner.user.phone)
-                                                : (`${data.owner.user.phone.slice(0, 4)}******`)
-                                            }
-                                        </span>
-                                    </div>
-                                    <div>Bấm để hiện số</div>
-                                </div>
-                            </div>
-                            <div className={styles['overview']}>
-                                <h4> Thông tin cơ bản </h4>
-                                <div className={styles['overview__col']}>
-                                    <div className={styles['overview-item']}>
-                                        <div className={styles['overview-item__image']}>
-                                            <Image src={"/desc/dien-tich.png"} width={25} height={25} alt="dien-tich" />
-                                        </div>
-                                        <span>Diện tích: </span>
-                                        <span>{data.detail.acreage.totalAcreage} m²</span>
-                                    </div>
-                                    {data.overview?.legalDocuments
-                                        && (
-                                            <div className={styles['overview-item']}>
-                                                <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/contract.png"} width={25} height={25} alt="dien-tich" />
-                                                </div>
-                                                <span>Giấy tờ pháp lý: </span>
-                                                <span>{legalDocumentsSpeaker(data.overview.legalDocuments)}</span>
-                                            </div>
-                                        )
-                                    }
-                                    {data.overview?.furniture
-                                        && (
-                                            <div className={styles['overview-item']}>
-                                                <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/sofa.png"} width={25} height={25} alt="dien-tich" />
-                                                </div>
-                                                <span>Tình trạng nội thất: </span>
-                                                <span>{furnitureSpeaker(data.overview.furniture)}</span>
-                                            </div>
-                                        )
-                                    }
-                                </div>
-                                <div className={styles['overview__col']}>
-                                    <div className={styles['overview-item']}>
-                                        <div className={styles['overview-item__image']}>
-                                            <Image src={"/desc/money.png"} width={25} height={25} alt="dien-tich" />
-                                        </div>
-                                        <span>Giá/m2: </span>
-                                        <span>{moneyConverter(data.detail.pricing.total / data.detail.acreage.totalAcreage)}/m²</span>
-                                    </div>
-                                    {data.overview?.doorDirection
-                                        && (
-                                            <div className={styles['overview-item']}>
-                                                <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/north.png"} width={25} height={25} alt="dien-tich" />
-                                                </div>
-                                                <span>Hướng cửa chính: </span>
-                                                <span>{directionSpeaker(data.overview.doorDirection)}</span>
-                                            </div>
-                                        )
-                                    }
-                                    {data.overview?.numberOfFloors
-                                        && (
-                                            <div className={styles['overview-item']}>
-                                                <div className={styles['overview-item__image']}>
-                                                    <Image src={"/desc/numfloor.png"} width={25} height={25} alt="dien-tich" />
-                                                </div>
-                                                <span>Tổng số tầng: </span>
-                                                <span>{data.overview.numberOfFloors}</span>
-                                            </div>
-                                        )
-                                    }
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -299,7 +209,7 @@ const HousePage: FunctionComponent<HousePageProps> = ({ data }) => {
                     </div>
                 </div>
             </main>
-            <Maps show={showMaps} handleShow={setShowMaps} address={data.detail.address} />
+            {/* <Maps show={showMaps} handleShow={setShowMaps} address={data.detail.address} /> */}
             <Footer />
         </>
     );

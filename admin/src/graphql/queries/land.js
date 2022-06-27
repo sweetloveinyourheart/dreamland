@@ -47,7 +47,7 @@ query Lands($filter: LandFilter!, $paging: PaginationArgs, $search: String) {
             }
             outstanding
             virtual3DLink
-            actived
+            postStatus
+        }
     }
-}
 `

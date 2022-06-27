@@ -32,7 +32,7 @@ const Header: FunctionComponent<HeaderProps> = () => {
                         <div className={styles['logo-area']}>
                             <div className={styles['logo']} onClick={() => router.push("/home")}>
                                 <Image
-                                    src={"/logo/logo-am-ban.png"}
+                                    src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656328913/logo/logo-am-ban_rwgbmu.png"}
                                     alt="#"
                                     width={275}
                                     height={50}

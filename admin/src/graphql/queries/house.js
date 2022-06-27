@@ -46,7 +46,7 @@ query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
             }
             virtual3DLink
             outstanding
-            actived
+            postStatus
     }
 }
 `

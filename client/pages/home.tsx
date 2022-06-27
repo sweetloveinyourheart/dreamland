@@ -10,18 +10,22 @@ import Header from '../components/header/header'
 import Items from '../components/items/items'
 import Projects from '../components/projects/projects'
 import { GetOutstandingPostData, GET_OUTSTANDING_POSTS, GET_TOP_POSTS_QUERY, GET_TOP_PROJECTS_QUERY, OutstandingPost, TopPostsResult } from '../graphql/queries/homePage'
+import { GET_PAGE_TEMPLATE } from '../graphql/queries/introPage'
 import { initializeApollo } from '../lib/apolloClient'
 import { ProjectInterface } from '../types/interfaces/project'
 import { Container } from '../UI/gridSystem'
 import styles from './../styles/pages/home.module.scss'
 
 interface HomePageProps {
+  template: {
+    banner: string | null
+  }
   projects: ProjectInterface[]
   posts: TopPostsResult
   outstandingPosts: OutstandingPost
 }
 
-const Home: NextPage<HomePageProps> = ({ projects, posts, outstandingPosts }) => {
+const Home: NextPage<HomePageProps> = ({ projects, posts, outstandingPosts, template }) => {
   return (
     <>
       <Head>
@@ -30,7 +34,7 @@ const Home: NextPage<HomePageProps> = ({ projects, posts, outstandingPosts }) =>
       </Head>
       <Header />
       <main style={{ backgroundColor: 'rgba(244,244,244, 0.8)' }}>
-        <MainBanner />
+        <MainBanner banner={template.banner} />
         <MainCategories />
         <section className={styles['items-area']}>
           <Container>
@@ -99,6 +103,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
   try {
     const client = initializeApollo()
 
+    const templateResult = await client.query({
+      query: GET_PAGE_TEMPLATE,
+      variables: {
+        pageName: "introduction"
+      }
+    })
+
     const projectsResult = await client.query<{ projects: ProjectInterface[] }>({
       query: GET_TOP_PROJECTS_QUERY
     })
@@ -113,6 +124,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
     return {
       props: {
+        template: templateResult?.data.template || { banner: null },
         projects: projectsResult?.data?.projects ?? [],
         posts: topPostsResult?.data ?? {
           sellingApartments: [],
@@ -135,6 +147,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
   } catch (error) {
     return {
       props: {
+        template: {
+          banner: null
+        },
         projects: [],
         posts: {
           sellingApartments: [],

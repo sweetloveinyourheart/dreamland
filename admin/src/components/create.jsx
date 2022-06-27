@@ -10,6 +10,7 @@ import { CREATE_APARTMENT_POST, CREATE_BUSINESS_PREMISES_POST, CREATE_HOUSE_POST
 import axios from 'axios'
 import { CloudName } from 'constants/cloudinary';
 import { GET_ALL_PROJECT_POSTS } from 'graphql/queries/project';
+import { useNavigate } from 'react-router';
 
 const CreateRSPost = ({ type }) => {
     const [projects, setProjects] = useState([])
@@ -78,7 +79,7 @@ const CreateRSPost = ({ type }) => {
             category: "MuaBan",
             overview: {},
             owner: {},
-            detail: { },
+            detail: {},
             media: {
                 images: [],
                 videos: []
@@ -285,7 +286,7 @@ const CreateRSPost = ({ type }) => {
                                                     variant="outlined"
                                                     type={"number"}
                                                     margin="normal"
-                                                    value={formData.detail?.pricing?.total}
+                                                    value={formData.detail?.pricing?.total ?? ""}
                                                     onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, pricing: { ...s.detail.pricing, total: Number(e.target.value) } } }))}
                                                 />
                                             </Grid>
@@ -297,7 +298,7 @@ const CreateRSPost = ({ type }) => {
                                                     type={"number"}
                                                     variant="outlined"
                                                     margin="normal"
-                                                    value={formData.detail?.pricing?.deposit}
+                                                    value={formData.detail?.pricing?.deposit ?? ""}
                                                     onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, pricing: { ...s.detail.pricing, deposit: Number(e.target.value) } } }))}
                                                 />
                                             </Grid>
@@ -312,7 +313,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth label="Block/Tháp"
                                                             variant="outlined"
                                                             margin="normal"
-                                                            value={formData.detail?.position?.blockName}
+                                                            value={formData.detail?.position?.blockName ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail.position, blockName: e.target.value } } }))}
                                                         />
                                                     </Grid>
@@ -328,7 +329,7 @@ const CreateRSPost = ({ type }) => {
                                                             label="Mã căn"
                                                             variant="outlined"
                                                             margin="normal"
-                                                            value={formData.detail?.position?.code?.value}
+                                                            value={formData.detail?.position?.code?.value ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail.position, code: { ...s.detail.position.code, value: e.target.value } } } }))}
                                                         />
                                                     </Grid>
@@ -344,7 +345,7 @@ const CreateRSPost = ({ type }) => {
                                                             label="Tầng số"
                                                             variant="outlined"
                                                             margin="normal"
-                                                            value={formData.detail?.position?.floorNumber}
+                                                            value={formData.detail?.position?.floorNumber ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail.position, floorNumber: e.target.value } } }))}
 
                                                         />
@@ -363,7 +364,7 @@ const CreateRSPost = ({ type }) => {
                                                             variant="outlined"
                                                             onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, project: e.target.value } }))}
                                                             margin="normal"
-                                                            value={formData.detail?.project}
+                                                            value={formData.detail?.project ?? ""}
                                                             defaultValue=""
                                                         >
                                                             {projects.map((option, index) => (
@@ -386,7 +387,7 @@ const CreateRSPost = ({ type }) => {
                                                     required
                                                     variant="outlined"
                                                     margin="normal"
-                                                    value={formData.detail?.address?.province}
+                                                    value={formData.detail?.address?.province ?? ""}
                                                     select
                                                     defaultValue={""}
                                                     onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, address: { ...s.detail.address, province: e.target.value } } }))}
@@ -409,7 +410,7 @@ const CreateRSPost = ({ type }) => {
                                                     variant="outlined"
                                                     defaultValue={""}
                                                     select
-                                                    value={formData.detail?.address?.district}
+                                                    value={formData.detail?.address?.district ?? ""}
                                                     onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, address: { ...s.detail.address, district: e.target.value } } }))}
                                                     margin="normal"
                                                 >
@@ -430,7 +431,7 @@ const CreateRSPost = ({ type }) => {
                                                     variant="outlined"
                                                     defaultValue={""}
                                                     select
-                                                    value={formData.detail?.address?.ward}
+                                                    value={formData.detail?.address?.ward ?? ""}
                                                     onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, address: { ...s.detail.address, ward: e.target.value } } }))}
                                                     margin="normal"
                                                 >
@@ -450,7 +451,7 @@ const CreateRSPost = ({ type }) => {
                                                     required
                                                     variant="outlined"
                                                     margin="normal"
-                                                    value={formData.detail?.address?.street}
+                                                    value={formData.detail?.address?.street ?? ""}
                                                     onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, address: { ...s.detail.address, street: e.target.value } } }))}
                                                 />
                                             </Grid>
@@ -461,7 +462,7 @@ const CreateRSPost = ({ type }) => {
                                                     fullWidth
                                                     label="Số nhà"
                                                     variant="outlined"
-                                                    value={formData.detail?.address?.houseNumber}
+                                                    value={formData.detail?.address?.houseNumber ?? ""}
                                                     margin="normal"
                                                     onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, address: { ...s.detail.address, houseNumber: e.target.value } } }))}
                                                 />
@@ -477,7 +478,7 @@ const CreateRSPost = ({ type }) => {
                                                     label="Tổng diện tích"
                                                     required
                                                     variant="outlined"
-                                                    value={formData.detail?.acreage?.totalAcreage}
+                                                    value={formData.detail?.acreage?.totalAcreage ?? ""}
                                                     margin="normal"
                                                     onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail.acreage, totalAcreage: Number(e.target.value) } } }))}
                                                 />
@@ -491,7 +492,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             type={"number"}
                                                             label="Diện tích sử dụng"
-                                                            value={formData.detail?.acreage?.usedAcreage}
+                                                            value={formData.detail?.acreage?.usedAcreage ?? ""}
 
                                                             variant="outlined"
                                                             margin="normal"
@@ -500,7 +501,7 @@ const CreateRSPost = ({ type }) => {
                                                     </Grid>
                                                 )
                                             }
-                                            {type === "nha-o" || type === "dat"
+                                            {(type === "nha-o" || type === "dat")
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -509,8 +510,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             type={"number"}
                                                             label="Chiều ngang"
-                                                            value={formData.detail?.acreage?.width}
-
+                                                            value={formData.detail?.acreage?.width ?? ""}
                                                             variant="outlined"
                                                             margin="normal"
                                                             onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail.acreage, width: Number(e.target.value) } } }))}
@@ -518,7 +518,7 @@ const CreateRSPost = ({ type }) => {
                                                     </Grid>
                                                 )
                                             }
-                                            {type === "nha-o" || type === "dat"
+                                            {(type === "nha-o" || type === "dat")
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -527,7 +527,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             type={"number"}
                                                             label="Chiều dài"
-                                                            value={formData.detail?.acreage?.height}
+                                                            value={formData.detail?.acreage?.height ?? ""}
 
                                                             variant="outlined"
                                                             margin="normal"
@@ -552,7 +552,7 @@ const CreateRSPost = ({ type }) => {
                                                     select
                                                     label="Hướng cửa chính"
                                                     fullWidth
-                                                    value={formData.overview.doorDirection}
+                                                    value={formData.overview?.doorDirection ?? ""}
                                                     onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, doorDirection: e.target.value } }))}
                                                     defaultValue={""}
                                                     margin="normal"
@@ -573,7 +573,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             select
                                                             label="Hướng ban công"
-                                                            value={formData.overview.balconyDirection}
+                                                            value={formData.overview?.balconyDirection ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, balconyDirection: e.target.value } }))}
                                                             defaultValue={""}
                                                             margin="normal"
@@ -597,7 +597,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             select
                                                             label="Tình trạng bất động sản"
-                                                            value={formData.overview.status}
+                                                            value={formData.overview?.status ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, status: e.target.value } }))}
                                                             defaultValue={""}
                                                             margin="normal"
@@ -611,7 +611,7 @@ const CreateRSPost = ({ type }) => {
                                                     </Grid>
                                                 )
                                             }
-                                            {type === "nha-o" || type === "can-ho-chung-cu" || type === "van-phong-mat-bang" || 'phong-tro'
+                                            {(type === "nha-o" || type === "can-ho-chung-cu" || type === "van-phong-mat-bang" || 'phong-tro')
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -620,7 +620,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             select
                                                             label="Tình trạng nội thất"
-                                                            value={formData.overview.furniture}
+                                                            value={formData.overview?.furniture ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, furniture: e.target.value } }))}
                                                             defaultValue={""}
                                                             margin="normal"
@@ -644,7 +644,7 @@ const CreateRSPost = ({ type }) => {
                                                             select
                                                             required
                                                             label="Loại hình"
-                                                            value={formData.overview.type}
+                                                            value={formData.overview?.type ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, type: e.target.value } }))}
                                                             defaultValue={""}
                                                             margin="normal"
@@ -661,7 +661,7 @@ const CreateRSPost = ({ type }) => {
                                                     fullWidth
                                                     select
                                                     label="Giấy tờ pháp lý"
-                                                    value={formData.overview.legalDocuments}
+                                                    value={formData.overview?.legalDocuments ?? ""}
                                                     onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, legalDocuments: e.target.value } }))}
                                                     defaultValue={""}
                                                     margin="normal"
@@ -673,7 +673,7 @@ const CreateRSPost = ({ type }) => {
                                                     ))}
                                                 </TextField>
                                             </Grid>
-                                            {type === "nha-o" || type === "dat"
+                                            {(type === "nha-o" || type === "dat")
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -682,7 +682,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             select
                                                             label="Nở hậu"
-                                                            value={formData.overview.legalDocuments}
+                                                            value={formData.overview?.noHau ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, noHau: e.target.value } }))}
                                                             defaultValue={""}
                                                             margin="normal"
@@ -697,7 +697,7 @@ const CreateRSPost = ({ type }) => {
                                                     </Grid>
                                                 )
                                             }
-                                            {type === "nha-o" || type === "dat"
+                                            {(type === "nha-o" || type === "dat")
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -706,7 +706,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             select
                                                             label="Nhà mặt tiền"
-                                                            value={formData.overview.frontispiece}
+                                                            value={formData.overview?.frontispiece ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, frontispiece: e.target.value } }))}
                                                             defaultValue={""}
                                                             margin="normal"
@@ -721,7 +721,7 @@ const CreateRSPost = ({ type }) => {
                                                     </Grid>
                                                 )
                                             }
-                                            {type === "nha-o" || type === "dat"
+                                            {(type === "nha-o" || type === "dat")
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -730,7 +730,7 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             select
                                                             label="Hẻm xe hơi"
-                                                            value={formData.overview.carAlley}
+                                                            value={formData.overview?.carAlley ?? ""}
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, carAlley: e.target.value } }))}
                                                             defaultValue={""}
                                                             margin="normal"
@@ -748,7 +748,7 @@ const CreateRSPost = ({ type }) => {
                                         </Grid>
 
                                         <Grid container marginBottom={4} spacing={2}>
-                                            {type === "can-ho-chung-cu" || type === 'nha-o'
+                                            {(type === "can-ho-chung-cu" || type === 'nha-o')
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -758,12 +758,12 @@ const CreateRSPost = ({ type }) => {
                                                             fullWidth
                                                             required
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, numberOfBedrooms: Number(e.target.value) } }))}
-                                                            value={formData.overview.numberOfBedrooms}
+                                                            value={formData.overview?.numberOfBedrooms ?? ""}
 
                                                         />
                                                     </Grid>
                                                 )}
-                                            {type === "can-ho-chung-cu" || type === 'nha-o'
+                                            {(type === "can-ho-chung-cu" || type === 'nha-o')
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -772,12 +772,12 @@ const CreateRSPost = ({ type }) => {
                                                             type={"number"}
                                                             fullWidth
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, numberOfBathrooms: Number(e.target.value) } }))}
-                                                            value={formData.overview.numberOfBathrooms}
+                                                            value={formData.overview?.numberOfBathrooms ?? ""}
                                                         />
                                                     </Grid>
                                                 )
                                             }
-                                            {type === "nha-o" || type === "phong-tro"
+                                            {(type === "nha-o" || type === "phong-tro")
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
@@ -786,7 +786,7 @@ const CreateRSPost = ({ type }) => {
                                                             type={"number"}
                                                             fullWidth
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, numberOfFloors: Number(e.target.value) } }))}
-                                                            value={formData.overview.numberOfFloors}
+                                                            value={formData.overview.numberOfFloors ?? ""}
                                                         />
                                                     </Grid>
                                                 )
@@ -847,8 +847,17 @@ const CreateRSPost = ({ type }) => {
                                         <TextField
                                             fullWidth
                                             label="Link thực tế ảo 3D"
-                                            value={formData.virtualLink}
+                                            value={formData.virtualLink ?? ""}
                                             onChange={e => setFormData(s => ({ ...s, virtualLink: e.target.value }))}
+                                            defaultValue={""}
+                                            margin="normal"
+                                        />
+
+                                        <TextField
+                                            fullWidth
+                                            label="Link Google Maps"
+                                            value={formData.googleMapsLink ?? ""}
+                                            onChange={e => setFormData(s => ({ ...s, googleMapsLink: e.target.value }))}
                                             defaultValue={""}
                                             margin="normal"
                                         />
@@ -870,7 +879,7 @@ const CreateRSPost = ({ type }) => {
                                                     variant="outlined"
                                                     margin="normal"
                                                     onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, user: { ...s.owner.user, name: e.target.value } } }))}
-                                                    value={formData.owner?.user?.name}
+                                                    value={formData.owner?.user?.name ?? ""}
                                                 />
                                             </Grid>
                                             <Grid xl={6} item>
@@ -883,7 +892,7 @@ const CreateRSPost = ({ type }) => {
                                                     variant="outlined"
                                                     margin="normal"
                                                     onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, user: { ...s.owner.user, phone: e.target.value } } }))}
-                                                    value={formData.owner?.user?.phone}
+                                                    value={formData.owner?.user?.phone ?? ""}
                                                 />
                                             </Grid>
                                             <Grid xl={6} item>
@@ -894,7 +903,7 @@ const CreateRSPost = ({ type }) => {
                                                     required
                                                     select
                                                     label="Cá nhân/Môi giới"
-                                                    value={formData.owner.type}
+                                                    value={formData.owner?.type ?? ""}
                                                     onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, type: e.target.value } }))}
                                                     margin="normal"
                                                 >
@@ -909,7 +918,15 @@ const CreateRSPost = ({ type }) => {
                                     </Box>
 
                                     <Grid justifyContent="flex-end" container>
-                                        <Button variant="contained" color="error" disabled={isUploading} sx={{ margin: "0px 20px" }}>Reset nội dung</Button>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            disabled={isUploading}
+                                            sx={{ margin: "0px 20px" }}
+                                            onClick={() => resetForm()}
+                                        >
+                                            Reset nội dung
+                                        </Button>
                                         <Box sx={{ m: "0px 4px", position: 'relative' }}>
                                             <Button variant="contained" type="submit" disabled={isUploading}>Thêm bài đăng mới</Button>
                                             {isUploading && (

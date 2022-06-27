@@ -95,7 +95,7 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                     <div className={styles['header-area']}>
                         <div className={styles["logo"]} onClick={() => router.push("/")}>
                             <Image
-                                src={"/logo/logo.png"}
+                                src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656328913/logo/logo_nfdfc7.png"}
                                 alt="#"
                                 width={275}
                                 height={50}
@@ -233,16 +233,24 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                     </div>
                     <div className={styles['project-list__item']}>
                         <div className={styles['project-item']}>
-                            <Image
-                                width={1200}
-                                height={900}
-                                src={selectedProject?.media.images[0] ?? '/img/327128795_Cen Ocean Park 1-min.jpg'}
-                                alt="#"
-                            />
-                            <div className={styles['project-item__name']}>
-                                <FaChevronRight />
-                                <p>{selectedProject?.projectName}</p>
-                            </div>
+                            {selectedProject?.media.images[0]
+                                && (
+                                    <Image
+                                        width={1200}
+                                        height={900}
+                                        src={selectedProject?.media.images[0]}
+                                        alt="#"
+                                    />
+                                )
+                            }
+                            {selectedProject?.media.images[0]
+                                && (
+                                    <div className={styles['project-item__name']}>
+                                        <FaChevronRight />
+                                        <p>{selectedProject?.projectName}</p>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
 
@@ -250,7 +258,7 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
             </section>
 
             {/* footer */}
-            <footer className={styles['footer']} style={{ backgroundImage: "url('https://www.datxanh.vn/template/tint/images/bgFooter.jpg')" }} id="lien-he">
+            <footer className={styles['footer']} id="lien-he">
                 <div className={styles['footer-bg']}>
                     <SpecialContainer>
                         <div className={styles["footer-list"]}>
@@ -283,16 +291,17 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                             <div className={styles['ftr-list-col']}>
                                 <div className={styles['company-info']}>
                                     <h5>VĂN PHÒNG GIAO DỊCH</h5>
-                                    <p>Văn phòng tại Hà Nội :
-                                        <br />-Tầng 1, Số 137 Nguyễn Ngọc Vũ, Trung Hòa, Cầu Giấy, Hà Nội.
-                                        <br /><br />Văn phòng tại TP. Hồ Chí Minh:
-                                        <br />-Tầng 8-9, Tòa nhà Cen Group, 91A Cao Thắng, phường 3, quận 3, TP.HCM.</p>
+                                    <p>Văn phòng tại Đắk Lắk :
+                                        <br />-89 Lý Thái Tổ, Tân Lợi, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk.
+                                        {/* <br /><br />Văn phòng tại TP. Hồ Chí Minh:
+                                        <br />-Tầng 8-9, Tòa nhà Cen Group, 91A Cao Thắng, phường 3, quận 3, TP.HCM. */}
+                                    </p>
                                 </div>
                             </div>
                             <div className={styles['ftr-list-col']}>
                                 <div className={styles['company-info']}>
-                                    <h5>Công ty Cổ phần Bất động sản Thế Kỷ</h5>
-                                    <p>ĐKKD 0101160306 Do Sở Kế Hoạch Và Đầu Tư Thành Phố Hà Nội cấp ngày 20 tháng 08 năm 2001</p>
+                                    <h5>Công ty Cổ phần Bất động sản Điền khôi</h5>
+                                    <p>ĐKKD 0101160306 Do Sở Kế Hoạch Và Đầu Tư Thành Phố cấp ngày 20 tháng 08 năm 2021</p>
                                 </div>
                             </div>
                         </div>

@@ -273,7 +273,7 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                             onClick={() => findByType(RealEstateType.CanHo)}
                         >
                             <div className={styles['selector-item__image']}>
-                                <div><Image width={36} height={36} alt="" src={'/categories/office-building.png'} /></div>
+                                <div><Image width={36} height={36} alt="" src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656328726/icons/office-building_bo5g9z.png'} /></div>
                             </div>
                             <p>Căn hộ, Chung cư</p>
                         </div>
@@ -282,7 +282,7 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                             onClick={() => findByType(RealEstateType.NhaO)}
                         >
                             <div className={styles['selector-item__image']}>
-                                <div><Image width={36} height={36} alt="" src={'/categories/home.png'} /></div>
+                                <div><Image width={36} height={36} alt="" src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656328726/icons/home_wt8cwv.png'} /></div>
                             </div>
                             <p>Nhà ở</p>
                         </div>
@@ -291,7 +291,7 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                             onClick={() => findByType(RealEstateType.Dat)}
                         >
                             <div className={styles['selector-item__image']}>
-                                <div><Image width={36} height={36} alt="" src={'/categories/area.png'} /></div>
+                                <div><Image width={36} height={36} alt="" src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656328726/icons/area_khe2ww.png'} /></div>
                             </div>
                             <p>Đất đai</p>
                         </div>
@@ -300,7 +300,7 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                             onClick={() => findByType(RealEstateType.VanPhong)}
                         >
                             <div className={styles['selector-item__image']}>
-                                <div> <Image width={36} height={36} alt="" src={'/categories/enterprise.png'} /></div>
+                                <div> <Image width={36} height={36} alt="" src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656328726/icons/enterprise_qfkzhi.png'} /></div>
                             </div>
                             <p>Văn phòng, Mặt bằng</p>
                         </div>
@@ -311,7 +311,7 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                                     onClick={() => findByType(RealEstateType.PhongTro)}
                                 >
                                     <div className={styles['selector-item__image']}>
-                                        <div><Image width={36} height={36} alt="" src={'/categories/house.png'} /></div>
+                                        <div><Image width={36} height={36} alt="" src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656328726/icons/house_tdwfkw.png'} /></div>
                                     </div>
                                     <p>Nhà trọ</p>
                                 </div>
@@ -390,8 +390,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
         return {
             props: {
                 data: [],
-                category: null,
-                pagingData: null
+                category: "MuaBan",
+                pagingData: {
+                    stats: {
+                        apartments: 0,
+                        houses: 0,
+                        lands: 0,
+                        businessPremises: 0,
+                        motals: 0,
+                    }
+                }
             },
             revalidate: 60,
         }

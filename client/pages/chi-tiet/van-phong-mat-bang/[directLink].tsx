@@ -15,7 +15,6 @@ import { GET_BUSINESS_PREMISES_POST_BY_DIRECT_LINK } from "../../../graphql/quer
 import { RealEstateCategory } from "../../../types/enums/realEstate";
 import { directionSpeaker, furnitureSpeaker, legalDocumentsSpeaker, moneyConverter, premisesTypeSpeaker, userTypeSpeaker } from "../../../lib/converter";
 import { useRouter } from "next/router";
-import Maps from "../../../components/maps/maps";
 import { BusinessPremisesInterface } from "../../../types/interfaces/businessPremises";
 import { useQuery } from "@apollo/client";
 import { BusinessPremisesPostResult, BusinessPremisesPostVars, GET_BUSINESS_PREMISES_POSTS } from "../../../graphql/queries/browsingPost";
@@ -28,7 +27,7 @@ interface BusinessPremisesPageProps {
 
 const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ data }) => {
     const [showPhoneNumber, setShowPhoneNumber] = useState<boolean>(false)
-    const [showMaps, setShowMaps] = useState<boolean>(false)
+    // const [showMaps, setShowMaps] = useState<boolean>(false)
 
     const router = useRouter()
 
@@ -92,7 +91,7 @@ const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ da
                             <div className={styles['information__quick-info']}>
                                 <div className={styles['contact']}>
                                     <div className={styles['contact-owner']}>
-                                        <Image src={'/logo/profile.png'} width={50} height={50} />
+                                        <Image src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656326293/icons/profile_om2daw.png'} width={50} height={50} />
                                         <div className={styles['contact-owner__info']}>
                                             <h5>{data.owner.user.name}</h5>
                                             <span>{userTypeSpeaker(data.owner.type)}</span>
@@ -126,7 +125,7 @@ const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ da
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/contract.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/contract_stctxg.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Giấy tờ pháp lý: </span>
                                                         <span>{legalDocumentsSpeaker(data.overview.legalDocuments)}</span>
@@ -137,7 +136,7 @@ const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ da
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/sofa.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/sofa_yfy1ep.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Tình trạng nội thất: </span>
                                                         <span>{furnitureSpeaker(data.overview.furniture)}</span>
@@ -151,7 +150,7 @@ const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ da
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/money.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/money_sbwwui.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Giá/m2: </span>
                                                         <span>{moneyConverter(Math.round(data.detail.pricing.total / data.detail.acreage.totalAcreage))}/m²</span>
@@ -162,7 +161,7 @@ const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ da
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/north.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326104/icons/north_q8ugah.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Hướng cửa chính: </span>
                                                         <span>{directionSpeaker(data.overview.doorDirection)}</span>
@@ -173,7 +172,7 @@ const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ da
                                                 && (
                                                     <div className={styles['overview-item']}>
                                                         <div className={styles['overview-item__image']}>
-                                                            <Image src={"/desc/smart-home.png"} width={25} height={25} alt="dien-tich" />
+                                                            <Image src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656326105/icons/smart-home_vijqkt.png"} width={25} height={25} alt="dien-tich" />
                                                         </div>
                                                         <span>Loại hình mặt bằng: </span>
                                                         <span>{premisesTypeSpeaker(data.overview.type)}</span>
@@ -205,7 +204,7 @@ const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ da
                                     , {data.detail.address.district}
                                     , {data.detail.address.province}
                                 </p>
-                                <span onClick={() => setShowMaps(true)}>Xem bản đồ</span>
+                                <a href={data.googleMapsLink} target="_blank" rel="noreferrer">Xem bản đồ</a>
                             </div>
                             {data.detail.project
                                 &&
@@ -236,7 +235,7 @@ const BusinessPremisesPage: FunctionComponent<BusinessPremisesPageProps> = ({ da
                     </div>
                 </div>
             </main>
-            <Maps show={showMaps} handleShow={setShowMaps} address={data.detail.address} />
+            {/* <Maps show={showMaps} handleShow={setShowMaps} address={data.detail.address} /> */}
             <Footer />
         </>
     );

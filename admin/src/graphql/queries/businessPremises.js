@@ -41,7 +41,7 @@ query BusinessPremises($filter: BusinessPremisesFilter!, $paging: PaginationArgs
                 furniture
             }
             virtual3DLink
-            actived
+            postStatus
             outstanding
     }
 }

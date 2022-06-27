@@ -26,7 +26,7 @@ import { ConfigModule } from '@nestjs/config';
       debug: false,
       autoSchemaFile: true
     }),
-    MongooseModule.forRoot('mongodb://localhost/dreamland', {
+    MongooseModule.forRoot(process.env.MONGO_URL, {
       connectionFactory: (connection) => {
         connection.plugin(require('mongoose-autopopulate'));
         return connection;

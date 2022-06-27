@@ -67,8 +67,8 @@ const UpdateRSPost = ({ type, post }) => {
     }, [projectsData, projectsErr])
 
     useEffect(() => {
-        if(post) {
-            const { _id, actived ,...result } = post
+        if (post) {
+            const { _id, actived, ...result } = post
             setFormData(result)
         }
     }, [post])
@@ -295,7 +295,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     id="pricing.total"
                                                     fullWidth
                                                     label="Giá"
-                                                    
+
                                                     variant="outlined"
                                                     type={"number"}
                                                     margin="normal"
@@ -397,7 +397,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     name='province'
                                                     fullWidth
                                                     label="Tỉnh"
-                                                    
+
                                                     variant="outlined"
                                                     margin="normal"
                                                     value={formData.detail?.address?.province}
@@ -419,7 +419,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     name='district'
                                                     fullWidth
                                                     label="Quận/Huyện"
-                                                    
+
                                                     variant="outlined"
                                                     defaultValue={""}
                                                     select
@@ -440,7 +440,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     name='ward'
                                                     fullWidth
                                                     label="Xã/Phường"
-                                                    
+
                                                     variant="outlined"
                                                     defaultValue={""}
                                                     select
@@ -461,7 +461,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     name='street'
                                                     fullWidth
                                                     label="Tên đường"
-                                                    
+
                                                     variant="outlined"
                                                     margin="normal"
                                                     value={formData.detail?.address?.street}
@@ -489,7 +489,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     fullWidth
                                                     type={"number"}
                                                     label="Tổng diện tích"
-                                                    
+
                                                     variant="outlined"
                                                     value={formData.detail?.acreage?.totalAcreage}
                                                     margin="normal"
@@ -653,7 +653,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                             name='overview.type'
                                                             fullWidth
                                                             select
-                                                            
+
                                                             label="Loại hình"
                                                             value={formData.overview.type}
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, type: e.target.value } }))}
@@ -767,7 +767,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                             label="Số phòng ngủ"
                                                             type={"number"}
                                                             fullWidth
-                                                            
+
                                                             onChange={e => setFormData(s => ({ ...s, overview: { ...s.overview, numberOfBedrooms: Number(e.target.value) } }))}
                                                             value={formData.overview?.numberOfBedrooms}
 
@@ -816,7 +816,7 @@ const UpdateRSPost = ({ type, post }) => {
                                             name='title'
                                             fullWidth
                                             label="Tiêu đề tin đăng"
-                                            
+
                                             variant="outlined"
                                             margin="normal"
                                             value={formData.title}
@@ -828,7 +828,7 @@ const UpdateRSPost = ({ type, post }) => {
                                             multiline
                                             minRows={24}
                                             name="description"
-                                            
+
                                             fullWidth
                                             label="Chi tiết bài đăng"
                                             variant="outlined"
@@ -840,7 +840,7 @@ const UpdateRSPost = ({ type, post }) => {
                                             id="category"
                                             name='category'
                                             select
-                                            
+
                                             label="Danh mục"
                                             value={formData.category}
                                             onChange={e => setFormData(s => ({ ...s, category: e.target.value }))}
@@ -863,6 +863,15 @@ const UpdateRSPost = ({ type, post }) => {
                                             defaultValue={""}
                                             margin="normal"
                                         />
+
+                                        <TextField
+                                            fullWidth
+                                            label="Link Google Maps"
+                                            value={formData.googleMapsLink}
+                                            onChange={e => setFormData(s => ({ ...s, googleMapsLink: e.target.value }))}
+                                            defaultValue={""}
+                                            margin="normal"
+                                        />
                                     </Box>
 
                                     <Box margin={"12px 0"}>
@@ -877,7 +886,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     name='owner.user.name'
                                                     fullWidth
                                                     label="Tên chủ sở hữu"
-                                                    
+
                                                     variant="outlined"
                                                     margin="normal"
                                                     onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, user: { ...s.owner.user, name: e.target.value } } }))}
@@ -890,7 +899,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     name='owner.user.phone'
                                                     fullWidth
                                                     label="Số điện thoại"
-                                                    
+
                                                     variant="outlined"
                                                     margin="normal"
                                                     onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, user: { ...s.owner.user, phone: e.target.value } } }))}
@@ -902,7 +911,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     id="owner.type"
                                                     name='owner.type'
                                                     fullWidth
-                                                    
+
                                                     select
                                                     label="Cá nhân/Môi giới"
                                                     value={formData.owner.type}

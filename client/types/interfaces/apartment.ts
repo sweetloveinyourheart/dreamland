@@ -4,6 +4,7 @@ import {
     Furniture, 
     LegalDocuments, 
     OwnerType, 
+    PostStatus, 
     RealEstateCategory, 
     RealEstateStatus 
 } from "../enums/realEstate"
@@ -69,8 +70,9 @@ export interface ApartmentInterface {
     }
 
     timeStamp: Date
-    actived: boolean
+    postStatus: PostStatus
     directLink: string
+    googleMapsLink: string
     index: number
 }
 

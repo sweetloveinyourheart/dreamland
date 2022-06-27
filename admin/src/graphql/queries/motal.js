@@ -43,7 +43,7 @@ export const GET_MOTAL_POSTS = gql`
             }
             virtual3DLink
             outstanding
-            actived
+            postStatus
         }
     }
 `

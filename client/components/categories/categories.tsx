@@ -46,7 +46,7 @@ const MainCategories: FunctionComponent<MainCategoriesProps> = () => {
                         <div className={styles["category"]} onClick={() => router.push("/mua-ban/bat-dong-san")}>
                             <div className={styles['category__image']}>
                                 <Image
-                                    src={"/categories/buildings.png"}
+                                    src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656328593/icons/buildings_y7bf9u.png"}
                                     width={40}
                                     height={40}
                                     alt=""
@@ -60,7 +60,7 @@ const MainCategories: FunctionComponent<MainCategoriesProps> = () => {
                         <div className={styles["category"]} onClick={() => router.push("/cho-thue/bat-dong-san")}>
                             <div className={styles['category__image']}>
                                 <Image
-                                    src={"/categories/creditor.png"}
+                                    src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656328593/icons/creditor_m4e5oa.png"}
                                     width={40}
                                     height={40}
                                     alt=""
@@ -74,7 +74,7 @@ const MainCategories: FunctionComponent<MainCategoriesProps> = () => {
                         <div className={styles["category"]} onClick={() => router.push("/du-an-bat-dong-san")}>
                             <div className={styles['category__image']}>
                                 <Image
-                                    src={"/categories/construction.png"}
+                                    src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656328593/icons/construction_yb5t5k.png"}
                                     width={40}
                                     height={40}
                                     alt=""

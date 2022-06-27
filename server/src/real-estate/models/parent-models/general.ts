@@ -1,5 +1,5 @@
 import { Field, Float, Int, ObjectType, registerEnumType } from "@nestjs/graphql"
-import { ApartmentType, BusinessPremisesType, Furniture, HouseType, LandType, RealEstateCategory, RealEstateStatus,Direction, LegalDocuments, OwnerType } from "../../enum/real-estate.enum"
+import { ApartmentType, BusinessPremisesType, Furniture, HouseType, LandType, RealEstateCategory, RealEstateStatus,Direction, LegalDocuments, OwnerType, PostStatus } from "../../enum/real-estate.enum"
 
 registerEnumType(ApartmentType, {
     name: "ApartmentType"
@@ -39,6 +39,10 @@ registerEnumType(OwnerType, {
 
 registerEnumType(RealEstateCategory, {
     name: 'RealEstateCategory',
+});
+
+registerEnumType(PostStatus, {
+    name: 'PostStatus',
 });
 
 @ObjectType()
@@ -160,13 +164,16 @@ export class RealEstate {
     directLink: string
 
     @Field(type => String, { nullable: true })
+    googleMapsLink?: string
+
+    @Field(type => String, { nullable: true })
     virtual3DLink?: string 
 
     @Field(type => Boolean)
     outstanding: boolean
 
-    @Field(type => Boolean)
-    actived: boolean
+    @Field(type => PostStatus)
+    postStatus: PostStatus
 
     @Field(type => Int)
     index: number

@@ -55,7 +55,7 @@ query Apartments($filter: ApartmentFilter!, $paging: PaginationArgs, $search: St
         category
     	virtual3DLink
         outstanding
-        actived
+        postStatus
     }
 }
 `

@@ -36,7 +36,7 @@ const Item = ({ data, selectPost, onSetOutStanding, onSetActived }) => {
                     </Button>
                     &nbsp;
                     <Button variant="contained" color="error" onClick={() => onSetActived(data)}>
-                        {data.actived ? "Tạm Ẩn" : "Kích hoạt"}
+                        {data.postStatus === 'Available' ? "Khoá" : "Kích hoạt"}
                     </Button>
                 </CardActions>
             </Card>
@@ -120,7 +120,7 @@ const RSList = ({ type, data, selectPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        actived: !post.actived
+                        postStatus: post.postStatus === 'Available' ? 'Lock': 'Available'
                     }
                 }
             })
@@ -131,7 +131,7 @@ const RSList = ({ type, data, selectPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        actived: !post.actived
+                        postStatus: post.postStatus === 'Available' ? 'Lock': 'Available'
                     }
                 }
             })
@@ -142,7 +142,7 @@ const RSList = ({ type, data, selectPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        actived: !post.actived
+                        postStatus: post.postStatus === 'Available' ? 'Lock': 'Available'
                     }
                 }
             })
@@ -153,7 +153,7 @@ const RSList = ({ type, data, selectPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        actived: !post.actived
+                        postStatus: post.postStatus === 'Available' ? 'Lock': 'Available'
                     }
                 }
             })
@@ -164,7 +164,7 @@ const RSList = ({ type, data, selectPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        actived: !post.actived
+                        postStatus: post.postStatus === 'Available' ? 'Lock': 'Available'
                     }
                 }
             })

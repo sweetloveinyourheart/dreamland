@@ -74,3 +74,10 @@ export enum BusinessPremisesType {
     ShopHouse = 'shop-house',
     Officetel = 'Officetel'
 }
+
+export enum PostStatus {
+    Available = 'available',
+    Lock = 'lock',
+    DatCoc = 'dat-coc',
+    BanGiao = 'ban-giao'
+}

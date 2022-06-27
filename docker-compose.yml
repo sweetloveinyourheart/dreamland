@@ -29,6 +29,7 @@ services:
       - JWT_SECRET=dienkhoilandserct
       - REFRESH_TOKEN_SECRET=dienkhoirfsecrt
       - ROLES_KEY=dienkhoiapproles
+      - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
 
     ports:
       - 9000:9000

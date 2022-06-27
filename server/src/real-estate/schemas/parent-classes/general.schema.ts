@@ -1,4 +1,4 @@
-import { Direction, LegalDocuments, OwnerType } from "../../enum/real-estate.enum"
+import { Direction, LegalDocuments, OwnerType, PostStatus } from "../../enum/real-estate.enum"
 import { Prop, Schema } from '@nestjs/mongoose';
 
 @Schema({ _id: false, id: false })
@@ -118,7 +118,13 @@ export class RealEstate {
     directLink: string
 
     @Prop()
+    googleMapsLink?: string
+
+    @Prop()
     virtual3DLink?: string
+
+    @Prop({ enum: PostStatus, default: PostStatus.Available })
+    postStatus: PostStatus
 
     @Prop({ default: false })
     outstanding: boolean

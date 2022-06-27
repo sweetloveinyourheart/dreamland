@@ -18,12 +18,12 @@ import { BusinessPremisesFilter, CreateBusinessPremisesInput } from './dto/input
 import { CreateMotalInput, MotalFilter } from './dto/inputs/motal.input';
 import { Motal } from './models/motal.model';
 import { BusinessPremises } from './models/business-premises.model';
-import { RealEstateCategory } from './enum/real-estate.enum';
+import { PostStatus, RealEstateCategory } from './enum/real-estate.enum';
 import { RealEstateStats } from 'src/stats/models/stats.model';
 import { Cache } from 'cache-manager';
-import { UpdateStatusInput } from 'src/project/dto/edit.input';
 import { RealEstatePosts } from './models/parent-models/top';
 import { RealEstateFilter } from './dto/inputs/general/filter.input';
+import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
 
 @Injectable()
 export class RealEstateService {
@@ -143,7 +143,7 @@ export class RealEstateService {
         }
     }
 
-    async updateApartmentPost(postId: string, data: CreateApartmentInput, updateStatus: UpdateStatusInput): Promise<Apartment> {
+    async updateApartmentPost(postId: string, data: CreateApartmentInput, updateStatus: UpdatePostStatusInput): Promise<Apartment> {
         try {
             return await this.apartmentModel.findByIdAndUpdate(postId, {
                 ...data,
@@ -154,7 +154,7 @@ export class RealEstateService {
         }
     }
 
-    async updateHousePost(postId: string, data: CreateHouseInput, updateStatus: UpdateStatusInput): Promise<House> {
+    async updateHousePost(postId: string, data: CreateHouseInput, updateStatus: UpdatePostStatusInput): Promise<House> {
         try {
             return await this.houseModel.findByIdAndUpdate(postId, {
                 ...data,
@@ -165,7 +165,7 @@ export class RealEstateService {
         }
     }
 
-    async updateLandPost(postId: string, data: CreateLandInput, updateStatus: UpdateStatusInput): Promise<Land> {
+    async updateLandPost(postId: string, data: CreateLandInput, updateStatus: UpdatePostStatusInput): Promise<Land> {
         try {
             return await this.landModel.findByIdAndUpdate(postId, {
                 ...data,
@@ -176,7 +176,7 @@ export class RealEstateService {
         }
     }
 
-    async updateBusinessPremisesPost(postId: string, data: CreateBusinessPremisesInput, updateStatus: UpdateStatusInput): Promise<BusinessPremises> {
+    async updateBusinessPremisesPost(postId: string, data: CreateBusinessPremisesInput, updateStatus: UpdatePostStatusInput): Promise<BusinessPremises> {
         try {
             return await this.businessPremisesModel.findByIdAndUpdate(postId, {
                 ...data,
@@ -187,7 +187,7 @@ export class RealEstateService {
         }
     }
 
-    async updateMotalPost(postId: string, data: CreateMotalInput, updateStatus: UpdateStatusInput): Promise<Motal> {
+    async updateMotalPost(postId: string, data: CreateMotalInput, updateStatus: UpdatePostStatusInput): Promise<Motal> {
         try {
             return await this.motalModel.findByIdAndUpdate(postId, {
                 ...data,
@@ -202,7 +202,7 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                actived: true,
+                postStatus: PostStatus.Available,
                 // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
                 ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
@@ -249,7 +249,7 @@ export class RealEstateService {
             let query = {
                 category: filter.category,
                 // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
-                actived: true,
+                postStatus: PostStatus.Available,
                 ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
                 ...(filter?.acreage?.max && { "detail.acreage.totalAcreage": { $gte: filter.acreage.min, $lte: filter.acreage.max } }),
@@ -296,7 +296,7 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                actived: true,
+                postStatus: PostStatus.Available,
                 // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
                 ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
@@ -342,7 +342,7 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                actived: true,
+                postStatus: PostStatus.Available,
                 ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
@@ -385,7 +385,7 @@ export class RealEstateService {
         try {
             let query = {
                 category: filter.category,
-                actived: true,
+                postStatus: PostStatus.Available,
                 // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
                 ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),
@@ -479,11 +479,11 @@ export class RealEstateService {
 
     async getOutstandingPosts(): Promise<RealEstatePosts> {
         return {
-            apartments: await this.apartmentModel.find({ actived: true, outstanding: true }),
-            houses: await this.houseModel.find({ actived: true, outstanding: true }),
-            lands: await this.landModel.find({ actived: true, outstanding: true }),
-            businessPremises: await this.businessPremisesModel.find({ actived: true, outstanding: true }),
-            motals: await this.motalModel.find({ actived: true, outstanding: true })
+            apartments: await this.apartmentModel.find({ postStatus: PostStatus.Available, outstanding: true }),
+            houses: await this.houseModel.find({ postStatus: PostStatus.Available, outstanding: true }),
+            lands: await this.landModel.find({ postStatus: PostStatus.Available, outstanding: true }),
+            businessPremises: await this.businessPremisesModel.find({ postStatus: PostStatus.Available, outstanding: true }),
+            motals: await this.motalModel.find({ postStatus: PostStatus.Available, outstanding: true })
         }
     }
 
@@ -496,7 +496,7 @@ export class RealEstateService {
 
             let query = {
                 category: filter.category,
-                actived: true,
+                postStatus: PostStatus.Available,
                 // ...(paging?.cursor && { index: { $lte: paging.cursor } }),
                 ...(filter?.outstanding && { outstanding: filter.outstanding }),
                 ...(filter?.price?.max && { "detail.pricing.total": { $gte: filter.price.min, $lte: filter.price.max } }),

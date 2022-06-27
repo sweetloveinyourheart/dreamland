@@ -1,4 +1,4 @@
-import { BusinessPremisesType, Direction, Furniture, LegalDocuments, OwnerType, RealEstateCategory, RealEstateStatus } from "../enums/realEstate"
+import { BusinessPremisesType, Direction, Furniture, LegalDocuments, OwnerType, PostStatus, RealEstateCategory } from "../enums/realEstate"
 import { ProjectInterface } from "./project"
 import { RealEstateFilter } from "./realEstate"
 
@@ -59,8 +59,9 @@ export interface BusinessPremisesInterface {
     }
 
     timeStamp: Date
-    actived: boolean
+    postStatus: PostStatus
     directLink: string
+    googleMapsLink: string
     index: number
 }
 

@@ -1,4 +1,4 @@
-import {  Direction, Furniture, LegalDocuments, OwnerType, RealEstateCategory, RealEstateStatus } from "../enums/realEstate"
+import {  Direction, Furniture, LegalDocuments, OwnerType, PostStatus, RealEstateCategory, RealEstateStatus } from "../enums/realEstate"
 import { ProjectInterface } from "./project"
 import { RealEstateFilter } from "./realEstate"
 
@@ -59,7 +59,8 @@ export interface MotalInterface {
     }
 
     timeStamp: Date
-    actived: boolean
+    postStatus: PostStatus
+    googleMapsLink: string
     directLink: string
     index: number
 
