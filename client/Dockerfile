@@ -53,5 +53,7 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT 3000
+ENV SERVER_SIDE_API=http://api_01:9000/graphql
+ENV CLIENT_SIDE_API=https://dienkhoiland.vn/graphql
 
 CMD ["node", "server.js"]
