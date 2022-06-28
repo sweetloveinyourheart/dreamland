@@ -33,7 +33,5 @@ WORKDIR /api
 # Copy all from development stage
 COPY --from=development /api ./
 
-EXPOSE 9000
-
 # Run app
 CMD [ "node", "dist/main" ]
