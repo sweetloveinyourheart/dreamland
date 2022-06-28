@@ -55,14 +55,14 @@ const UpdateProject = ({ project }) => {
 
             const mediaImagePresets = await Promise.all(images.map(async image => {
                 formData.append("file", image.file)
-                formData.append("upload_preset", "main-uploader")
+                formData.append("upload_preset", "projects")
                 const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${CloudName}/image/upload`, formData)
                 return data?.secure_url
             }))
 
             const utilitiesPresets = await Promise.all(utilities.map(async (elm) => {
                 formData.append("file", elm.image.file)
-                formData.append("upload_preset", "main-uploader")
+                formData.append("upload_preset", "projects")
                 const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${CloudName}/image/upload`, formData)
                 return {
                     image: data?.secure_url,
@@ -72,7 +72,7 @@ const UpdateProject = ({ project }) => {
 
             const masterPlanPresets = await Promise.all(masterPlan.map(async (elm) => {
                 formData.append("file", elm.image.file)
-                formData.append("upload_preset", "main-uploader")
+                formData.append("upload_preset", "projects")
                 const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${CloudName}/image/upload`, formData)
                 return {
                     image: data?.secure_url,

@@ -1,1 +1,1 @@
-export const CloudName = "dien-khoi"
+export const CloudName = "dienkhoiland"

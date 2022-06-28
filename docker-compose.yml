@@ -8,9 +8,8 @@ services:
       dockerfile: Dockerfile
       target: runner
     environment:
-      - SERVER_SIDE_API=http://localhost:9000/graphql
-      - CLIENT_SIDE_API=http://localhost:9000/graphql
-      - MAPS_API_KEY=AIzaSyDgRxBunKDKbtQaZvzaTEoaFY558i-8WJE
+      - SERVER_SIDE_API=http://api_01:9000/graphql
+      - CLIENT_SIDE_API=https://dienkhoiland.vn/graphql
 
     ports:
       - 3000:3000
