@@ -15,6 +15,8 @@ FROM node:16-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+ENV SERVER_SIDE_API=http://api_01:9000/graphql
+ENV CLIENT_SIDE_API=https://dienkhoiland.vn/graphql
 
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
