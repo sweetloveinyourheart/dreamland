@@ -1,6 +1,5 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
-import { Project } from 'src/project/models/project.model';
 import { ProjectService } from 'src/project/project.service';
 import { RealEstateCategory } from 'src/real-estate/enum/real-estate.enum';
 import { RealEstateService } from 'src/real-estate/real-estate.service';
