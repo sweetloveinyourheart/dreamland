@@ -146,8 +146,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       revalidate: 60
     }
   } catch (error) {
-    console.log(error);
-    
     return {
       props: {
         template: {

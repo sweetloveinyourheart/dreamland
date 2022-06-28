@@ -68,7 +68,7 @@ const UpdateRSPost = ({ type, post }) => {
 
     useEffect(() => {
         if (post) {
-            const { _id, actived, ...result } = post
+            const { _id, outstanding, postStatus, ...result } = post
             setFormData(result)
         }
     }, [post])
