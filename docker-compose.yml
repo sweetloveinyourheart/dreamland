@@ -107,3 +107,8 @@ services:
 
 networks:
   shared-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
