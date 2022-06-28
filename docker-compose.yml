@@ -30,6 +30,7 @@ services:
       - ROLES_KEY=dienkhoiapproles
       - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
       - REDIS_HOST=redis
+      - PORT=9000
 
     ports:
       - 9000:9000
@@ -50,9 +51,10 @@ services:
       - ROLES_KEY=dienkhoiapproles
       - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
       - REDIS_HOST=redis
+      - PORT=9001
 
     ports:
-      - 9000:9001
+      - 9001:9001
 
     networks:
       - shared-network
