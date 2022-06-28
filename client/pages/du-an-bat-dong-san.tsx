@@ -98,6 +98,7 @@ const RealEstateProjectPage: NextPage<ProjectPage> = ({ data, pagingData }) => {
         <>
             <Head>
                 <title>Dự án bất động sản</title>
+                <link rel="icon" href="https://res.cloudinary.com/dienkhoiland/image/upload/v1656394563/logo/LOGO-DIEN-KHOI_amhn6i.ico" />
             </Head>
             <Header />
             <main style={{ backgroundColor: "#f4f4f4", padding: '64px 0' }}>

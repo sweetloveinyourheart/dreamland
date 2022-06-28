@@ -23,6 +23,7 @@ function BlogPage({ blog }: BlogPageProps) {
         <>
             <Head>
                 <title> {blog.title} </title>
+                <link rel="icon" href="https://res.cloudinary.com/dienkhoiland/image/upload/v1656394563/logo/LOGO-DIEN-KHOI_amhn6i.ico" />
             </Head>
             <header className={styles["header"]}>
                 <SpecialContainer>

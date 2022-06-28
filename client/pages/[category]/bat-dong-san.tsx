@@ -260,8 +260,9 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
         <>
             <Head>
                 <title>{categorySpeaker(category)} bất động sản</title>
-                <meta name="name" content="Chợ Tốt - Website Mua Bán, Rao Vặt Trực Tuyến Hàng Đầu Của Người Việt" />
-                <meta name="description" content="Cập nhật giá cả mua bán bất động sản Toàn quốc mới nhất tháng 04/2022. Thông tin bất động sản rõ ràng. Sắp xếp theo nhu cầu dễ chọn lựa" />
+                <meta name="name" content="Điền Khôi Land - Website Bất động sản Trực Tuyến Hàng Đầu Tây Nguyên Của Người Việt" />
+                <link rel="icon" href="https://res.cloudinary.com/dienkhoiland/image/upload/v1656394563/logo/LOGO-DIEN-KHOI_amhn6i.ico" />
+                <meta name="description" content="Cập nhật giá cả mua bán bất động sản Toàn quốc mới nhất. Thông tin bất động sản rõ ràng. Sắp xếp theo nhu cầu dễ chọn lựa" />
             </Head>
             <Header />
             <main style={{ backgroundColor: 'rgba(244,244,244, 0.8)', padding: '64px 0' }}>
