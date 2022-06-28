@@ -9,7 +9,6 @@ import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
-import AuthFooter from 'ui-component/cards/AuthFooter';
 
 // assets
 
@@ -46,14 +45,14 @@ const Login = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Hi, Welcome Back
+                                                        Trang quản trị
                                                     </Typography>
                                                     <Typography
                                                         variant="caption"
                                                         fontSize="16px"
                                                         textAlign={matchDownSM ? 'center' : 'inherit'}
                                                     >
-                                                        Enter your credentials to continue
+                                                        Hãy đăng nhập để tiếp tục
                                                     </Typography>
                                                 </Stack>
                                             </Grid>

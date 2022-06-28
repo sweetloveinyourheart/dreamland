@@ -156,7 +156,7 @@ const FirebaseLogin = ({ ...others }) => {
                                     variant="contained"
                                     color="secondary"
                                 >
-                                    Sign in
+                                    Đăng nhập
                                 </Button>
                             </AnimateButton>
                         </Box>

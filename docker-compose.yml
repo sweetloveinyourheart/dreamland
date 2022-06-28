@@ -52,7 +52,7 @@ services:
       - REDIS_HOST=redis
 
     ports:
-      - 9001:9001
+      - 9000:9001
 
     networks:
       - shared-network
