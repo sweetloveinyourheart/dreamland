@@ -4,9 +4,6 @@ const nextConfig = {
   experimental: {
     outputStandalone: true,
   },
-  env: {
-    MAPS_API_KEY: process.env.MAPS_API_KEY,
-  },
   serverRuntimeConfig: {
     // Will only be available on the server side
     api: process.env.SERVER_SIDE_API
