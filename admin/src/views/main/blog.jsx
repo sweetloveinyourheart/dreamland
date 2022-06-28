@@ -75,7 +75,7 @@ function BlogManagement() {
 
             const presets = Promise.all(images.map(async image => {
                 formData.append("file", image.file)
-                formData.append("upload_preset", "main-uploader")
+                formData.append("upload_preset", "blog_posts")
                 const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${CloudName}/image/upload`, formData)
                 return data?.secure_url
             }))
