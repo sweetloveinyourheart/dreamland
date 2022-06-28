@@ -18,9 +18,9 @@ services:
     networks:
       - shared-network
 
-  api:
-    image: api
-    container_name: api
+  api_01:
+    image: api_01
+    container_name: api_01
     build: 
       context: server
       dockerfile: Dockerfile
@@ -30,9 +30,30 @@ services:
       - REFRESH_TOKEN_SECRET=dienkhoirfsecrt
       - ROLES_KEY=dienkhoiapproles
       - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
+      - REDIS_HOST=redis
 
     ports:
       - 9000:9000
+
+    networks:
+      - shared-network
+
+  api_02:
+    image: api_02
+    container_name: api_02
+    build: 
+      context: server
+      dockerfile: Dockerfile
+      target: production
+    environment:
+      - JWT_SECRET=dienkhoilandserct
+      - REFRESH_TOKEN_SECRET=dienkhoirfsecrt
+      - ROLES_KEY=dienkhoiapproles
+      - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
+      - REDIS_HOST=redis
+
+    ports:
+      - 9001:9001
 
     networks:
       - shared-network
@@ -49,6 +70,37 @@ services:
 
     networks:
       - shared-network
+  
+  nginx: 
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - 80:80
+    
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    
+    command: /bin/sh -c "nginx -g 'daemon off;'"
+
+    depends_on:
+      app:
+        condition: service_started
+      api:
+        condition: service_started
+
+    networks:
+      - shared-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - shared-network
+    ports:
+      - 6379:6379
 
 networks:
   shared-network:

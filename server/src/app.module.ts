@@ -12,14 +12,21 @@ import { BlogModule } from './blog/blog.module';
 import { PageTemplateModule } from './page-template/page-template.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import type { ClientOpts } from 'redis';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CacheModule.register({
-      isGlobal: true
+    CacheModule.register<ClientOpts>({
+      isGlobal: true,
+      store: redisStore,
+
+      // Store-specific configuration:
+      host: process.env.REDIS_HOST,
+      port: 6379,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
