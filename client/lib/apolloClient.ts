@@ -12,6 +12,8 @@ export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__'
 let apolloClient: ApolloClient<any>
 
 function createApolloClient() {
+  console.log("server:", serverRuntimeConfig.api);
+  console.log("client:", publicRuntimeConfig.api);
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: new HttpLink({
