@@ -85,7 +85,10 @@ services:
     depends_on:
       app:
         condition: service_started
-      api:
+      api_01:
+        condition: service_started
+
+      api_02:
         condition: service_started
 
     networks:
