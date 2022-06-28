@@ -26,6 +26,7 @@
     "react-responsive-carousel": "^3.2.23",
     "react-reveal": "^1.2.2",
     "sass": "^1.50.1",
+    "sharp": "^0.30.7",
     "use-places-autocomplete": "^3.0.0"
   },
   "devDependencies": {

@@ -22,11 +22,11 @@ import * as redisStore from 'cache-manager-redis-store';
     }),
     CacheModule.register<ClientOpts>({
       isGlobal: true,
-      store: redisStore,
+      // store: redisStore,
 
-      // Store-specific configuration:
-      host: process.env.REDIS_HOST,
-      port: 6379,
+      // // Store-specific configuration:
+      // host: process.env.REDIS_HOST,
+      // port: 6379,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
