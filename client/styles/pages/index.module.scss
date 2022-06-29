@@ -96,6 +96,10 @@
     background-size: cover;
     position: relative;
     user-select: none;
+
+    @include Responsive(xs sm) {
+        height: 225px;
+    }
 }
 
 .scroll-down {
@@ -106,6 +110,10 @@
     justify-content: center;
     cursor: pointer;
     user-select: none;
+
+    @include Responsive(xs sm) {
+       display: none;
+    }
 
     &__item {
         height: 100px;

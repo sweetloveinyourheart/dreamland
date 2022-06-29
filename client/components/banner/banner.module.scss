@@ -1,7 +1,12 @@
+@import '../../styles/responsive';
 //banner
 .banner {
     padding: 76px 0 12px 0;
     background-color: #fff;
+
+    @include Responsive(xs sm) {
+        padding-top: 120px;
+     }
 }
 
 .banner-bg {
@@ -9,4 +14,8 @@
     height: 450px;
     background-position: center;
     background-size: cover;
+
+    @include Responsive(xs sm) {
+        height: 225px;
+     }
 }
