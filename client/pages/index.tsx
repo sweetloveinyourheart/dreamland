@@ -86,7 +86,7 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
     return (
         <>
             <Head>
-                <title> DreamLand Group </title>
+                <title> ĐIỀN KHÔI LAND </title>
                 <link rel="icon" href="https://res.cloudinary.com/dienkhoiland/image/upload/v1656394563/logo/LOGO-DIEN-KHOI_amhn6i.ico" />
                 <meta name="description" content="Hệ sinh thái dịch vụ bất động sản số 1 - Điền Khôi Land đang ngày càng hoàn thiện dịch vụ môi giới, truyền thông, đầu tư và quản lý bất động sản" />
             </Head>
@@ -167,7 +167,7 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                                 />
                                 <div className={styles["category-desc"]}>
                                     <div className={styles["category-desc__title"]}>Phát triển<br />bất động sản</div>
-                                    <div className={styles["category-desc__content"]}>Là một trong những nhà phát triển dự án hàng đầu Việt Nam, Tập đoàn Đất Xanh tự hào mang đến những dự án chất lượng cao, mang đến những trải nghiệm hoàn hảo cho khách hàng</div>
+                                    <div className={styles["category-desc__content"]}>ĐIỀN KHÔI LAND cung cấp những dự án chất lượng cao và giàu tiềm năng. Trải nghiệm của khách hàng luôn là ưu tiên hàng đầu của chúng tôi.</div>
                                 </div>
                             </div>
                         </div>
@@ -180,8 +180,8 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                                     alt="#"
                                 />
                                 <div className={styles["category-desc"]}>
-                                    <div className={styles["category-desc__title"]}>Phát triển<br />bất động sản</div>
-                                    <div className={styles["category-desc__content"]}>Là một trong những nhà phát triển dự án hàng đầu Việt Nam, Tập đoàn Đất Xanh tự hào mang đến những dự án chất lượng cao, mang đến những trải nghiệm hoàn hảo cho khách hàng</div>
+                                    <div className={styles["category-desc__title"]}>DỊCH VỤ</div>
+                                    <div className={styles["category-desc__content"]}>Trải nghiệm của khách hàng luôn được chú trọng, chúng tôi luôn ưu tiên sự nhanh chóng và đáp ứng được tối đa nhu cầu của khách hàng. ĐIỀN KHÔI LAND - không chỉ cung cấp sản phẩm bất động sản.</div>
                                 </div>
                             </div>
                         </div>
@@ -194,8 +194,8 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                                     alt="#"
                                 />
                                 <div className={styles["category-desc"]}>
-                                    <div className={styles["category-desc__title"]}>Phát triển<br />bất động sản</div>
-                                    <div className={styles["category-desc__content"]}>Là một trong những nhà phát triển dự án hàng đầu Việt Nam, Tập đoàn Đất Xanh tự hào mang đến những dự án chất lượng cao, mang đến những trải nghiệm hoàn hảo cho khách hàng</div>
+                                    <div className={styles["category-desc__title"]}>ĐẦU TƯ VÀ PHÁT TRIỂN</div>
+                                    <div className={styles["category-desc__content"]}>Đáp ứng nhu cầu về các loại hình bất động sản, cũng như tiềm năng về thị trường tại Tỉnh Đắk Lắk, ĐIỀN KHÔI LAND - tiên phong kết nối, dẫn lối thành công. </div>
                                 </div>
                             </div>
                         </div>
@@ -208,8 +208,8 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                                     alt="#"
                                 />
                                 <div className={styles["category-desc"]}>
-                                    <div className={styles["category-desc__title"]}>Phát triển<br />bất động sản</div>
-                                    <div className={styles["category-desc__content"]}>Là một trong những nhà phát triển dự án hàng đầu Việt Nam, Tập đoàn Đất Xanh tự hào mang đến những dự án chất lượng cao, mang đến những trải nghiệm hoàn hảo cho khách hàng</div>
+                                    <div className={styles["category-desc__title"]}>NHÂN LỰC</div>
+                                    <div className={styles["category-desc__content"]}>Với nhân sự phổ rộng ở nhiều độ tuổi, ĐIỀN KHÔI LAND sỡ hữu nguồn tài nguyên về con người đang dạng và hài hòa từ kinh nghiệm đến sức trẻ. ĐIỀN KHÔI LAND - không gì là không thể.</div>
                                 </div>
                             </div>
                         </div>
@@ -273,7 +273,7 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                                 <div className={styles['company-info']}>
                                     <p>
                                         <FaLocationArrow />
-                                        Trụ sở chính: 89 Lý Thái Tổ, Tân Lợi, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk
+                                        Trụ sở chính: 89G Lý Thái Tổ, P. Tân Lợi, Tp. Buôn Ma Thuột, Tỉnh Đắk Lắk
                                     </p>
                                     <p>
                                         <FaPhoneAlt />
@@ -283,17 +283,20 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                                         <FaEnvelope />
                                         Email: info@dienkhoigroup.vn
                                     </p>
-                                    <p>
+                                    <div className={styles['company-info__item']}>
                                         <FaGlobe />
-                                        Website: www.dienkhoigroup.vn
-                                    </p>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                            <div style={{ marginRight: 12 }}>Website:</div>
+                                            <div><div>dienkhoiland.vn</div><div>dienkhoigroup.vn</div></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div className={styles['ftr-list-col']}>
                                 <div className={styles['company-info']}>
                                     <h5>VĂN PHÒNG GIAO DỊCH</h5>
                                     <p>Văn phòng tại Đắk Lắk :
-                                        <br />-89 Lý Thái Tổ, Tân Lợi, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk.
+                                        <br />-89G Lý Thái Tổ, P. Tân Lợi, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk.
                                         {/* <br /><br />Văn phòng tại TP. Hồ Chí Minh:
                                         <br />-Tầng 8-9, Tòa nhà Cen Group, 91A Cao Thắng, phường 3, quận 3, TP.HCM. */}
                                     </p>
@@ -301,8 +304,8 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                             </div>
                             <div className={styles['ftr-list-col']}>
                                 <div className={styles['company-info']}>
-                                    <h5>Công ty Cổ phần Bất động sản Điền khôi</h5>
-                                    <p>ĐKKD 0101160306 Do Sở Kế Hoạch Và Đầu Tư Thành Phố cấp ngày 20 tháng 08 năm 2021</p>
+                                    <h5>CÔNG TY CỔ PHẦN TẬP ĐOÀN ĐIỀN KHÔI </h5>
+                                    <p>ĐKKD 6001713501 Do sở Kế Hoạch và Đầu Tư Tỉnh Đắk Lắk cấp ngày 18 tháng 4 năm 2022</p>
                                 </div>
                             </div>
                         </div>

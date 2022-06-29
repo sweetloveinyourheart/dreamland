@@ -29,7 +29,7 @@ const Home: NextPage<HomePageProps> = ({ projects, posts, outstandingPosts, temp
   return (
     <>
       <Head>
-        <title> DreamLand Group </title>
+        <title> ĐIỀN KHÔI LAND </title>
         <link rel="icon" href="https://res.cloudinary.com/dienkhoiland/image/upload/v1656394563/logo/LOGO-DIEN-KHOI_amhn6i.ico" />
         <meta name="description" content="Hệ sinh thái dịch vụ bất động sản số 1 - Điền Khôi Land đang ngày càng hoàn thiện dịch vụ môi giới, truyền thông, đầu tư và quản lý bất động sản" />
       </Head>
