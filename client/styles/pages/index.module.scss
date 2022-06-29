@@ -4,6 +4,7 @@
 .header {
     padding: 8px 0;
     position: relative;
+    user-select: none;
 }
 
 .header-area {
@@ -14,6 +15,7 @@
 .menu {
     display: flex;
     align-items: center;
+    user-select: none;
 
     ul {
         display: flex;
@@ -93,6 +95,7 @@
     background-position: center;
     background-size: cover;
     position: relative;
+    user-select: none;
 }
 
 .scroll-down {
@@ -102,6 +105,7 @@
     display: flex;
     justify-content: center;
     cursor: pointer;
+    user-select: none;
 
     &__item {
         height: 100px;
@@ -124,6 +128,7 @@
 //news
 .news {
     padding: 70px 0;
+    user-select: none;
 }
 
 .news-title {
@@ -230,6 +235,7 @@
 .categories {
     padding: 70px 0 0 0;
     background: url(https://www.datxanh.vn/template/tint/modules/main/images/bgactivity.jpg);
+    user-select: none;
 }
 
 .categories-title {
@@ -257,6 +263,7 @@
 .category {
     position: relative;
     overflow: hidden;
+    user-select: none;
 
     &:hover .category-desc__content {
         height: 150px;
@@ -295,6 +302,7 @@
     height: 1px;
     position: relative;
     margin-bottom: 28px;
+    user-select: none;
 
     &::before {
         position: absolute;
@@ -315,6 +323,7 @@
 
 .project {
     background-color: #02213a;
+    user-select: none;
 }
 
 .project-title {
@@ -428,6 +437,7 @@
 // footer
 .footer {
     background-position: bottom;
+    user-select: none;
 }
 
 .footer-bg {

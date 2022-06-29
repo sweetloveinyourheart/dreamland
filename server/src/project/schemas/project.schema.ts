@@ -100,6 +100,9 @@ export class Project {
     @Prop()
     virtual3DLink?: string
 
+    @Prop()
+    googleMapsLink?: string
+
     @Prop({ default: true })
     actived: boolean
 

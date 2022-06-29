@@ -10,7 +10,6 @@ import { CREATE_APARTMENT_POST, CREATE_BUSINESS_PREMISES_POST, CREATE_HOUSE_POST
 import axios from 'axios'
 import { CloudName } from 'constants/cloudinary';
 import { GET_ALL_PROJECT_POSTS } from 'graphql/queries/project';
-import { useNavigate } from 'react-router';
 
 const CreateRSPost = ({ type }) => {
     const [projects, setProjects] = useState([])
@@ -30,7 +29,9 @@ const CreateRSPost = ({ type }) => {
         media: {
             images: [],
             videos: []
-        }
+        },
+        virtual3DLink: "",
+        googleMapsLink: ""
     })
 
     const [selectedAddress, setSelectedAdress] = useState({
@@ -95,7 +96,14 @@ const CreateRSPost = ({ type }) => {
 
     const onUploadImage = async () => {
         try {
-            if (images.length === 0) return null
+            if (images.length === 0) {
+                setIsUploading(false)
+                setModal({
+                    message: 'Chưa có hình ảnh !',
+                    active: false
+                })
+                return null
+            }
 
             let formData = new FormData()
 
@@ -847,8 +855,8 @@ const CreateRSPost = ({ type }) => {
                                         <TextField
                                             fullWidth
                                             label="Link thực tế ảo 3D"
-                                            value={formData.virtualLink ?? ""}
-                                            onChange={e => setFormData(s => ({ ...s, virtualLink: e.target.value }))}
+                                            value={formData.virtual3DLink ?? ""}
+                                            onChange={e => setFormData(s => ({ ...s, virtual3DLink: e.target.value }))}
                                             defaultValue={""}
                                             margin="normal"
                                         />

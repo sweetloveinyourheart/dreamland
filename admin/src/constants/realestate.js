@@ -166,7 +166,7 @@ export const houseType = [
         label: ""
     },
     {
-        value: " NhaMatTien",
+        value: "NhaMatTien",
         label: "Nhà mặt tiền"
     },
     {

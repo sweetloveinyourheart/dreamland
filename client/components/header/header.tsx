@@ -64,7 +64,7 @@ const Header: FunctionComponent<HeaderProps> = () => {
                     <Col xl={5}>
                         <nav className={`${styles['nav-menu']} ${isMobileNavActive ? styles['nav-menu--active'] : ''}`}>
                             <ul>
-                                <li onClick={() => router.push("/home")}>
+                                <li onClick={() => router.push("/")}>
                                     <FaHome />
                                     <span> Trang chủ </span>
                                 </li>

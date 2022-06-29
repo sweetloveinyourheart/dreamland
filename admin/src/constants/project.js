@@ -6,5 +6,9 @@ export const projectType = [
     {
         value: "KhuDoThiMoi",
         label: "Khu đô thị mới"
+    },
+    {
+        value: "DatNen",
+        label: "Đất nền"
     }
 ]

@@ -340,7 +340,8 @@ export const getStaticProps: GetStaticProps = async () => {
                 template: templateResult?.data.template || { banner: null },
                 blogs: blogResult?.data.blogs || [],
                 projects: projectsResult?.data.projects || []
-            }
+            },
+            revalidate: 60
         }
 
     } catch (error) {
@@ -349,7 +350,8 @@ export const getStaticProps: GetStaticProps = async () => {
                 template: { banner: null },
                 blogs: [],
                 projects: []
-            }
+            },
+            revalidate: 60
         }
     }
 }

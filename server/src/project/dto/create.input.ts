@@ -96,4 +96,7 @@ export class CreateProjectInput {
 
     @Field(type => String, { nullable: true })
     virtual3DLink?: string
+
+    @Field(type => String, { nullable: true })
+    googleMapsLink?: string
 }

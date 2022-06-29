@@ -20,7 +20,8 @@ const CreateProject = () => {
             about: ""
         },
         information: {},
-        virtualLink: null
+        virtual3DLink: null,
+        googleMapsLink: null,
     })
     const [isUploading, setIsUploading] = useState(false)
 
@@ -46,7 +47,14 @@ const CreateProject = () => {
 
     const onUploadImage = async () => {
         try {
-            if (images.length === 0) return null
+            if (images.length === 0) {
+                setIsUploading(false)
+                setModal({
+                    message: 'Chưa có hình ảnh !',
+                    active: false
+                })
+                return null
+            }
 
             let formData = new FormData()
 
@@ -291,6 +299,16 @@ const CreateProject = () => {
                                                 label="Link thực tế ảo 3D"
                                                 value={formData.virtualLink}
                                                 onChange={e => setFormData(s => ({ ...s, virtualLink: e.target.value }))}
+                                                defaultValue={""}
+                                                margin="normal"
+                                            />
+                                        </Grid>
+                                        <Grid xs={12} lg={12} xl={12} item>
+                                            <TextField
+                                                fullWidth
+                                                label="Link Google Maps"
+                                                value={formData.googleMapsLink ?? ""}
+                                                onChange={e => setFormData(s => ({ ...s, googleMapsLink: e.target.value }))}
                                                 defaultValue={""}
                                                 margin="normal"
                                             />
@@ -544,6 +562,7 @@ const CreateProject = () => {
                                                                 variant="outlined"
                                                                 margin="normal"
                                                                 label='Tiêu đề tiện ích'
+                                                                required
                                                             />
                                                         </Box>
                                                         <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
@@ -560,7 +579,78 @@ const CreateProject = () => {
                         </Grid>
                     </SubCard>
                 </Grid>
+
                 <Grid item xs={12} lg={6}>
+                    <SubCard title="Mặt bằng dự án">
+                        <Grid item sm={12} xs={12}>
+                            <ImageUploading
+                                multiple
+                                value={masterPlan}
+                                onChange={imgList => onChange(imgList, 2)}
+                                maxNumber={maxNumber}
+                                dataURLKey="data_url"
+                            >
+                                {({
+                                    imageList,
+                                    onImageUpload,
+                                    onImageRemoveAll,
+                                    onImageUpdate,
+                                    onImageRemove,
+                                    isDragging,
+                                    dragProps,
+                                }) => (
+                                    // write your building UI
+                                    <div className="upload__image-wrapper">
+                                        <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
+                                            <Button
+                                                style={isDragging ? { color: 'red' } : undefined}
+                                                onClick={onImageUpload}
+                                                {...dragProps}
+                                                variant="contained"
+                                                color="secondary"
+                                            >
+                                                Thêm hình ảnh
+                                            </Button>
+                                            &nbsp;
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={onImageRemoveAll}
+                                            >
+                                                Reset bộ ảnh
+                                            </Button>
+                                        </ButtonGroup>
+                                        <Grid marginTop={2} container spacing={1}>
+                                            {imageList.map((elm, index) => (
+                                                <Grid item xs={12} lg={6} key={index}>
+                                                    <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                                                        <img src={elm.image['data_url']} alt="" width="100%" />
+                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
+                                                            <TextField
+                                                                value={elm.title}
+                                                                onChange={e => onTitleChange(e, index, 2)}
+                                                                fullWidth
+                                                                variant="outlined"
+                                                                margin="normal"
+                                                                label='Tiêu đề mặt bằng'
+                                                                required
+                                                            />
+                                                        </Box>
+                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
+                                                            <Button variant="outlined" onClick={() => onOptionalRemove(index, 2)}>Loại bỏ</Button>
+                                                        </Box >
+                                                    </div>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
+                                    </div>
+                                )}
+                            </ImageUploading>
+                        </Grid>
+                    </SubCard>
+                </Grid>
+
+                <Grid item xs={12} lg={12}>
                     <SubCard title="Hình ảnh dự án">
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
@@ -619,74 +709,7 @@ const CreateProject = () => {
                         </Grid>
                     </SubCard>
                 </Grid>
-                <Grid item xs={12} lg={6}>
-                    <SubCard title="Mặt bằng dự án">
-                        <Grid item sm={12} xs={12}>
-                            <ImageUploading
-                                multiple
-                                value={masterPlan}
-                                onChange={imgList => onChange(imgList, 2)}
-                                maxNumber={maxNumber}
-                                dataURLKey="data_url"
-                            >
-                                {({
-                                    imageList,
-                                    onImageUpload,
-                                    onImageRemoveAll,
-                                    onImageUpdate,
-                                    onImageRemove,
-                                    isDragging,
-                                    dragProps,
-                                }) => (
-                                    // write your building UI
-                                    <div className="upload__image-wrapper">
-                                        <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
-                                            <Button
-                                                style={isDragging ? { color: 'red' } : undefined}
-                                                onClick={onImageUpload}
-                                                {...dragProps}
-                                                variant="contained"
-                                                color="secondary"
-                                            >
-                                                Thêm hình ảnh
-                                            </Button>
-                                            &nbsp;
-                                            <Button
-                                                variant="contained"
-                                                color="error"
-                                                onClick={onImageRemoveAll}
-                                            >
-                                                Reset bộ ảnh
-                                            </Button>
-                                        </ButtonGroup>
-                                        <Grid marginTop={2} container spacing={1}>
-                                            {imageList.map((elm, index) => (
-                                                <Grid item xs={12} lg={6} key={index}>
-                                                    <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                                                        <img src={elm.image['data_url']} alt="" width="100%" />
-                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
-                                                            <TextField
-                                                                value={elm.title}
-                                                                onChange={e => onTitleChange(e, index, 2)}
-                                                                fullWidth
-                                                                variant="outlined"
-                                                                margin="normal"
-                                                                label='Tiêu đề mặt bằng'
-                                                            />
-                                                        </Box>
-                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
-                                                            <Button variant="outlined" onClick={() => onOptionalRemove(index, 2)}>Loại bỏ</Button>
-                                                        </Box >
-                                                    </div>
-                                                </Grid>
-                                            ))}
-                                        </Grid>
-                                    </div>
-                                )}
-                            </ImageUploading>
-                        </Grid>
-                    </SubCard>
-                </Grid>
+
                 <Grid item xs={12} lg={12}>
                     <SubCard>
                         <Grid justifyContent="flex-end" container>
