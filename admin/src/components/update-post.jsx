@@ -952,6 +952,7 @@ const UpdateRSPost = ({ type, post }) => {
                 </Grid>
                 <Grid item xs={12} lg={5} >
                     <SubCard title="Hình ảnh">
+                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple

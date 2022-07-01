@@ -13,7 +13,7 @@ import { ProjectTypeTranslate } from "../../types/enums/project"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import { Md360 } from 'react-icons/md'
-import Maps from "../../components/maps/maps"
+// import Maps from "../../components/maps/maps"
 
 interface RealEstateProjectPageProps {
     project: ProjectInterface | null
@@ -22,7 +22,7 @@ interface RealEstateProjectPageProps {
 
 const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) => {
     const [currentMasterPlanId, setMasterPlanId] = useState<number>(0)
-    const [showMaps, setShowMaps] = useState<boolean>(false)
+    // const [showMaps, setShowMaps] = useState<boolean>(false)
 
     const router = useRouter()
 
@@ -81,11 +81,11 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
             <main>
                 <div className={styles['project']}>
                     <div className={styles['images']}>
-                        <div className="container">
+                        
                             <Carousel showThumbs={false} showIndicators={false}>
                                 {renderImage()}
                             </Carousel>
-                        </div>
+                        
                     </div>
                     <div className="container">
                         <div className={styles['project-header']}>
@@ -97,8 +97,8 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                     {project.address.street},
                                     {project.address.ward},
                                     {project.address.district},
-                                    {project.address.province},
-                                    <span onClick={() => setShowMaps(true)}>Xem bản đồ</span>
+                                    {project.address.province}
+                                    {/* <span onClick={() => setShowMaps(true)}>Xem bản đồ</span> */}
                                 </p>
                             </div>
                             <div className={styles['project-header__links']}>
@@ -205,19 +205,23 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                         <img src="https://batdongsanexpress.vn/template/detail/images/line.gif" alt="#" />
                                     </div>
                                 </div>
-                                <div className={styles['pj-plan-track']}>
-                                    <div className={styles['pj-plan-track__selector']}>
-                                        {renderProjectPlan()}
-                                    </div>
-                                    <div className={styles['pj-plan-track__img']}>
-                                        <Image
-                                            src={project.masterPlan[currentMasterPlanId].image}
-                                            width={800}
-                                            height={600}
-                                            alt=""
-                                        />
-                                    </div>
-                                </div>
+                                {project.masterPlan.length !== 0
+                                    && (
+                                        <div className={styles['pj-plan-track']}>
+                                            <div className={styles['pj-plan-track__selector']}>
+                                                {renderProjectPlan()}
+                                            </div>
+                                            <div className={styles['pj-plan-track__img']}>
+                                                <Image
+                                                    src={project.masterPlan[currentMasterPlanId].image}
+                                                    width={800}
+                                                    height={600}
+                                                    alt=""
+                                                />
+                                            </div>
+                                        </div>
+                                    )
+                                }
                             </div>
 
                             <div className={styles['pj-owner']} id="chudautu">
@@ -231,8 +235,8 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                 </div>
                                 <div className={styles['owner']}>
                                     <div className={styles['owner__name']}>
-                                        <p>Tập đoàn Vingroup</p>
-                                        <span>Thành lập từ năm: 2019</span>
+                                        <p>{project.investor.name}</p>
+                                        <h6>{project.investor.about}</h6>
                                     </div>
                                 </div>
                                 {/* <div className={styles['owner-decr']}>
@@ -258,7 +262,7 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                     </div>
                 </div>
             </main>
-            <Maps show={showMaps} handleShow={setShowMaps} address={project.address} />
+            {/* <Maps show={showMaps} handleShow={setShowMaps} address={project.address} /> */}
             <Footer />
         </>
     )

@@ -246,7 +246,7 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
                             }
                             {selectedProject?.media.images[0]
                                 && (
-                                    <div className={styles['project-item__name']}>
+                                    <div className={styles['project-item__name']} onClick={() => router.push(`/du-an/${selectedProject.directLink}`)}>
                                         <FaChevronRight />
                                         <p>{selectedProject?.projectName}</p>
                                     </div>

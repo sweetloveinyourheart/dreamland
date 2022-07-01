@@ -1,6 +1,7 @@
 export enum ProjectType {
     KhuCanHo = "KhuCanHo",
-    KhuDoThiMoi = 'KhuDoThiMoi'
+    KhuDoThiMoi = 'KhuDoThiMoi',
+    DatNen = 'DatNen'
 }
 
 export enum ProjectUtilities {
@@ -23,6 +24,9 @@ export function ProjectTypeTranslate(type: ProjectType) {
             return "Khu Căn Hộ"
         case ProjectType.KhuDoThiMoi:
             return "Khu Đô Thị Mới"
+        case ProjectType.DatNen:
+            return "Đất nền"
+        
         default:
             return ""
     }

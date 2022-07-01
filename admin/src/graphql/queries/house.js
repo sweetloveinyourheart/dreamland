@@ -45,6 +45,7 @@ query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
                 numberOfFloors
             }
             virtual3DLink
+            googleMapsLink
             outstanding
             postStatus
     }

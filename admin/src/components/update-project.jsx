@@ -317,6 +317,16 @@ const UpdateProject = ({ project }) => {
                                                 margin="normal"
                                             />
                                         </Grid>
+                                        <Grid xs={12} lg={12} xl={12} item>
+                                            <TextField
+                                                fullWidth
+                                                label="Link Google Maps"
+                                                value={formData.googleMapsLink ?? ""}
+                                                onChange={e => setFormData(s => ({ ...s, googleMapsLink: e.target.value }))}
+                                                defaultValue={""}
+                                                margin="normal"
+                                            />
+                                        </Grid>
                                     </Grid>
                                 </Box>
                             </Grid>
@@ -515,7 +525,7 @@ const UpdateProject = ({ project }) => {
                 </Grid>
                 <Grid item xs={12} lg={6}>
                     <SubCard title="Tiện ích">
-                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ </Typography>
+                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple
@@ -585,7 +595,7 @@ const UpdateProject = ({ project }) => {
                 </Grid>
                 <Grid item xs={12} lg={6}>
                     <SubCard title="Hình ảnh dự án">
-                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ </Typography>
+                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới </Typography>
 
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
@@ -646,7 +656,7 @@ const UpdateProject = ({ project }) => {
                 </Grid>
                 <Grid item xs={12} lg={6}>
                     <SubCard title="Mặt bằng dự án">
-                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ </Typography>
+                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple

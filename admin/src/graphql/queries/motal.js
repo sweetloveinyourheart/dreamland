@@ -42,6 +42,7 @@ export const GET_MOTAL_POSTS = gql`
                 numberOfFloors
             }
             virtual3DLink
+            googleMapsLink
             outstanding
             postStatus
         }

@@ -41,7 +41,7 @@ export class RealEstateService {
             const newItem = await this.apartmentModel.create({
                 ...data,
                 timeStamp: new Date(),
-                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?/g, "-"),
+                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.apartmentModel.countDocuments({ category: data.category }) + 1
             })
 
@@ -63,7 +63,7 @@ export class RealEstateService {
             const newItem = await this.houseModel.create({
                 ...data,
                 timeStamp: new Date(),
-                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?/g, "-"),
+                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.houseModel.countDocuments({ category: data.category }) + 1
             })
             // Clear current stats cache
@@ -84,7 +84,7 @@ export class RealEstateService {
             const newItem = await this.landModel.create({
                 ...data,
                 timeStamp: new Date(),
-                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?/g, "-"),
+                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.landModel.countDocuments({ category: data.category }) + 1
             })
 
@@ -106,7 +106,7 @@ export class RealEstateService {
             const newItem = await this.businessPremisesModel.create({
                 ...data,
                 timeStamp: new Date(),
-                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?/g, "-"),
+                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.businessPremisesModel.countDocuments({ category: data.category }) + 1
             })
             // Clear current stats cache
@@ -127,7 +127,7 @@ export class RealEstateService {
             const newItem = await this.motalModel.create({
                 ...data,
                 timeStamp: new Date(),
-                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?/g, "-"),
+                directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.motalModel.countDocuments({ category: data.category }) + 1
             })
             // Clear current stats cache

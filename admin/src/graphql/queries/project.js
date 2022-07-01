@@ -39,6 +39,8 @@ export const GET_ALL_PROJECT_POSTS = gql`
                 name
             }
             directLink
+            googleMapsLink
+            virtual3DLink
             outstanding
             actived
         }

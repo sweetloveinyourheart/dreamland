@@ -1,10 +1,10 @@
 @import "../responsive";
 
 .project {
-    padding-top: 64px;
+    padding-top: 56px;
 
     @include Responsive(xs sm) {
-        padding-top: 120px;
+        padding-top: 110px;
     }
 }
 
@@ -381,10 +381,15 @@
             margin-bottom: 2px;
             color: #ffb41f;
             font-size: 20px;
+            text-align: center;
         }
 
-        span {
+        h6 {
             font-size: 14px;
+            max-width: 500px;
+            font-weight: 400;
+            margin-top: 12px;
+            text-align: center;
         }
     }
 }
