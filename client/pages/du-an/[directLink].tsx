@@ -13,6 +13,7 @@ import { ProjectTypeTranslate } from "../../types/enums/project"
 import { useState } from "react"
 import { useRouter } from "next/router"
 import { Md360 } from 'react-icons/md'
+import { moneyConverter } from "../../lib/converter"
 // import Maps from "../../components/maps/maps"
 
 interface RealEstateProjectPageProps {
@@ -144,7 +145,7 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                     <div className={styles['pj-info__col']}>
                                         <div className={`${styles['pj-info-item']} `}>
                                             <h5>Giá mua bán</h5>
-                                            <p>{project.information?.purchaseInfo ? `Từ ${project.information.purchaseInfo} tr/m²` : "---"}</p>
+                                            <p>{project.information?.purchaseInfo ? `Từ ${moneyConverter(project.information.purchaseInfo)}/m²` : "---"}</p>
                                         </div>
                                         <div className={styles['pj-info-item']}>
                                             <h5>Khởi công</h5>
