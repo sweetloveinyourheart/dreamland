@@ -24,6 +24,8 @@ import { Cache } from 'cache-manager';
 import { RealEstatePosts } from './models/parent-models/top';
 import { RealEstateFilter } from './dto/inputs/general/filter.input';
 import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
+import { UserPayload } from 'src/auth/decorators/user.decorator';
+import { UserRole } from 'src/user/enum/user.enum';
 
 @Injectable()
 export class RealEstateService {
@@ -36,13 +38,14 @@ export class RealEstateService {
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) { }
 
-    async createApartmentPost(data: CreateApartmentInput): Promise<Apartment> {
+    async createApartmentPost(data: CreateApartmentInput, user: UserPayload): Promise<Apartment> {
         try {
             const newItem = await this.apartmentModel.create({
                 ...data,
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
-                index: await this.apartmentModel.countDocuments({ category: data.category }) + 1
+                index: await this.apartmentModel.countDocuments({ category: data.category }) + 1,
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
             })
 
             // Clear current stats cache
@@ -58,13 +61,14 @@ export class RealEstateService {
         }
     }
 
-    async createHousePost(data: CreateHouseInput): Promise<House> {
+    async createHousePost(data: CreateHouseInput, user: UserPayload): Promise<House> {
         try {
             const newItem = await this.houseModel.create({
                 ...data,
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
-                index: await this.houseModel.countDocuments({ category: data.category }) + 1
+                index: await this.houseModel.countDocuments({ category: data.category }) + 1,
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
             })
             // Clear current stats cache
             if (data.category === RealEstateCategory.MuaBan) {
@@ -79,13 +83,14 @@ export class RealEstateService {
         }
     }
 
-    async createLandPost(data: CreateLandInput): Promise<Land> {
+    async createLandPost(data: CreateLandInput, user: UserPayload): Promise<Land> {
         try {
             const newItem = await this.landModel.create({
                 ...data,
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
-                index: await this.landModel.countDocuments({ category: data.category }) + 1
+                index: await this.landModel.countDocuments({ category: data.category }) + 1,
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
             })
 
             // Clear current stats cache
@@ -101,13 +106,14 @@ export class RealEstateService {
         }
     }
 
-    async createBusinessPremisesPost(data: CreateBusinessPremisesInput): Promise<BusinessPremises> {
+    async createBusinessPremisesPost(data: CreateBusinessPremisesInput, user: UserPayload): Promise<BusinessPremises> {
         try {
             const newItem = await this.businessPremisesModel.create({
                 ...data,
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
-                index: await this.businessPremisesModel.countDocuments({ category: data.category }) + 1
+                index: await this.businessPremisesModel.countDocuments({ category: data.category }) + 1,
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
             })
             // Clear current stats cache
             if (data.category === RealEstateCategory.MuaBan) {
@@ -122,13 +128,14 @@ export class RealEstateService {
         }
     }
 
-    async createMotalPost(data: CreateMotalInput): Promise<Motal> {
+    async createMotalPost(data: CreateMotalInput, user: UserPayload): Promise<Motal> {
         try {
             const newItem = await this.motalModel.create({
                 ...data,
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
-                index: await this.motalModel.countDocuments({ category: data.category }) + 1
+                index: await this.motalModel.countDocuments({ category: data.category }) + 1,
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
             })
             // Clear current stats cache
             if (data.category === RealEstateCategory.MuaBan) {
@@ -226,16 +233,17 @@ export class RealEstateService {
         }
     }
 
-    async getAllApartments(filter: ApartmentFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<Apartment[]> {
+    async getAllApartments(filter: ApartmentFilter, paging: PaginationArgs | undefined, search: string | undefined, pending: boolean): Promise<Apartment[]> {
         try {
             let searchQuery = undefined
-            if(search) {
+            if (search) {
                 searchQuery = new RegExp(search, 'ig')
             }
-            
+
             let query = {
                 category: filter.category,
-                ...(searchQuery && { title: { $regex: searchQuery } })
+                ...(searchQuery && { title: { $regex: searchQuery } }),
+                ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
             return await this.apartmentModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -274,16 +282,17 @@ export class RealEstateService {
         }
     }
 
-    async getAllHouses(filter: HouseFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<House[]> {
+    async getAllHouses(filter: HouseFilter, paging: PaginationArgs | undefined, search: string | undefined, pending: boolean): Promise<House[]> {
         try {
             let searchQuery = undefined
-            if(search) {
+            if (search) {
                 searchQuery = new RegExp(search, 'ig')
             }
 
             let query = {
                 category: filter.category,
-                ...(searchQuery && { title: { $regex: searchQuery } })
+                ...(searchQuery && { title: { $regex: searchQuery } }),
+                ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
             return await this.houseModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -320,16 +329,17 @@ export class RealEstateService {
         }
     }
 
-    async getAllLands(filter: LandFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<Land[]> {
+    async getAllLands(filter: LandFilter, paging: PaginationArgs | undefined, search: string | undefined, pending: boolean): Promise<Land[]> {
         try {
             let searchQuery = undefined
-            if(search) {
+            if (search) {
                 searchQuery = new RegExp(search, 'ig')
             }
 
             let query = {
                 category: filter.category,
-                ...(searchQuery && { title: { $regex: searchQuery } })
+                ...(searchQuery && { title: { $regex: searchQuery } }),
+                ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
             return await this.landModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -363,16 +373,17 @@ export class RealEstateService {
         }
     }
 
-    async getAllBusinessPremises(filter: BusinessPremisesFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<BusinessPremisesModel[]> {
+    async getAllBusinessPremises(filter: BusinessPremisesFilter, paging: PaginationArgs | undefined, search: string | undefined, pending: boolean): Promise<BusinessPremisesModel[]> {
         try {
             let searchQuery = undefined
-            if(search) {
+            if (search) {
                 searchQuery = new RegExp(search, 'ig')
             }
 
             let query = {
                 category: filter.category,
-                ...(searchQuery && { title: { $regex: searchQuery } })
+                ...(searchQuery && { title: { $regex: searchQuery } }),
+                ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
             return await this.businessPremisesModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -405,16 +416,17 @@ export class RealEstateService {
         }
     }
 
-    async getAllMotals(filter: MotalFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<Motal[]> {
+    async getAllMotals(filter: MotalFilter, paging: PaginationArgs | undefined, search: string | undefined, pending: boolean): Promise<Motal[]> {
         try {
             let searchQuery = undefined
-            if(search) {
+            if (search) {
                 searchQuery = new RegExp(search, 'ig')
             }
 
             let query = {
                 category: filter.category,
-                ...(searchQuery && { title: { $regex: searchQuery } })
+                ...(searchQuery && { title: { $regex: searchQuery } }),
+                ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
             return await this.motalModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -490,7 +502,7 @@ export class RealEstateService {
     async getRealEstatePosts(filter: RealEstateFilter, paging: PaginationArgs | undefined, search: string | undefined): Promise<RealEstatePosts> {
         try {
             let searchQuery = undefined
-            if(search) {
+            if (search) {
                 searchQuery = new RegExp(search, 'ig')
             }
 

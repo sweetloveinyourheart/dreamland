@@ -1,9 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { Model } from "mongoose"
 import { CreateUserInput } from './dto/create-user.input';
 import * as bcrypt from 'bcrypt';
+import { FindUserInput } from './dto/find-user.input';
+import { Profile } from './models/user.model';
+import { UserPayload } from 'src/auth/decorators/user.decorator';
 
 @Injectable()
 export class UserService {
@@ -29,4 +32,26 @@ export class UserService {
         return this.userModel.findOne({ phone });
     }
 
-}
+    async getUsers(paging: FindUserInput): Promise<User[]> {
+        try {
+            const result = await this.userModel
+                .find({ actived: true, roles: { $not: { $in: ["admin"] } } })
+                .select({ password: 0 })
+                .skip(paging.cursor)
+                .limit(paging.limit)
+                .sort({ createdAt: -1 })
+
+            return result
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getProfile(user: UserPayload): Promise<Profile> {
+        try {
+            return await this.userModel.findById(user.userId)
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+}   

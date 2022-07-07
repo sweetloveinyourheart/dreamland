@@ -145,7 +145,7 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                     <div className={styles['pj-info__col']}>
                                         <div className={`${styles['pj-info-item']} `}>
                                             <h5>Giá mua bán</h5>
-                                            <p>{project.information?.purchaseInfo ? `Từ ${moneyConverter(project.information.purchaseInfo)}/m²` : "---"}</p>
+                                            <p>{project.information?.purchaseInfo ? `Từ ${moneyConverter(project.information.purchaseInfo)}` : "---"}</p>
                                         </div>
                                         <div className={styles['pj-info-item']}>
                                             <h5>Khởi công</h5>
@@ -165,7 +165,7 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                         </div>
                                         <div className={`${styles['pj-info-item']} `}>
                                             <h5>Giá cho thuê</h5>
-                                            <p>{project.information?.rentInfo ? `Từ ${project.information.rentInfo} tr/m²` : "---"}</p>
+                                            <p>{project.information?.rentInfo ? `Từ ${moneyConverter(project.information.rentInfo)}` : "---"}</p>
                                         </div>
                                         <div className={styles['pj-info-item']}>
                                             <h5>Năm bàn giao</h5>

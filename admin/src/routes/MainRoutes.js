@@ -6,6 +6,8 @@ import Loadable from 'ui-component/Loadable';
 import Project from 'views/manager/project';
 import IntroManagement from 'views/main/intro';
 import BlogManagement from 'views/main/blog';
+import Register from 'views/user/register';
+import PostManager from 'views/user/post';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -61,6 +63,14 @@ const MainRoutes = {
         {
             path: '/main/blog',
             element: <BlogManagement />
+        },
+        {
+            path: '/user/account',
+            element: <Register />
+        },
+        {
+            path: '/user/post',
+            element: <PostManager />
         },
     ]
 };

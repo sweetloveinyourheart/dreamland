@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_HOUSE_POSTS = gql`
 query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
-    houses: getAllHouses(filter: $filter, paging: $paging, search: $search) {
+        houses: getAllHouses(filter: $filter, paging: $paging, search: $search) {
             _id
             title
             description
@@ -48,6 +48,6 @@ query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
             googleMapsLink
             outstanding
             postStatus
+        }
     }
-}
 `

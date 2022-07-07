@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_BUSINESS_PREMISES_POSTS = gql`
 query BusinessPremises($filter: BusinessPremisesFilter!, $paging: PaginationArgs, $search: String) {
-   businessPremises: getAllBusinessPremises(filter: $filter, paging: $paging, search: $search) {
+        businessPremises: getAllBusinessPremises(filter: $filter, paging: $paging, search: $search) {
             _id
             title
             description
@@ -44,6 +44,6 @@ query BusinessPremises($filter: BusinessPremisesFilter!, $paging: PaginationArgs
             googleMapsLink
             postStatus
             outstanding
+        }
     }
-}
 `

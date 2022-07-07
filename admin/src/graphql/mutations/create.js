@@ -60,3 +60,12 @@ export const CREATE_BLOG = gql`
         }
     }
 `
+
+export const CREATE_USER = gql`
+    mutation Register($data: CreateUserInput!) {
+        createNewUser(data: $data) {
+            name
+            phone
+        }
+    }
+`

@@ -14,6 +14,12 @@ import { BusinessPremisesFilter, CreateBusinessPremisesInput } from './dto/input
 import { CreateMotalInput, MotalFilter } from './dto/inputs/motal.input';
 import { RealEstatePosts } from './models/parent-models/top';
 import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/auth/guards/graphql.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { UserRole } from 'src/user/enum/user.enum';
+import { AuthenticatedUser, UserPayload } from 'src/auth/decorators/user.decorator';
 
 @Resolver()
 export class RealEstateResolver {
@@ -41,13 +47,16 @@ export class RealEstateResolver {
     return await this.realEstateService.getHousePosts(filter, paging);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
   @Query(returns => [House])
   async getAllHouses(
     @Args('filter') filter: HouseFilter,
     @Args('paging', { nullable: true }) paging: PaginationArgs,
-    @Args('search', { nullable: true }) search: string
+    @Args('search', { nullable: true }) search: string,
+    @Args('pending', { nullable: true, type: () => Boolean }) pending: boolean
   ) {
-    return await this.realEstateService.getAllHouses(filter, paging, search);
+    return await this.realEstateService.getAllHouses(filter, paging, search, pending);
   }
 
   @Query(returns => [Apartment])
@@ -58,13 +67,16 @@ export class RealEstateResolver {
     return await this.realEstateService.getApartmentPosts(filter, paging);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
   @Query(returns => [Apartment])
   async getAllApartments(
     @Args('filter') filter: ApartmentFilter,
     @Args('paging', { nullable: true }) paging: PaginationArgs,
-    @Args('search', { nullable: true }) search: string
+    @Args('search', { nullable: true }) search: string,
+    @Args('pending', { nullable: true, type: () => Boolean }) pending: boolean
   ) {
-    return await this.realEstateService.getAllApartments(filter, paging, search);
+    return await this.realEstateService.getAllApartments(filter, paging, search, pending);
   }
 
   @Query(returns => [Land])
@@ -75,13 +87,16 @@ export class RealEstateResolver {
     return await this.realEstateService.getLandPosts(filter, paging);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
   @Query(returns => [Land])
   async getAllLands(
     @Args('filter') filter: LandFilter,
     @Args('paging', { nullable: true }) paging: PaginationArgs,
-    @Args('search', { nullable: true }) search: string
+    @Args('search', { nullable: true }) search: string,
+    @Args('pending', { nullable: true, type: () => Boolean }) pending: boolean
   ) {
-    return await this.realEstateService.getAllLands(filter, paging, search);
+    return await this.realEstateService.getAllLands(filter, paging, search, pending);
   }
 
   @Query(returns => [BusinessPremises])
@@ -92,13 +107,16 @@ export class RealEstateResolver {
     return await this.realEstateService.getBusinessPremisesPosts(filter, paging);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
   @Query(returns => [BusinessPremises])
   async getAllBusinessPremises(
     @Args('filter') filter: BusinessPremisesFilter,
     @Args('paging', { nullable: true }) paging: PaginationArgs,
-    @Args('search', { nullable: true }) search: string
+    @Args('search', { nullable: true }) search: string,
+    @Args('pending', { nullable: true, type: () => Boolean }) pending: boolean
   ) {
-    return await this.realEstateService.getAllBusinessPremises(filter, paging, search);
+    return await this.realEstateService.getAllBusinessPremises(filter, paging, search, pending);
   }
 
   @Query(returns => [Motal])
@@ -109,13 +127,16 @@ export class RealEstateResolver {
     return await this.realEstateService.getMotalPosts(filter, paging);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
   @Query(returns => [Motal])
   async getAllMotals(
     @Args('filter') filter: MotalFilter,
     @Args('paging', { nullable: true }) paging: PaginationArgs,
-    @Args('search', { nullable: true }) search: string
+    @Args('search', { nullable: true }) search: string,
+    @Args('pending', { nullable: true, type: () => Boolean }) pending: boolean
   ) {
-    return await this.realEstateService.getAllMotals(filter, paging, search);
+    return await this.realEstateService.getAllMotals(filter, paging, search, pending);
   }
 
   @Query(returns => Apartment)
@@ -143,31 +164,43 @@ export class RealEstateResolver {
     return await this.realEstateService.getMotalPostByLink(link);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
   @Mutation(returns => Apartment)
-  async createApartmentPost(@Args('data') data: CreateApartmentInput): Promise<Apartment> {
-    return await this.realEstateService.createApartmentPost(data);
+  async createApartmentPost(@Args('data') data: CreateApartmentInput, @AuthenticatedUser() user: UserPayload): Promise<Apartment> {
+    return await this.realEstateService.createApartmentPost(data, user);
   }
 
   @Mutation(returns => House)
-  async createHousePost(@Args('data') data: CreateHouseInput): Promise<House> {
-    return await this.realEstateService.createHousePost(data);
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
+  async createHousePost(@Args('data') data: CreateHouseInput, @AuthenticatedUser() user: UserPayload): Promise<House> {
+    return await this.realEstateService.createHousePost(data, user);
   }
 
   @Mutation(returns => Land)
-  async createLandPost(@Args('data') data: CreateLandInput): Promise<Land> {
-    return await this.realEstateService.createLandPost(data);
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
+  async createLandPost(@Args('data') data: CreateLandInput, @AuthenticatedUser() user: UserPayload): Promise<Land> {
+    return await this.realEstateService.createLandPost(data, user);
   }
 
   @Mutation(returns => BusinessPremises)
-  async createBusinessPremisesPost(@Args('data') data: CreateBusinessPremisesInput): Promise<BusinessPremises> {
-    return await this.realEstateService.createBusinessPremisesPost(data);
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
+  async createBusinessPremisesPost(@Args('data') data: CreateBusinessPremisesInput, @AuthenticatedUser() user: UserPayload): Promise<BusinessPremises> {
+    return await this.realEstateService.createBusinessPremisesPost(data, user);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
   @Mutation(returns => Motal)
-  async createMotalPost(@Args('data') data: CreateMotalInput): Promise<Motal> {
-    return await this.realEstateService.createMotalPost(data);
+  async createMotalPost(@Args('data') data: CreateMotalInput, @AuthenticatedUser() user: UserPayload): Promise<Motal> {
+    return await this.realEstateService.createMotalPost(data, user);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
   @Mutation(returns => Apartment)
   async updateApartmentPost(
     @Args('postId') postId: string,
@@ -177,6 +210,8 @@ export class RealEstateResolver {
     return await this.realEstateService.updateApartmentPost(postId, data, updateStatus);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
   @Mutation(returns => House)
   async updateHousePost(
     @Args('postId') postId: string,
@@ -186,6 +221,8 @@ export class RealEstateResolver {
     return await this.realEstateService.updateHousePost(postId, data, updateStatus);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
   @Mutation(returns => Land)
   async updateLandPost(
     @Args('postId') postId: string,
@@ -195,6 +232,8 @@ export class RealEstateResolver {
     return await this.realEstateService.updateLandPost(postId, data, updateStatus);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
   @Mutation(returns => BusinessPremises)
   async updateBusinessPremisesPost(
     @Args('postId') postId: string,
@@ -204,6 +243,8 @@ export class RealEstateResolver {
     return await this.realEstateService.updateBusinessPremisesPost(postId, data, updateStatus);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Manager)
   @Mutation(returns => Motal)
   async updateMotalPost(
     @Args('postId') postId: string,

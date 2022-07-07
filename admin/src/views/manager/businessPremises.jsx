@@ -118,9 +118,13 @@ const BusinessPremises = () => {
             </Grid>
             <Divider sx={{ margin: 2 }} />
             {renderMenu()}
-            <Box display={"flex"} mt={2} justifyContent="center">
-                <Button onClick={() => showMorePost()} disabled={!canShowMore} variant='outlined'> Xem thêm </Button>
-            </Box>
+            {menu === 0
+                && (
+                    <Box display={"flex"} mt={2} justifyContent="center">
+                        <Button onClick={() => showMorePost()} disabled={!canShowMore} variant='outlined'> Xem thêm </Button>
+                    </Box>
+                )
+            }
         </MainCard>
     );
 }

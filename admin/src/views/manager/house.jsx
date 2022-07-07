@@ -33,10 +33,10 @@ const House = () => {
         if (data) {
             if (items.length !== data?.houses.length) {
                 setCanShowMore(true)
-            }    
+            }
             setItems(data.houses)
         }
-        
+
 
     }, [data, error])
 
@@ -104,7 +104,7 @@ const House = () => {
                                 {"Cho Thuê"}
                             </MenuItem>
                         </TextField>
-                        <SearchSection onSearch={onSearch}/>
+                        <SearchSection onSearch={onSearch} />
                     </Box>
                 </Grid>
                 <Grid xl={3} item>
@@ -118,9 +118,13 @@ const House = () => {
             </Grid>
             <Divider sx={{ margin: 2 }} />
             {renderMenu()}
-            <Box display={"flex"} mt={2} justifyContent="center">
-                <Button onClick={() => showMorePost()} disabled={!canShowMore} variant='outlined'> Xem thêm </Button>
-            </Box>
+            {menu === 0
+                && (
+                    <Box display={"flex"} mt={2} justifyContent="center">
+                        <Button onClick={() => showMorePost()} disabled={!canShowMore} variant='outlined'> Xem thêm </Button>
+                    </Box>
+                )
+            }
         </MainCard>
     );
 }

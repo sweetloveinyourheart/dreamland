@@ -953,6 +953,13 @@ const UpdateRSPost = ({ type, post }) => {
                 <Grid item xs={12} lg={5} >
                     <SubCard title="Hình ảnh">
                         <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
+                        <Grid marginTop={2} container spacing={1}>
+                            {post.media.images.map((image, index) => (
+                                <Grid item lg={4} key={index}>
+                                    <img src={image} style={{ width: '100%' }} />
+                                </Grid>
+                            ))}
+                        </Grid>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple
@@ -980,7 +987,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                 variant="contained"
                                                 color="secondary"
                                             >
-                                                Thêm hình ảnh
+                                                Chỉnh sửa hình ảnh
                                             </Button>
                                             &nbsp;
                                             <Button

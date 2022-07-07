@@ -526,6 +526,14 @@ const UpdateProject = ({ project }) => {
                 <Grid item xs={12} lg={6}>
                     <SubCard title="Tiện ích">
                         <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
+                        <Grid marginTop={2} container spacing={1}>
+                            {project.utilities.map((item, index) => (
+                                <Grid item lg={4} key={index}>
+                                    <img src={item.image} style={{ width: '100%' }} />
+                                    <Typography>{item.title}</Typography>
+                                </Grid>
+                            ))}
+                        </Grid>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple
@@ -553,7 +561,7 @@ const UpdateProject = ({ project }) => {
                                                 variant="contained"
                                                 color="secondary"
                                             >
-                                                Thêm hình ảnh
+                                                Chỉnh sửa bộ ảnh
                                             </Button>
                                             &nbsp;
                                             <Button
@@ -596,7 +604,13 @@ const UpdateProject = ({ project }) => {
                 <Grid item xs={12} lg={6}>
                     <SubCard title="Hình ảnh dự án">
                         <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới </Typography>
-
+                        <Grid marginTop={2} container spacing={1}>
+                            {project.media.images.map((image, index) => (
+                                <Grid item lg={4} key={index}>
+                                    <img src={image} style={{ width: '100%' }} />
+                                </Grid>
+                            ))}
+                        </Grid>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple
@@ -624,7 +638,7 @@ const UpdateProject = ({ project }) => {
                                                 variant="contained"
                                                 color="secondary"
                                             >
-                                                Thêm hình ảnh
+                                                Chỉnh sửa bộ ảnh
                                             </Button>
                                             &nbsp;
                                             <Button
@@ -657,6 +671,14 @@ const UpdateProject = ({ project }) => {
                 <Grid item xs={12} lg={6}>
                     <SubCard title="Mặt bằng dự án">
                         <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
+                        <Grid marginTop={2} container spacing={1}>
+                            {project.masterPlan.map((item, index) => (
+                                <Grid item lg={4} key={index}>
+                                    <img src={item.image} style={{ width: '100%' }} />
+                                    <Typography marginTop={2}>{item.title}</Typography>
+                                </Grid>
+                            ))}
+                        </Grid>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple
@@ -684,7 +706,7 @@ const UpdateProject = ({ project }) => {
                                                 variant="contained"
                                                 color="secondary"
                                             >
-                                                Thêm hình ảnh
+                                                Chỉnh sửa bộ ảnh
                                             </Button>
                                             &nbsp;
                                             <Button
@@ -744,7 +766,7 @@ const UpdateProject = ({ project }) => {
                         </Grid>
                     </SubCard>
                 </Grid>
-            </Grid>
+            </Grid >
             <Modal
                 open={modal.active}
                 onClose={() => setModal(s => ({ ...s, active: !s.active }))}
@@ -771,7 +793,7 @@ const UpdateProject = ({ project }) => {
                     </Typography>
                 </Box>
             </Modal>
-        </form>
+        </form >
     );
 }
 
