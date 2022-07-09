@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Divider, Grid, Typography, Tabs, Tab, Box, TextField, MenuItem, Button } from '@mui/material';
 import CreateRSPost from 'components/create';
+import PostDetail from 'components/post';
 import RSList from 'components/rsList';
 import UpdateRSPost from 'components/update-post';
 import { GET_LAND_POSTS } from 'graphql/queries/land';
@@ -53,16 +54,24 @@ const Motal = () => {
         setMenu(2)
     }, [selectedPost, menu])
 
+    const onViewPost = useCallback((post) => {
+        setSelectedPost(post)
+        setMenu(3)
+    }, [selectedPost, menu])
+
     const renderMenu = () => {
         switch (menu) {
             case 0:
-                return <RSList data={items} selectPost={onSelectPost} type="phong-tro" />
+                return <RSList data={items} selectPost={onSelectPost} type="phong-tro" viewPost={onViewPost}/>
 
             case 1:
                 return <CreateRSPost type="phong-tro" />
 
             case 2:
                 return <UpdateRSPost type="phong-tro" post={selectedPost} />
+
+            case 3:
+                return <PostDetail post={selectedPost} />
 
             default:
                 return <RSList data={items} selectPost={onSelectPost} type="phong-tro" />

@@ -1,7 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
-import { Login } from './models/auth.model';
+import { AccessToken, Login } from './models/auth.model';
 import { User } from 'src/user/schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { UserRole } from 'src/user/enum/user.enum';
@@ -35,7 +35,7 @@ export class AuthService {
 
             return {
                 accessToken: await this.jwtService.sign(jwtPayload, { expiresIn: "1h" }),
-                refreshToken:  await this.jwtService.sign(jwtPayload, { expiresIn: "7d", secret: process.env.REFRESH_TOKEN_SECRET })
+                refreshToken: await this.jwtService.sign(jwtPayload, { expiresIn: "7d", secret: process.env.REFRESH_TOKEN_SECRET })
             }
         } catch (error) {
             throw new UnauthorizedException()
@@ -44,7 +44,7 @@ export class AuthService {
 
     async adminLogin(user: User & { _id: string }): Promise<Login> {
         try {
-            if(!user.roles.includes(UserRole.Admin))
+            if (!user.roles.includes(UserRole.Admin))
                 throw new Error('Forbidden resource !')
 
             const jwtPayload = {
@@ -59,6 +59,26 @@ export class AuthService {
             }
         } catch (error) {
             throw new UnauthorizedException()
+        }
+    }
+
+    async refreshToken(refeshToken: string): Promise<AccessToken> {
+        try {
+            const payload = await this.jwtService.verify(refeshToken, { secret: process.env.REFRESH_TOKEN_SECRET })
+            if (!payload) throw new Error()
+
+            return {
+                accessToken: await this.jwtService.sign(
+                    {
+                        phone: payload.phone,
+                        sub: payload.sub,
+                        roles: payload.sub
+                    },
+                    { expiresIn: "1h" }
+                ),
+            }
+        } catch (error) {
+            throw new ForbiddenException()
         }
     }
 

@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthenticatedUser } from './decorators/user.decorator';
 import { LoginInput } from './dto/login.dto';
 import { LocalAuthGuard } from './guards/local.guard';
-import { Login } from './models/auth.model';
+import { AccessToken, Login } from './models/auth.model';
 
 @Resolver()
 export class AuthResolver {
@@ -22,4 +22,10 @@ export class AuthResolver {
     return await this.authService.adminLogin(context.user)
   }
 
+  @Query(returns => AccessToken)
+  async refreshToken(
+    @Args('refreshToken') token: string
+  ): Promise<AccessToken> {
+    return await this.authService.refreshToken(token)
+  }
 }

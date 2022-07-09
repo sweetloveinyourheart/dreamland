@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Divider, Grid, Typography, Tabs, Tab, Box, TextField, MenuItem, Button } from '@mui/material';
 import CreateRSPost from 'components/create';
+import PostDetail from 'components/post';
 import RSList from 'components/rsList';
 import UpdateRSPost from 'components/update-post';
 import { GET_LAND_POSTS } from 'graphql/queries/land';
@@ -17,7 +18,7 @@ const Land = () => {
         limit: 20
     })
     const [items, setItems] = useState([])
-    const [canShowMore, setCanShowMore] = useState(true) 
+    const [canShowMore, setCanShowMore] = useState(true)
     const [selectedPost, setSelectedPost] = useState(null)
 
     const [menu, setMenu] = useState(0)
@@ -32,11 +33,11 @@ const Land = () => {
 
     useEffect(() => {
         if (data) {
-            if(items.length !== data?.lands.length) {
+            if (items.length !== data?.lands.length) {
                 setCanShowMore(true)
             }
-            
-            setItems(data.lands)   
+
+            setItems(data.lands)
         }
     }, [data, error])
 
@@ -53,10 +54,15 @@ const Land = () => {
         setMenu(2)
     }, [selectedPost, menu])
 
+    const onViewPost = useCallback((post) => {
+        setSelectedPost(post)
+        setMenu(3)
+    }, [selectedPost, menu])
+
     const renderMenu = () => {
         switch (menu) {
             case 0:
-                return <RSList data={items} selectPost={onSelectPost} type="dat"/>
+                return <RSList data={items} selectPost={onSelectPost} type="dat" viewPost={onViewPost} />
 
             case 1:
                 return <CreateRSPost type="dat" />
@@ -64,14 +70,17 @@ const Land = () => {
             case 2:
                 return <UpdateRSPost type="dat" post={selectedPost} />
 
+            case 3:
+                return <PostDetail post={selectedPost} />
+
             default:
-                return <RSList data={items} selectPost={onSelectPost} type="dat"/>
+                return <RSList data={items} selectPost={onSelectPost} type="dat" />
         }
     }
 
     const showMorePost = () => {
         setCanShowMore(false)
-        setPaging(s => ({...s, limit: s.limit + 20}))
+        setPaging(s => ({ ...s, limit: s.limit + 20 }))
         refetch({
             paging: { limit: paging.limit + 20 }
         })
@@ -104,7 +113,7 @@ const Land = () => {
                                 {"Cho Thuê"}
                             </MenuItem>
                         </TextField>
-                        <SearchSection onSearch={onSearch}/>
+                        <SearchSection onSearch={onSearch} />
                     </Box>
                 </Grid>
                 <Grid xl={3} item>

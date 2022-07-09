@@ -254,4 +254,49 @@ export class RealEstateResolver {
     return await this.realEstateService.updateMotalPost(postId, data, updateStatus);
   }
 
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Mutation(returns => Apartment)
+  async deleteApartmentPost(
+    @Args('postId') postId: string
+  ): Promise<Apartment> {
+    return await this.realEstateService.deleteApartmentPost(postId);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Mutation(returns => House)
+  async deleteHousePost(
+    @Args('postId') postId: string
+  ): Promise<House> {
+    return await this.realEstateService.deleteHousePost(postId);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Mutation(returns => Land)
+  async deleteLandPost(
+    @Args('postId') postId: string
+  ): Promise<Land> {
+    return await this.realEstateService.deleteLandPost(postId);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Mutation(returns => BusinessPremises)
+  async deleteBusinessPremisesPost(
+    @Args('postId') postId: string
+  ): Promise<BusinessPremises> {
+    return await this.realEstateService.deleteBusinessPremisesPost(postId);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Mutation(returns => Motal)
+  async deleteMotalPost(
+    @Args('postId') postId: string
+  ): Promise<Motal> {
+    return await this.realEstateService.deleteMotalPost(postId);
+  }
+
 }

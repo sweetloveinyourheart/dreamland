@@ -8,3 +8,9 @@ export class Login {
     @Field()
     refreshToken: string
 }
+
+@ObjectType()
+export class AccessToken {
+    @Field()
+    accessToken: string
+}

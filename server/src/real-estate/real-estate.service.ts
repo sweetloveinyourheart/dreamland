@@ -205,6 +205,46 @@ export class RealEstateService {
         }
     }
 
+    async deleteApartmentPost(postId: string): Promise<Apartment> {
+        try {
+            return await this.apartmentModel.findByIdAndDelete(postId)
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async deleteHousePost(postId: string): Promise<House> {
+        try {
+            return await this.houseModel.findByIdAndDelete(postId)
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async deleteLandPost(postId: string): Promise<Land> {
+        try {
+            return await this.landModel.findByIdAndDelete(postId)
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async deleteBusinessPremisesPost(postId: string): Promise<BusinessPremises> {
+        try {
+            return await this.businessPremisesModel.findByIdAndDelete(postId)
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
+    async deleteMotalPost(postId: string): Promise<Motal> {
+        try {
+            return await this.motalModel.findByIdAndDelete(postId)
+        } catch (error) {
+            throw new BadRequestException()
+        }
+    }
+
     async getApartmentPosts(filter: ApartmentFilter, paging: PaginationArgs | undefined): Promise<Apartment[]> {
         try {
             let query = {

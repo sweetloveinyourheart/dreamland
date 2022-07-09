@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Divider, Grid, Typography, Tabs, Tab, Box, TextField, MenuItem, Button } from '@mui/material';
 import CreateRSPost from 'components/create';
+import PostDetail from 'components/post';
 import RSList from 'components/rsList';
 import UpdateRSPost from 'components/update-post';
 import { GET_BUSINESS_PREMISES_POSTS } from 'graphql/queries/businessPremises';
@@ -45,6 +46,11 @@ const BusinessPremises = () => {
         setMenu(2)
     }, [selectedPost, menu])
 
+    const onViewPost = useCallback((post) => {
+        setSelectedPost(post)
+        setMenu(3)
+    }, [selectedPost, menu])
+
     const onSearch = useCallback((title) => {
         refetch({
             filter,
@@ -56,7 +62,7 @@ const BusinessPremises = () => {
     const renderMenu = () => {
         switch (menu) {
             case 0:
-                return <RSList data={items} selectPost={onSelectPost} type="van-phong-mat-bang"/>
+                return <RSList data={items} selectPost={onSelectPost} type="van-phong-mat-bang" viewPost={onViewPost}/>
 
             case 1:
                 return <CreateRSPost type="van-phong-mat-bang" />
@@ -64,8 +70,11 @@ const BusinessPremises = () => {
             case 2:
                 return <UpdateRSPost type="van-phong-mat-bang" post={selectedPost} />
 
+            case 3:
+                return <PostDetail post={selectedPost} />
+
             default:
-                return <RSList data={items} selectPost={onSelectPost} type="van-phong-mat-bang"/>
+                return <RSList data={items} selectPost={onSelectPost} type="van-phong-mat-bang" />
         }
     }
 
@@ -104,7 +113,7 @@ const BusinessPremises = () => {
                                 {"Cho Thuê"}
                             </MenuItem>
                         </TextField>
-                        <SearchSection onSearch={onSearch}/>
+                        <SearchSection onSearch={onSearch} />
                     </Box>
                 </Grid>
                 <Grid xl={3} item>

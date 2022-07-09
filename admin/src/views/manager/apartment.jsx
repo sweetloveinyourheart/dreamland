@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Divider, Grid, Typography, Tabs, Tab, Box, TextField, MenuItem, Button } from '@mui/material';
 import CreateRSPost from 'components/create';
+import PostDetail from 'components/post';
 import RSList from 'components/rsList';
 import UpdateRSPost from 'components/update-post';
 import { GET_APARTMENT_POSTS } from 'graphql/queries/apartment';
@@ -43,21 +44,11 @@ const Apartment = () => {
 
     }, [data, error])
 
-    const renderMenu = () => {
-        switch (menu) {
-            case 0:
-                return <RSList data={items} selectPost={onSelectPost} type="can-ho-chung-cu"/>
 
-            case 1:
-                return <CreateRSPost type="can-ho-chung-cu" />
-
-            case 2:
-                return <UpdateRSPost type="can-ho-chung-cu" post={selectedPost} />
-
-            default:
-                return <RSList data={items} selectPost={onSelectPost} type="can-ho-chung-cu"/>
-        }
-    }
+    const onViewPost = useCallback((post) => {
+        setSelectedPost(post)
+        setMenu(3)
+    }, [selectedPost, menu])
 
     const onSelectPost = useCallback((post) => {
         setSelectedPost(post)
@@ -78,6 +69,26 @@ const Apartment = () => {
         refetch({
             paging: { limit: paging.limit + 20 }
         })
+    }
+
+    
+    const renderMenu = () => {
+        switch (menu) {
+            case 0:
+                return <RSList data={items} selectPost={onSelectPost} type="can-ho-chung-cu" viewPost={onViewPost}/>
+
+            case 1:
+                return <CreateRSPost type="can-ho-chung-cu" />
+
+            case 2:
+                return <UpdateRSPost type="can-ho-chung-cu" post={selectedPost} />
+
+            case 3:
+                return <PostDetail post={selectedPost} />
+
+            default:
+                return <RSList data={items} selectPost={onSelectPost} type="can-ho-chung-cu"/>
+        }
     }
 
     return (

@@ -1,15 +1,16 @@
 import { useMutation } from "@apollo/client";
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from "@mui/material";
+import { DELETE_APARTMENT, DELETE_BUSINESS_PREMISES, DELETE_HOUSE, DELETE_LAND, DELETE_MOTAL } from "graphql/mutations/remove";
 import { UPDATE_APARTMENT, UPDATE_BUSINESS_PREMISES, UPDATE_HOUSE, UPDATE_LAND, UPDATE_MOTAL } from "graphql/mutations/update";
 import { moneyConverter } from "helpers/money";
 import { useEffect, useState } from "react";
 import Notification from "ui-component/notifications/notification";
 
-const Item = ({ data, selectPost, onSetOutStanding, onSetActived, viewPost }) => {
+const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
     return (
         <Grid md={6} lg={4} xl={3} item>
             <Card variant="outlined">
-                <Box onClick={() => viewPost(data)} sx={{ cursor: 'pointer' }}>
+                <Box onClick={() => selectPost(data)} sx={{ cursor: 'pointer' }}>
                     <CardMedia
                         component="img"
                         height="240"
@@ -26,19 +27,12 @@ const Item = ({ data, selectPost, onSetOutStanding, onSetActived, viewPost }) =>
                     </CardContent>
                 </Box>
                 <CardActions sx={{ padding: "12px 24px" }}>
-                    <Button
-                        variant="contained"
-                        color="warning"
-                        onClick={() => onSetOutStanding(data)}
-                    >
-                        {data.outstanding ? "Gỡ nổi bật" : "Đặt nổi bật"}
-                    </Button>
-                    <Button variant="contained" color="success" onClick={() => selectPost(data)}>
-                        Chỉnh sửa
+                    <Button variant="contained" color="warning" onClick={() => onSetActived(data)}>
+                        Duyệt
                     </Button>
                     &nbsp;
-                    <Button variant="contained" color="error" onClick={() => onSetActived(data)}>
-                        {data.postStatus === 'Available' ? "Khoá" : "Kích hoạt"}
+                    <Button variant="contained" color="error" onClick={() => onDelete(data)}>
+                        Từ chối
                     </Button>
                 </CardActions>
             </Card>
@@ -47,7 +41,7 @@ const Item = ({ data, selectPost, onSetOutStanding, onSetActived, viewPost }) =>
     )
 }
 
-const RSList = ({ type, data, selectPost, viewPost }) => {
+const PendingList = ({ type, data, selectPost }) => {
     const [modal, setModal] = useState({
         message: '',
         active: false
@@ -59,62 +53,11 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
     const [updateBusinessPremises, { data: updateBusinessPremisesData, error: updateBusinessPremisesErr }] = useMutation(UPDATE_BUSINESS_PREMISES)
     const [updateMotal, { data: updateMotalData, error: updateMotalErr }] = useMutation(UPDATE_MOTAL)
 
-    const setOutStanding = (post) => {
-        if (type === "can-ho-chung-cu") {
-            updateApartment({
-                variables: {
-                    postId: post._id,
-                    status: {
-                        outstanding: !post.outstanding
-                    }
-                }
-            })
-        }
-
-        if (type === "nha-o") {
-            updateHouse({
-                variables: {
-                    postId: post._id,
-                    status: {
-                        outstanding: !post.outstanding
-                    }
-                }
-            })
-        }
-
-        if (type === "dat") {
-            updateLand({
-                variables: {
-                    postId: post._id,
-                    status: {
-                        outstanding: !post.outstanding
-                    }
-                }
-            })
-        }
-
-        if (type === "van-phong-mat-bang") {
-            updateBusinessPremises({
-                variables: {
-                    postId: post._id,
-                    status: {
-                        outstanding: !post.outstanding
-                    }
-                }
-            })
-        }
-
-        if (type === "phong-tro") {
-            updateMotal({
-                variables: {
-                    postId: post._id,
-                    status: {
-                        outstanding: !post.outstanding
-                    }
-                }
-            })
-        }
-    }
+    const [deleteApartment, { data: deleteApartmentData, error: deleteApartmentErr }] = useMutation(DELETE_APARTMENT)
+    const [deleteHouse, { data: deleteHouseData, error: deleteHouseErr }] = useMutation(DELETE_HOUSE)
+    const [deleteLand, { data: deleteLandData, error: deleteLandErr }] = useMutation(DELETE_LAND)
+    const [deleteBusinessPremises, { data: deleteBusinessPremisesData, error: deleteBusinessPremisesErr }] = useMutation(DELETE_BUSINESS_PREMISES)
+    const [deleteMotal, { data: deleteMotalData, error: deleteMotalErr }] = useMutation(DELETE_MOTAL)
 
     const setActived = (post) => {
         if (type === "can-ho-chung-cu") {
@@ -122,7 +65,7 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: 'Available'
                     }
                 }
             })
@@ -133,7 +76,7 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: 'Available'
                     }
                 }
             })
@@ -144,7 +87,7 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: 'Available'
                     }
                 }
             })
@@ -155,7 +98,7 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: 'Available'
                     }
                 }
             })
@@ -166,8 +109,50 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: 'Available'
                     }
+                }
+            })
+        }
+    }
+
+    const deletePost = (post) => {
+        if (type === "can-ho-chung-cu") {
+            deleteApartment({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+
+        if (type === "nha-o") {
+            deleteHouse({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+
+        if (type === "dat") {
+            deleteLand({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+
+        if (type === "van-phong-mat-bang") {
+            deleteBusinessPremises({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+
+        if (type === "phong-tro") {
+            deleteMotal({
+                variables: {
+                    postId: post._id
                 }
             })
         }
@@ -176,14 +161,14 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
     useEffect(() => {
         if (updateApartmentData || updateHouseData || updateLandData || updateBusinessPremisesData || updateMotalData) {
             setModal({
-                message: "Cập nhật thông tin thành công !",
+                message: "Duyệt thành công !",
                 active: true
             })
         }
 
         if (updateApartmentErr || updateHouseErr || updateLandErr || updateBusinessPremisesErr || updateMotalErr) {
             setModal({
-                message: "Cập nhật thông tin thất bại !",
+                message: "Duyệt thất bại !",
                 active: true
             })
         }
@@ -200,11 +185,38 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
         updateMotalErr
     ])
 
+    useEffect(() => {
+        if (deleteApartmentData || deleteHouseData || deleteLandData || deleteBusinessPremisesData || deleteMotalData) {
+            setModal({
+                message: "Đã từ chối bài đăng !",
+                active: true
+            })
+        }
+
+        if (deleteApartmentErr || deleteHouseErr || deleteLandErr || deleteBusinessPremisesErr || deleteMotalErr) {
+            setModal({
+                message: "Có lỗi xảy ra, vui lòng refresh trang và thử lại !",
+                active: true
+            })
+        }
+    }, [
+        deleteApartmentData,
+        deleteApartmentErr,
+        deleteHouseData,
+        deleteHouseErr,
+        deleteLandData,
+        deleteLandErr,
+        deleteBusinessPremisesData,
+        deleteBusinessPremisesErr,
+        deleteMotalData,
+        deleteMotalErr
+    ])
+
     const renderData = () => {
         let result
         if (data) {
             result = data.map((elm, ind) => {
-                return <Item data={elm} key={ind} selectPost={selectPost} onSetActived={setActived} onSetOutStanding={setOutStanding} viewPost={viewPost}/>
+                return <PendingItem data={elm} key={ind} selectPost={selectPost} onSetActived={setActived} onDelete={deletePost} />
             })
         }
 
@@ -221,4 +233,4 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
     );
 }
 
-export default RSList;
+export default PendingList;
