@@ -34,7 +34,7 @@ import * as redisStore from 'cache-manager-redis-store';
       debug: false,
       autoSchemaFile: true
     }),
-    MongooseModule.forRoot(process.env.MONGO_URL, {
+    MongooseModule.forRoot(process.env.ATLAT_URL, {
       connectionFactory: (connection) => {
         connection.plugin(require('mongoose-autopopulate'));
         return connection;
