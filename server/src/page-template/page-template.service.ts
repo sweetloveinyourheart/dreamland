@@ -4,10 +4,14 @@ import { PageTemplate as PageTemplateModel, PageTemplateDocument } from './schem
 import { Model } from "mongoose"
 import { UpdateTemplateInput } from './dto/update.input';
 import { PageTemplate } from './models/template.model';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class PageTemplateService {
-    constructor(@InjectModel(PageTemplateModel.name) private templageModel: Model<PageTemplateDocument>) { }
+    constructor(
+        @InjectModel(PageTemplateModel.name) private templageModel: Model<PageTemplateDocument>,
+        private cloudinaryService: CloudinaryService
+    ) { }
 
     async getTemplate(pageName): Promise<PageTemplate> {
         try {
@@ -28,7 +32,11 @@ export class PageTemplateService {
                 return await newTemplate.save()
             }
 
-            return await this.templageModel.findOneAndUpdate({ pageName }, data)
+            const updated = await this.templageModel.findOneAndUpdate({ pageName }, data)
+
+            await this.cloudinaryService.removeFile(updated.banner)
+
+            return updated
 
         } catch (error) {
             throw new NotFoundException()

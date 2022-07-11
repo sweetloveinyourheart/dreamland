@@ -7,6 +7,7 @@ import { House, HouseSchema } from './schemas/house.schema';
 import { Land, LandSchema } from './schemas/land.schema';
 import { BusinessPremises, BusinessPremisesSchema } from './schemas/business-premises.schema';
 import { Motal, MotalSchema } from './schemas/motal.schema';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { Motal, MotalSchema } from './schemas/motal.schema';
         name: Motal.name, 
         schema: MotalSchema
       }
-    ])
+    ]),
+    CloudinaryModule
   ],
   providers: [RealEstateResolver, RealEstateService],
   exports: [RealEstateService]

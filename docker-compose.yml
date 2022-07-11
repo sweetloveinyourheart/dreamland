@@ -31,6 +31,9 @@ services:
       - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
       - REDIS_HOST=redis
       - PORT=9000
+      - CLD_CLOUD_NAME=dienkhoiland
+      - CLD_API_KEY=579414987748234
+      - CLD_API_SECRET=Y7wrYG-qnBnucoD3jAy_kMum8iQ
 
     ports:
       - 9000:9000
@@ -52,6 +55,9 @@ services:
       - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
       - REDIS_HOST=redis
       - PORT=9001
+      - CLD_CLOUD_NAME=dienkhoiland
+      - CLD_API_KEY=579414987748234
+      - CLD_API_SECRET=Y7wrYG-qnBnucoD3jAy_kMum8iQ
 
     ports:
       - 9001:9001

@@ -215,7 +215,7 @@ export class RealEstateResolver {
   @Mutation(returns => House)
   async updateHousePost(
     @Args('postId') postId: string,
-    @Args('data', { nullable: true }) data: CreateHouseInput,
+    @Args('data', { nullable: true }) data: CreateHouseInput | null,
     @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
   ): Promise<House> {
     return await this.realEstateService.updateHousePost(postId, data, updateStatus);

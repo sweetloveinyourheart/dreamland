@@ -13,6 +13,7 @@ import { PageTemplateModule } from './page-template/page-template.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import type { ClientOpts } from 'redis';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
@@ -33,7 +34,7 @@ import * as redisStore from 'cache-manager-redis-store';
       debug: false,
       autoSchemaFile: true
     }),
-    MongooseModule.forRoot(process.env.ATLAS_URL, {
+    MongooseModule.forRoot(process.env.MONGO_URL, {
       connectionFactory: (connection) => {
         connection.plugin(require('mongoose-autopopulate'));
         return connection;
@@ -46,7 +47,8 @@ import * as redisStore from 'cache-manager-redis-store';
     StatsModule,
     BlogModule,
     PageTemplateModule,
-    AuthModule
+    AuthModule,
+    CloudinaryModule
   ],
   controllers: [AppController],
   providers: [AppService],

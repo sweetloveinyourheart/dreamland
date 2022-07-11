@@ -9,7 +9,7 @@ import axios from 'axios';
 import { CloudName } from 'constants/cloudinary';
 import { EDIT_PROJECT } from 'graphql/mutations/update';
 
-const UpdateProject = ({ project }) => {
+const UpdateProject = ({ project, goBack }) => {
     const [formData, setFormData] = useState({
         projectName: "",
         description: "",
@@ -35,7 +35,8 @@ const UpdateProject = ({ project }) => {
 
     const [modal, setModal] = useState({
         message: '',
-        active: false
+        active: false,
+        success: false
     })
 
     const maxNumber = 10;
@@ -87,9 +88,9 @@ const UpdateProject = ({ project }) => {
             }
         } catch (error) {
             return {
-                mediaImagePresets: null,
-                utilitiesPresets: null,
-                masterPlanPresets: null
+                mediaImagePresets: [],
+                utilitiesPresets: [],
+                masterPlanPresets: []
             }
         }
     }
@@ -102,20 +103,26 @@ const UpdateProject = ({ project }) => {
 
         if (option === 1) {
             const result = imageList.map((el) => {
-                return {
-                    image: el,
-                    title: ''
-                }
+                if (el.image === undefined)
+                    return {
+                        image: el,
+                        title: ''
+                    }
+
+                return el
             })
             setUtilities(result);
         }
 
         if (option === 2) {
             const result = imageList.map((el) => {
-                return {
-                    image: el,
-                    title: ''
-                }
+                if (el.image === undefined)
+                    return {
+                        image: el,
+                        title: ''
+                    }
+
+                return el
             })
             setMasterPlan(result);
         }
@@ -157,30 +164,12 @@ const UpdateProject = ({ project }) => {
         const { mediaImagePresets, utilitiesPresets, masterPlanPresets } = await onUploadImage()
 
         let updateData = {
-            ...formData
-        }
-
-        if (mediaImagePresets.length !== 0) {
-            updateData = {
-                ...updateData,
-                media: {
-                    images: mediaImagePresets
-                },
-            }
-        }
-
-        if (utilitiesPresets.length !== 0) {
-            updateData = {
-                ...updateData,
-                utilities: utilitiesPresets,
-            }
-        }
-
-        if (masterPlanPresets.length !== 0) {
-            updateData = {
-                ...updateData,
-                masterPlan: masterPlanPresets
-            }
+            ...formData,
+            media: {
+                images: [...formData.media.images, ...mediaImagePresets]
+            },
+            utilities: [...formData.utilities, ...utilitiesPresets],
+            masterPlan: [...formData.masterPlan, ...masterPlanPresets]
         }
 
         edit({
@@ -191,43 +180,58 @@ const UpdateProject = ({ project }) => {
         })
     }
 
-    const resetForm = () => {
-        setFormData({
-            projectName: "",
-            description: "",
-            address: {},
-            investor: {
-                name: "",
-                establishYear: 2022,
-                about: ""
-            },
-            information: {}
-        })
-        setImages([])
-        setSelectedAdress({
-            province: undefined,
-            district: undefined,
-            ward: undefined
-        })
+    const onDeleteImage = (index, option) => {
+        if (option === 1) {
+            let items = formData.utilities
+            items.splice(index, 1)
+            setFormData(s => ({ ...s, utilities: items }))
+            return;
+        }
+
+        if (option === 2) {
+            let items = formData.masterPlan
+            items.splice(index, 1)
+            setFormData(s => ({ ...s, masterPlan: items }))
+            return;
+        }
+
+        let items = formData.media.images
+        items.splice(index, 1)
+        setFormData(s => ({ ...s, media: { ...s.media, images: items } }))
     }
 
     useEffect(() => {
         setIsUploading(false)
         if (data && !error) {
-            resetForm()
+
             setModal({
-                message: "Đăng tin thành công !",
-                active: true
+                message: "Chỉnh sửa thành công !",
+                active: true,
+                success: true
             })
+            goBack()
         }
 
         if (error) {
             setModal({
-                message: "Đăng tin thất bại !",
-                active: true
+                message: "Chỉnh sửa thất bại !",
+                active: true,
+                success: false
             })
         }
     }, [data, error])
+
+    const onCloseModal = () => {
+        if (modal.success) {
+            goBack()
+        }
+
+        setModal({
+            message: '',
+            active: false,
+            success: false
+        })
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -342,13 +346,11 @@ const UpdateProject = ({ project }) => {
                                                 id="province"
                                                 name='province'
                                                 fullWidth
-                                                label="Tỉnh"
-
+                                                label={formData.address?.province ?? "Tỉnh"}
                                                 variant="outlined"
                                                 margin="normal"
                                                 value={formData.address?.province}
                                                 select
-                                                defaultValue={""}
                                                 onChange={e => setFormData(s => ({ ...s, address: { ...s.address, province: e.target.value } }))}
 
                                             >
@@ -364,10 +366,8 @@ const UpdateProject = ({ project }) => {
                                                 id="district"
                                                 name='district'
                                                 fullWidth
-                                                label="Quận/Huyện"
-
+                                                label={formData.address?.district ?? "Quận/Huyện"}
                                                 variant="outlined"
-                                                defaultValue={""}
                                                 select
                                                 value={formData.address?.district}
                                                 onChange={e => setFormData(s => ({ ...s, address: { ...s.address, district: e.target.value } }))}
@@ -385,7 +385,7 @@ const UpdateProject = ({ project }) => {
                                                 id="ward"
                                                 name='ward'
                                                 fullWidth
-                                                label="Xã/Phường"
+                                                label={formData.address?.ward ?? "Xã/Phường"}
 
                                                 variant="outlined"
                                                 defaultValue={""}
@@ -427,7 +427,7 @@ const UpdateProject = ({ project }) => {
                                                 fullWidth
                                                 select
 
-                                                label="Loại hình"
+                                                label={"Loại hình"}
                                                 value={formData.information.type}
                                                 onChange={e => setFormData(s => ({ ...s, information: { ...s.information, type: e.target.value } }))}
                                                 defaultValue={""}
@@ -524,16 +524,20 @@ const UpdateProject = ({ project }) => {
                     </SubCard>
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <SubCard title="Tiện ích">
-                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
+                    <SubCard title="Tiện ích (4:3 / 16:9)">
+                        <Typography>* Hình ảnh hiện tại</Typography>
                         <Grid marginTop={2} container spacing={1}>
                             {project.utilities.map((item, index) => (
                                 <Grid item lg={4} key={index}>
                                     <img src={item.image} style={{ width: '100%' }} />
                                     <Typography>{item.title}</Typography>
+                                    <Box sx={{ display: "flex", justifyContent: "center", marginY: 1 }} fullWidth>
+                                        <Button variant="outlined" onClick={() => onDeleteImage(index, 1)}>Loại bỏ</Button>
+                                    </Box >
                                 </Grid>
                             ))}
                         </Grid>
+                        <Typography mt={2}>* Hình ảnh thêm mới</Typography>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple
@@ -541,6 +545,7 @@ const UpdateProject = ({ project }) => {
                                 onChange={imgList => onChange(imgList, 1)}
                                 maxNumber={maxNumber}
                                 dataURLKey="data_url"
+                                resolutionType='ratio'
                             >
                                 {({
                                     imageList,
@@ -553,30 +558,14 @@ const UpdateProject = ({ project }) => {
                                 }) => (
                                     // write your building UI
                                     <div className="upload__image-wrapper">
-                                        <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
-                                            <Button
-                                                style={isDragging ? { color: 'red' } : undefined}
-                                                onClick={onImageUpload}
-                                                {...dragProps}
-                                                variant="contained"
-                                                color="secondary"
-                                            >
-                                                Chỉnh sửa bộ ảnh
-                                            </Button>
-                                            &nbsp;
-                                            <Button
-                                                variant="contained"
-                                                color="error"
-                                                onClick={onImageRemoveAll}
-                                            >
-                                                Reset bộ ảnh
-                                            </Button>
-                                        </ButtonGroup>
+
                                         <Grid marginTop={2} container spacing={1}>
                                             {imageList.map((elm, index) => (
                                                 <Grid item xs={12} lg={6} key={index}>
                                                     <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                                                        <img src={elm.image['data_url']} alt="" width="100%" />
+                                                        <Box>
+                                                            <img src={elm.image['data_url']} alt="" style={{ maxWidth: '100%', height: 'auto' }} />
+                                                        </Box>
                                                         <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
                                                             <TextField
                                                                 value={elm.title}
@@ -587,49 +576,13 @@ const UpdateProject = ({ project }) => {
                                                                 label='Tiêu đề tiện ích'
                                                             />
                                                         </Box>
-                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
-
+                                                        <Box sx={{ display: "flex", justifyContent: "center", marginBottom: 1 }} fullWidth>
                                                             <Button variant="outlined" onClick={() => onOptionalRemove(index, 1)}>Loại bỏ</Button>
                                                         </Box >
                                                     </div>
                                                 </Grid>
                                             ))}
                                         </Grid>
-                                    </div>
-                                )}
-                            </ImageUploading>
-                        </Grid>
-                    </SubCard>
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                    <SubCard title="Hình ảnh dự án">
-                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới </Typography>
-                        <Grid marginTop={2} container spacing={1}>
-                            {project.media.images.map((image, index) => (
-                                <Grid item lg={4} key={index}>
-                                    <img src={image} style={{ width: '100%' }} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                        <Grid item sm={12} xs={12}>
-                            <ImageUploading
-                                multiple
-                                value={images}
-                                onChange={imgList => onChange(imgList, 0)}
-                                maxNumber={maxNumber}
-                                dataURLKey="data_url"
-                            >
-                                {({
-                                    imageList,
-                                    onImageUpload,
-                                    onImageRemoveAll,
-                                    onImageUpdate,
-                                    onImageRemove,
-                                    isDragging,
-                                    dragProps,
-                                }) => (
-                                    // write your building UI
-                                    <div className="upload__image-wrapper">
                                         <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
                                             <Button
                                                 style={isDragging ? { color: 'red' } : undefined}
@@ -638,7 +591,7 @@ const UpdateProject = ({ project }) => {
                                                 variant="contained"
                                                 color="secondary"
                                             >
-                                                Chỉnh sửa bộ ảnh
+                                                Thêm hình ảnh
                                             </Button>
                                             &nbsp;
                                             <Button
@@ -646,39 +599,31 @@ const UpdateProject = ({ project }) => {
                                                 color="error"
                                                 onClick={onImageRemoveAll}
                                             >
-                                                Reset bộ ảnh
+                                                Xoá toàn bộ ảnh vừa thêm
                                             </Button>
                                         </ButtonGroup>
-                                        <Grid marginTop={2} container spacing={1}>
-                                            {imageList.map((image, index) => (
-                                                <Grid item xs={12} lg={6} key={index}>
-                                                    <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                                                        <img src={image['data_url']} alt="" width="100%" />
-                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
-                                                            <Button variant="outlined" onClick={() => onImageUpdate(index)}>Sửa đổi</Button>
-                                                            <Button variant="outlined" onClick={() => onImageRemove(index)}>Loại bỏ</Button>
-                                                        </Box >
-                                                    </div>
-                                                </Grid>
-                                            ))}
-                                        </Grid>
                                     </div>
                                 )}
                             </ImageUploading>
                         </Grid>
                     </SubCard>
                 </Grid>
+
                 <Grid item xs={12} lg={6}>
-                    <SubCard title="Mặt bằng dự án">
-                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
+                    <SubCard title="Mặt bằng dự án (4:3 / 16:9)">
+                        <Typography>* Hình ảnh hiện tại</Typography>
                         <Grid marginTop={2} container spacing={1}>
                             {project.masterPlan.map((item, index) => (
                                 <Grid item lg={4} key={index}>
                                     <img src={item.image} style={{ width: '100%' }} />
                                     <Typography marginTop={2}>{item.title}</Typography>
+                                    <Box sx={{ display: "flex", justifyContent: "center", marginY: 1 }} fullWidth>
+                                        <Button variant="outlined" onClick={() => onDeleteImage(index, 2)}>Loại bỏ</Button>
+                                    </Box >
                                 </Grid>
                             ))}
                         </Grid>
+                        <Typography mt={2}>* Hình ảnh thêm mới</Typography>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple
@@ -698,30 +643,14 @@ const UpdateProject = ({ project }) => {
                                 }) => (
                                     // write your building UI
                                     <div className="upload__image-wrapper">
-                                        <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
-                                            <Button
-                                                style={isDragging ? { color: 'red' } : undefined}
-                                                onClick={onImageUpload}
-                                                {...dragProps}
-                                                variant="contained"
-                                                color="secondary"
-                                            >
-                                                Chỉnh sửa bộ ảnh
-                                            </Button>
-                                            &nbsp;
-                                            <Button
-                                                variant="contained"
-                                                color="error"
-                                                onClick={onImageRemoveAll}
-                                            >
-                                                Reset bộ ảnh
-                                            </Button>
-                                        </ButtonGroup>
+
                                         <Grid marginTop={2} container spacing={1}>
                                             {imageList.map((elm, index) => (
                                                 <Grid item xs={12} lg={6} key={index}>
                                                     <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                                                        <img src={elm.image['data_url']} alt="" width="100%" />
+                                                        <Box>
+                                                            <img src={elm.image['data_url']} alt="" style={{ maxWidth: '100%', height: 'auto' }} />
+                                                        </Box>
                                                         <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
                                                             <TextField
                                                                 value={elm.title}
@@ -732,19 +661,115 @@ const UpdateProject = ({ project }) => {
                                                                 label='Tiêu đề mặt bằng'
                                                             />
                                                         </Box>
-                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
+                                                        <Box sx={{ display: "flex", justifyContent: "center", marginBottom: 2 }} fullWidth>
                                                             <Button variant="outlined" onClick={() => onOptionalRemove(index, 2)}>Loại bỏ</Button>
                                                         </Box >
                                                     </div>
                                                 </Grid>
                                             ))}
                                         </Grid>
+                                        <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
+                                            <Button
+                                                style={isDragging ? { color: 'red' } : undefined}
+                                                onClick={onImageUpload}
+                                                {...dragProps}
+                                                variant="contained"
+                                                color="secondary"
+                                            >
+                                                Thêm hình ảnh
+                                            </Button>
+                                            &nbsp;
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={onImageRemoveAll}
+                                            >
+                                                Xoá toàn bộ ảnh vừa thêm
+                                            </Button>
+                                        </ButtonGroup>
                                     </div>
                                 )}
                             </ImageUploading>
                         </Grid>
                     </SubCard>
                 </Grid>
+
+                <Grid item xs={12} lg={12}>
+                    <SubCard title="Hình ảnh dự án (16:9)">
+                        <Typography>* Hình ảnh hiện tại</Typography>
+                        <Grid marginTop={2} container spacing={1}>
+                            {project.media.images.map((image, index) => (
+                                <Grid item lg={4} key={index}>
+                                    <img src={image} style={{ width: '100%' }} />
+                                    <Box sx={{ display: "flex", justifyContent: "center", marginY: 1 }} fullWidth>
+                                        <Button variant="outlined" onClick={() => onDeleteImage(index, 0)}>Loại bỏ</Button>
+                                    </Box >
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Typography>* Hình ảnh thêm mới</Typography>
+                        <Grid item sm={12} xs={12}>
+                            <ImageUploading
+                                multiple
+                                value={images}
+                                onChange={imgList => onChange(imgList, 0)}
+                                maxNumber={maxNumber}
+                                dataURLKey="data_url"
+                            >
+                                {({
+                                    imageList,
+                                    onImageUpload,
+                                    onImageRemoveAll,
+                                    onImageUpdate,
+                                    onImageRemove,
+                                    isDragging,
+                                    dragProps,
+                                }) => (
+                                    // write your building UI
+                                    <div className="upload__image-wrapper">
+
+                                        <Grid marginTop={2} container spacing={1}>
+                                            {imageList.map((image, index) => (
+                                                <Grid item xs={12} lg={3} key={index}>
+                                                    <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                                                        <Box>
+                                                            <img src={image['data_url']} alt="" style={{ maxWidth: '100%', height: 'auto' }} />
+                                                        </Box>
+                                                        <Box sx={{ display: "flex", justifyContent: "center", marginBottom: 1 }} fullWidth>
+                                                            <Button variant="outlined" onClick={() => onImageUpdate(index)}>Sửa đổi</Button>
+                                                            <Button variant="outlined" onClick={() => onImageRemove(index)}>Loại bỏ</Button>
+                                                        </Box >
+                                                    </div>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
+
+                                        <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
+                                            <Button
+                                                style={isDragging ? { color: 'red' } : undefined}
+                                                onClick={onImageUpload}
+                                                {...dragProps}
+                                                variant="contained"
+                                                color="secondary"
+                                            >
+                                                Thêm hình ảnh
+                                            </Button>
+                                            &nbsp;
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={onImageRemoveAll}
+                                            >
+                                                Xoá toàn bộ ảnh vừa thêm
+                                            </Button>
+                                        </ButtonGroup>
+                                    </div>
+                                )}
+                            </ImageUploading>
+                        </Grid>
+                    </SubCard>
+                </Grid>
+
                 <Grid item xs={12} lg={12}>
                     <SubCard>
                         <Grid justifyContent="flex-end" container>
@@ -769,7 +794,7 @@ const UpdateProject = ({ project }) => {
             </Grid >
             <Modal
                 open={modal.active}
-                onClose={() => setModal(s => ({ ...s, active: !s.active }))}
+                onClose={() => onCloseModal()}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >

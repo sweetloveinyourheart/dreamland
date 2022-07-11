@@ -11,7 +11,7 @@ import { CloudName } from 'constants/cloudinary';
 import { GET_ALL_PROJECT_POSTS } from 'graphql/queries/project';
 import { UPDATE_APARTMENT, UPDATE_BUSINESS_PREMISES, UPDATE_HOUSE, UPDATE_LAND, UPDATE_MOTAL } from 'graphql/mutations/update';
 
-const UpdateRSPost = ({ type, post }) => {
+const UpdateRSPost = ({ type, post, goBack }) => {
     const [projects, setProjects] = useState([])
     const [formData, setFormData] = useState({
         title: "",
@@ -40,7 +40,8 @@ const UpdateRSPost = ({ type, post }) => {
 
     const [modal, setModal] = useState({
         message: '',
-        active: false
+        active: false,
+        success: false
     })
 
     const [isUploading, setIsUploading] = useState(false)
@@ -101,7 +102,7 @@ const UpdateRSPost = ({ type, post }) => {
 
     const onUploadImage = async () => {
         try {
-            if (images.length === 0) return null
+            if (images.length === 0) return []
 
             let formData = new FormData()
 
@@ -114,7 +115,7 @@ const UpdateRSPost = ({ type, post }) => {
 
             return presets
         } catch (error) {
-            return null
+            return []
         }
     }
 
@@ -126,7 +127,7 @@ const UpdateRSPost = ({ type, post }) => {
                     data: {
                         ...formData,
                         media: {
-                            images: imagePresets,
+                            images: [...formData.media.images, ...imagePresets],
                             videos: []
                         }
                     }
@@ -141,7 +142,7 @@ const UpdateRSPost = ({ type, post }) => {
                     data: {
                         ...formData,
                         media: {
-                            images: imagePresets,
+                            images: [...formData.media.images, ...imagePresets],
                             videos: []
                         }
                     }
@@ -156,7 +157,7 @@ const UpdateRSPost = ({ type, post }) => {
                     data: {
                         ...formData,
                         media: {
-                            images: imagePresets,
+                            images: [...formData.media.images, ...imagePresets],
                             videos: []
                         }
                     }
@@ -171,7 +172,7 @@ const UpdateRSPost = ({ type, post }) => {
                     data: {
                         ...formData,
                         media: {
-                            images: imagePresets,
+                            images: [...formData.media.images, ...imagePresets],
                             videos: []
                         }
                     }
@@ -186,7 +187,7 @@ const UpdateRSPost = ({ type, post }) => {
                     data: {
                         ...formData,
                         media: {
-                            images: imagePresets,
+                            images: [...formData.media.images, ...imagePresets],
                             videos: []
                         },
                         category: "ChoThue"
@@ -200,12 +201,7 @@ const UpdateRSPost = ({ type, post }) => {
         e.preventDefault()
         setIsUploading(true)
         const imagePresets = await onUploadImage()
-
-        if (imagePresets) {
-            activeMutation(imagePresets)
-        } else {
-            activeMutation(post.media.images)
-        }
+        activeMutation(imagePresets)
     }
 
     const renderType = () => {
@@ -247,20 +243,40 @@ const UpdateRSPost = ({ type, post }) => {
         }
     }
 
+    const onDeleteImage = (index) => {
+        let items = formData.media.images
+        items.splice(index, 1)
+        setFormData(s => ({ ...s, media: { ...s.media, images: items } }))
+    }
+
+    const onCloseModal = () => {
+        if (modal.success) {
+            goBack()
+        }
+
+        setModal({
+            message: '',
+            active: false,
+            success: false
+        })
+    }
+
     useEffect(() => {
         setIsUploading(false)
         if (updateApartmentData || updateHouseData || updateLandData || updateBusinessPremisesData || updateMotalData) {
-            resetForm()
+            goBack()
             setModal({
                 message: "Cập nhật thông tin thành công !",
-                active: true
+                active: true,
+                success: true
             })
         }
 
         if (updateApartmentErr || updateHouseErr || updateLandErr || updateBusinessPremisesErr || updateMotalErr) {
             setModal({
                 message: "Cập nhật thông tin thất bại !",
-                active: true
+                active: true,
+                success: false
             })
         }
     }, [
@@ -396,8 +412,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     id="province"
                                                     name='province'
                                                     fullWidth
-                                                    label="Tỉnh"
-
+                                                    label={formData.detail?.address?.province ?? "Tỉnh"}
                                                     variant="outlined"
                                                     margin="normal"
                                                     value={formData.detail?.address?.province}
@@ -418,7 +433,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     id="district"
                                                     name='district'
                                                     fullWidth
-                                                    label="Quận/Huyện"
+                                                    label={formData.detail?.address?.district ?? "Quận/Huyện"}
 
                                                     variant="outlined"
                                                     defaultValue={""}
@@ -439,7 +454,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     id="ward"
                                                     name='ward'
                                                     fullWidth
-                                                    label="Xã/Phường"
+                                                    label={formData.detail?.address?.ward ?? "Xã/Phường"}
 
                                                     variant="outlined"
                                                     defaultValue={""}
@@ -460,7 +475,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     id="street"
                                                     name='street'
                                                     fullWidth
-                                                    label="Tên đường"
+                                                    label={formData.detail?.address?.street ?? "Tên đường"}
 
                                                     variant="outlined"
                                                     margin="normal"
@@ -473,7 +488,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                     id="houseNumber"
                                                     name='houseNumber'
                                                     fullWidth
-                                                    label="Số nhà"
+                                                    label={formData.detail?.address?.houseNumber ?? "Số nhà"}
                                                     variant="outlined"
                                                     value={formData.detail?.address?.houseNumber}
                                                     margin="normal"
@@ -951,15 +966,21 @@ const UpdateRSPost = ({ type, post }) => {
                     </SubCard>
                 </Grid>
                 <Grid item xs={12} lg={5} >
-                    <SubCard title="Hình ảnh">
-                        <Typography marginBottom={1}>* Lưu ý: Hình ảnh sẽ được thay đổi toàn bộ nếu thay mới</Typography>
+                    <SubCard title="Hình ảnh (4:3)">
+                        <Typography marginBottom={1}>* Hình ảnh hiện tại</Typography>
                         <Grid marginTop={2} container spacing={1}>
                             {post.media.images.map((image, index) => (
-                                <Grid item lg={4} key={index}>
-                                    <img src={image} style={{ width: '100%' }} />
+                                <Grid item lg={6} key={index}>
+                                    <Box>
+                                        <img src={image} style={{ width: '100%' }} />
+                                    </Box>
+                                    <Box sx={{ display: "flex", justifyContent: "center", marginY: 1 }} fullWidth>
+                                        <Button variant="outlined" onClick={() => onDeleteImage(index)}>Loại bỏ</Button>
+                                    </Box >
                                 </Grid>
                             ))}
                         </Grid>
+                        <Typography marginY={1}>* Hình ảnh thêm mới</Typography>
                         <Grid item sm={12} xs={12}>
                             <ImageUploading
                                 multiple
@@ -979,6 +1000,20 @@ const UpdateRSPost = ({ type, post }) => {
                                 }) => (
                                     // write your building UI
                                     <div className="upload__image-wrapper">
+
+                                        <Grid marginTop={2} container spacing={1}>
+                                            {imageList.map((image, index) => (
+                                                <Grid item xs={12} lg={6} key={index}>
+                                                    <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                                                        <img src={image['data_url']} alt="" width="100%" />
+                                                        <Box sx={{ display: "flex", justifyContent: "center", marginBottom: 1 }} fullWidth>
+                                                            <Button variant="outlined" onClick={() => onImageUpdate(index)}>Sửa đổi</Button>
+                                                            <Button variant="outlined" onClick={() => onImageRemove(index)}>Loại bỏ</Button>
+                                                        </Box >
+                                                    </div>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
                                         <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
                                             <Button
                                                 style={isDragging ? { color: 'red' } : undefined}
@@ -987,7 +1022,7 @@ const UpdateRSPost = ({ type, post }) => {
                                                 variant="contained"
                                                 color="secondary"
                                             >
-                                                Chỉnh sửa hình ảnh
+                                                Thêm hình ảnh
                                             </Button>
                                             &nbsp;
                                             <Button
@@ -998,19 +1033,6 @@ const UpdateRSPost = ({ type, post }) => {
                                                 Reset bộ ảnh
                                             </Button>
                                         </ButtonGroup>
-                                        <Grid marginTop={2} container spacing={1}>
-                                            {imageList.map((image, index) => (
-                                                <Grid item xs={12} lg={6} key={index}>
-                                                    <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-                                                        <img src={image['data_url']} alt="" width="100%" />
-                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
-                                                            <Button variant="outlined" onClick={() => onImageUpdate(index)}>Sửa đổi</Button>
-                                                            <Button variant="outlined" onClick={() => onImageRemove(index)}>Loại bỏ</Button>
-                                                        </Box >
-                                                    </div>
-                                                </Grid>
-                                            ))}
-                                        </Grid>
                                     </div>
                                 )}
                             </ImageUploading>
@@ -1020,7 +1042,7 @@ const UpdateRSPost = ({ type, post }) => {
             </Grid >
             <Modal
                 open={modal.active}
-                onClose={() => setModal(s => ({ ...s, active: !s.active }))}
+                onClose={() => setModal(s => onCloseModal())}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >

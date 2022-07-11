@@ -11,7 +11,7 @@ import axios from 'axios'
 import { CloudName } from 'constants/cloudinary';
 import { GET_ALL_PROJECT_POSTS } from 'graphql/queries/project';
 
-const CreateRSPost = ({ type }) => {
+const CreateRSPost = ({ type, goBack }) => {
     const [projects, setProjects] = useState([])
     const [formData, setFormData] = useState({
         title: "",
@@ -42,7 +42,8 @@ const CreateRSPost = ({ type }) => {
 
     const [modal, setModal] = useState({
         message: '',
-        active: false
+        active: false,
+        success: false
     })
 
     const [isUploading, setIsUploading] = useState(false)
@@ -100,7 +101,8 @@ const CreateRSPost = ({ type }) => {
                 setIsUploading(false)
                 setModal({
                     message: 'Chưa có hình ảnh !',
-                    active: false
+                    active: false,
+                    success: false
                 })
                 return null
             }
@@ -242,20 +244,34 @@ const CreateRSPost = ({ type }) => {
         }
     }
 
+    const onCloseModal = () => {
+        if (modal.success) {
+            goBack()
+        }
+
+        setModal({
+            message: '',
+            active: false,
+            success: false
+        })
+    }
+
     useEffect(() => {
         setIsUploading(false)
         if (createApartmentData || createHouseData || createLandData || createBusinessPremisesData || createMotalData) {
             resetForm()
             setModal({
                 message: "Đăng tin thành công !",
-                active: true
+                active: true,
+                success: true
             })
         }
 
         if (createApartmentErr || createHouseErr || createLandErr || createBusinessPremisesErr || createMotalErr) {
             setModal({
                 message: "Đăng tin thất bại !",
-                active: true
+                active: true,
+                success: false
             })
         }
     }, [
@@ -354,7 +370,7 @@ const CreateRSPost = ({ type }) => {
                                                             variant="outlined"
                                                             margin="normal"
                                                             value={formData.detail?.position?.floorNumber ?? ""}
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail?.position, floorNumber: e.target.value } } }))}
+                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail?.position, floorNumber: Number(e.target.value) } } }))}
 
                                                         />
                                                     </Grid>
@@ -1018,7 +1034,7 @@ const CreateRSPost = ({ type }) => {
             </Grid >
             <Modal
                 open={modal.active}
-                onClose={() => setModal(s => ({ ...s, active: !s.active }))}
+                onClose={() => onCloseModal()}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >

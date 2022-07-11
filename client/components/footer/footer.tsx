@@ -92,7 +92,7 @@ const Footer: FunctionComponent<FooterProps> = () => {
                     </Col>
                 </Row>
                 <div className={styles["address"]}>
-                    <address>CÔNG TY TNHH CHỢ TỐT - Địa chỉ: Phòng 1808, Tầng 18, Mê Linh Point Tower, 02 Ngô Đức Kế, Phường Bến Nghé, Quận 1, TP Hồ Chí Minh </address>
+                    <address>CÔNG TY CỔ PHẦN TẬP ĐOÀN ĐIỀN KHÔI - Địa chỉ: 89G Lý Thái Tổ, P. Tân Lợi, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk. </address>
                 </div>
             </Container>
         </footer>

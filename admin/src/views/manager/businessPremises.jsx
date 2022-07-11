@@ -41,6 +41,12 @@ const BusinessPremises = () => {
         }
     }, [data, error])
 
+    const onGoBack = useCallback(() => {
+        setSelectedPost(undefined)
+        setMenu(0)
+        refetch()
+    }, [selectedPost, menu])
+
     const onSelectPost = useCallback((post) => {
         setSelectedPost(post)
         setMenu(2)
@@ -65,10 +71,10 @@ const BusinessPremises = () => {
                 return <RSList data={items} selectPost={onSelectPost} type="van-phong-mat-bang" viewPost={onViewPost}/>
 
             case 1:
-                return <CreateRSPost type="van-phong-mat-bang" />
+                return <CreateRSPost type="van-phong-mat-bang" goBack={onGoBack}/>
 
             case 2:
-                return <UpdateRSPost type="van-phong-mat-bang" post={selectedPost} />
+                return <UpdateRSPost type="van-phong-mat-bang" post={selectedPost} goBack={onGoBack}/>
 
             case 3:
                 return <PostDetail post={selectedPost} />

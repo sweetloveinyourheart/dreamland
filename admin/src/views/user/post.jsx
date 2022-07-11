@@ -13,12 +13,18 @@ function PostManager() {
 
     const [menu, setMenu] = useState(0)
 
-    const { data } = useQuery(GET_PENDING_POST, {
+    const { data, refetch } = useQuery(GET_PENDING_POST, {
         variables: {
             category: category
         },
         fetchPolicy: 'no-cache'
     })
+
+    const onGoBack = useCallback(() => {
+        setSelectedPost(undefined)
+        setMenu(0)
+        refetch()
+    }, [setSelectedPost, menu])
 
     const onSelectPost = useCallback((post) => {
         setSelectedPost(post)
@@ -63,23 +69,23 @@ function PostManager() {
                 : (
                     <Box>
                         <Box marginY={4}>
-                            <PendingList data={data?.apartments ?? []} selectPost={onSelectPost} type="can-ho-chung-cu" />
+                            <PendingList data={data?.apartments ?? []} selectPost={onSelectPost} type="can-ho-chung-cu" goBack={onGoBack} />
 
                         </Box>
                         <Box marginY={4}>
-                            <PendingList data={data?.houses ?? []} selectPost={onSelectPost} type="nha-o" />
+                            <PendingList data={data?.houses ?? []} selectPost={onSelectPost} type="nha-o" goBack={onGoBack} />
 
                         </Box>
                         <Box marginY={4}>
-                            <PendingList data={data?.lands ?? []} selectPost={onSelectPost} type="dat" />
+                            <PendingList data={data?.lands ?? []} selectPost={onSelectPost} type="dat" goBack={onGoBack} />
 
                         </Box>
                         <Box marginY={4}>
-                            <PendingList data={data?.businessPremises ?? []} selectPost={onSelectPost} type="van-phong-mat-bang" />
+                            <PendingList data={data?.businessPremises ?? []} selectPost={onSelectPost} type="van-phong-mat-bang" goBack={onGoBack} />
 
                         </Box>
                         <Box marginY={4}>
-                            <PendingList data={data?.motals ?? []} selectPost={onSelectPost} type="phong-tro" />
+                            <PendingList data={data?.motals ?? []} selectPost={onSelectPost} type="phong-tro" goBack={onGoBack} />
                         </Box>
                     </Box>
                 )

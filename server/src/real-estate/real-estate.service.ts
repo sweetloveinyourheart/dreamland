@@ -26,6 +26,7 @@ import { RealEstateFilter } from './dto/inputs/general/filter.input';
 import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
 import { UserPayload } from 'src/auth/decorators/user.decorator';
 import { UserRole } from 'src/user/enum/user.enum';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class RealEstateService {
@@ -36,6 +37,7 @@ export class RealEstateService {
         @InjectModel(BusinessPremisesModel.name) private businessPremisesModel: Model<BusinessPremisesDocument>,
         @InjectModel(MotalModel.name) private motalModel: Model<MotalDocument>,
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
+        private cloudinaryService: CloudinaryService
     ) { }
 
     async createApartmentPost(data: CreateApartmentInput, user: UserPayload): Promise<Apartment> {
@@ -150,56 +152,107 @@ export class RealEstateService {
         }
     }
 
-    async updateApartmentPost(postId: string, data: CreateApartmentInput, updateStatus: UpdatePostStatusInput): Promise<Apartment> {
+    async updateApartmentPost(postId: string, data: CreateApartmentInput | null, updateStatus: UpdatePostStatusInput | null): Promise<Apartment> {
         try {
-            return await this.apartmentModel.findByIdAndUpdate(postId, {
+            const updated = await this.apartmentModel.findByIdAndUpdate(postId, {
                 ...data,
                 ...updateStatus
             })
+
+            if (data)
+                updated.media.images.forEach(async (image) => {
+                    const exist = data.media.images.find(img => img === image)
+                    if (!exist) {
+                        await this.cloudinaryService.removeFile(image)
+                    }
+                })
+
+            return updated
         } catch (error) {
             throw new BadRequestException()
         }
     }
 
-    async updateHousePost(postId: string, data: CreateHouseInput, updateStatus: UpdatePostStatusInput): Promise<House> {
+    async updateHousePost(postId: string, data: CreateHouseInput | null, updateStatus: UpdatePostStatusInput): Promise<House> {
         try {
-            return await this.houseModel.findByIdAndUpdate(postId, {
+            const updated = await this.houseModel.findByIdAndUpdate(postId, {
                 ...data,
                 ...updateStatus
             })
+
+            if (data)
+                updated.media.images.forEach(async (image) => {
+                    const exist = data.media.images.find(img => img === image)
+                    if (!exist) {
+                        await this.cloudinaryService.removeFile(image)
+                    }
+                })
+
+            return updated
+
         } catch (error) {
             throw new BadRequestException()
         }
     }
 
-    async updateLandPost(postId: string, data: CreateLandInput, updateStatus: UpdatePostStatusInput): Promise<Land> {
+    async updateLandPost(postId: string, data: CreateLandInput | null, updateStatus: UpdatePostStatusInput | null): Promise<Land> {
         try {
-            return await this.landModel.findByIdAndUpdate(postId, {
+            const updated = await this.landModel.findByIdAndUpdate(postId, {
                 ...data,
                 ...updateStatus
             })
+
+            if (data)
+                updated.media.images.forEach(async (image) => {
+                    const exist = data.media.images.find(img => img === image)
+                    if (!exist) {
+                        await this.cloudinaryService.removeFile(image)
+                    }
+                })
+
+            return updated
         } catch (error) {
             throw new BadRequestException()
         }
     }
 
-    async updateBusinessPremisesPost(postId: string, data: CreateBusinessPremisesInput, updateStatus: UpdatePostStatusInput): Promise<BusinessPremises> {
+    async updateBusinessPremisesPost(postId: string, data: CreateBusinessPremisesInput | null, updateStatus: UpdatePostStatusInput | null): Promise<BusinessPremises> {
         try {
-            return await this.businessPremisesModel.findByIdAndUpdate(postId, {
+            const updated = await this.businessPremisesModel.findByIdAndUpdate(postId, {
                 ...data,
                 ...updateStatus
             })
+
+            if (data)
+                updated.media.images.forEach(async (image) => {
+                    const exist = data.media.images.find(img => img === image)
+                    if (!exist) {
+                        await this.cloudinaryService.removeFile(image)
+                    }
+                })
+
+            return updated
         } catch (error) {
             throw new BadRequestException()
         }
     }
 
-    async updateMotalPost(postId: string, data: CreateMotalInput, updateStatus: UpdatePostStatusInput): Promise<Motal> {
+    async updateMotalPost(postId: string, data: CreateMotalInput | null, updateStatus: UpdatePostStatusInput | null): Promise<Motal> {
         try {
-            return await this.motalModel.findByIdAndUpdate(postId, {
+            const updated = await this.motalModel.findByIdAndUpdate(postId, {
                 ...data,
                 ...updateStatus
             })
+
+            if (data)
+                updated.media.images.forEach(async (image) => {
+                    const exist = data.media.images.find(img => img === image)
+                    if (!exist) {
+                        await this.cloudinaryService.removeFile(image)
+                    }
+                })
+
+            return updated
         } catch (error) {
             throw new BadRequestException()
         }
@@ -207,7 +260,16 @@ export class RealEstateService {
 
     async deleteApartmentPost(postId: string): Promise<Apartment> {
         try {
-            return await this.apartmentModel.findByIdAndDelete(postId)
+            const deleted = await this.apartmentModel.findByIdAndDelete(postId)
+            deleted.media.images.forEach(async (image) => {
+                try {
+                    await this.cloudinaryService.removeFile(image)
+                } catch (error) {
+                    return;
+                }
+            })
+
+            return deleted
         } catch (error) {
             throw new BadRequestException()
         }
@@ -215,7 +277,15 @@ export class RealEstateService {
 
     async deleteHousePost(postId: string): Promise<House> {
         try {
-            return await this.houseModel.findByIdAndDelete(postId)
+            const deleted = await this.houseModel.findByIdAndDelete(postId)
+            deleted.media.images.forEach(async (image) => {
+                try {
+                    await this.cloudinaryService.removeFile(image)
+                } catch (error) {
+                    return;
+                }
+            })
+            return deleted
         } catch (error) {
             throw new BadRequestException()
         }
@@ -223,7 +293,15 @@ export class RealEstateService {
 
     async deleteLandPost(postId: string): Promise<Land> {
         try {
-            return await this.landModel.findByIdAndDelete(postId)
+            const deleted = await this.landModel.findByIdAndDelete(postId)
+            deleted.media.images.forEach(async (image) => {
+                try {
+                    await this.cloudinaryService.removeFile(image)
+                } catch (error) {
+                    return;
+                }
+            })
+            return deleted
         } catch (error) {
             throw new BadRequestException()
         }
@@ -231,7 +309,15 @@ export class RealEstateService {
 
     async deleteBusinessPremisesPost(postId: string): Promise<BusinessPremises> {
         try {
-            return await this.businessPremisesModel.findByIdAndDelete(postId)
+            const deleted = await this.businessPremisesModel.findByIdAndDelete(postId)
+            deleted.media.images.forEach(async (image) => {
+                try {
+                    await this.cloudinaryService.removeFile(image)
+                } catch (error) {
+                    return;
+                }
+            })
+            return deleted
         } catch (error) {
             throw new BadRequestException()
         }
@@ -239,7 +325,15 @@ export class RealEstateService {
 
     async deleteMotalPost(postId: string): Promise<Motal> {
         try {
-            return await this.motalModel.findByIdAndDelete(postId)
+            const deleted = await this.motalModel.findByIdAndDelete(postId)
+            deleted.media.images.forEach(async (image) => {
+                try {
+                    await this.cloudinaryService.removeFile(image)
+                } catch (error) {
+                    return;
+                }
+            })
+            return deleted
         } catch (error) {
             throw new BadRequestException()
         }
@@ -518,11 +612,11 @@ export class RealEstateService {
     async realEstateStats(category: RealEstateCategory): Promise<RealEstateStats> {
         try {
             return {
-                apartments: await this.apartmentModel.countDocuments({ category }),
-                houses: await this.houseModel.countDocuments({ category }),
-                lands: await this.landModel.countDocuments({ category }),
-                businessPremises: await this.businessPremisesModel.countDocuments({ category }),
-                motals: await this.motalModel.countDocuments({ category }),
+                apartments: await this.apartmentModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
+                houses: await this.houseModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
+                lands: await this.landModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
+                businessPremises: await this.businessPremisesModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
+                motals: await this.motalModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
             }
         } catch (error) {
             throw new NotFoundException()

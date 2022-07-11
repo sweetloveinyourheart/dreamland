@@ -9,7 +9,7 @@ import { CREATE_PROJECT_POST } from 'graphql/mutations/create';
 import axios from 'axios';
 import { CloudName } from 'constants/cloudinary';
 
-const CreateProject = () => {
+const CreateProject = ({ goBack }) => {
     const [formData, setFormData] = useState({
         projectName: "",
         description: "",
@@ -36,7 +36,8 @@ const CreateProject = () => {
 
     const [modal, setModal] = useState({
         message: '',
-        active: false
+        active: false,
+        success: false
     })
 
     const maxNumber = 10;
@@ -177,40 +178,33 @@ const CreateProject = () => {
         }
     }
 
-    const resetForm = () => {
-        setFormData({
-            projectName: "",
-            description: "",
-            address: {},
-            investor: {
-                name: "",
-                establishYear: 2022,
-                about: ""
-            },
-            information: {}
-        })
-        setImages([])
-        setSelectedAdress({
-            province: undefined,
-            district: undefined,
-            ward: undefined
+    const onCloseModal = () => {
+        if (modal.success) {
+            goBack()
+        }
+
+        setModal({
+            message: '',
+            active: false,
+            success: false
         })
     }
 
     useEffect(() => {
         setIsUploading(false)
         if (data && !error) {
-            resetForm()
             setModal({
                 message: "Đăng tin thành công !",
-                active: true
+                active: true,
+                success: true
             })
         }
 
         if (error) {
             setModal({
                 message: "Đăng tin thất bại !",
-                active: true
+                active: true,
+                success: false
             })
         }
     }, [data, error])
@@ -297,8 +291,8 @@ const CreateProject = () => {
                                             <TextField
                                                 fullWidth
                                                 label="Link thực tế ảo 3D"
-                                                value={formData.virtualLink}
-                                                onChange={e => setFormData(s => ({ ...s, virtualLink: e.target.value }))}
+                                                value={formData.virtual3DLink}
+                                                onChange={e => setFormData(s => ({ ...s, virtual3DLink: e.target.value }))}
                                                 defaultValue={""}
                                                 margin="normal"
                                             />
@@ -480,7 +474,7 @@ const CreateProject = () => {
                                             <TextField
                                                 label="Quy mô"
                                                 fullWidth
-                                                onChange={e => setFormData(s => ({ ...s, information: { ...s.information, scale: Number(e.target.value) } }))}
+                                                onChange={e => setFormData(s => ({ ...s, information: { ...s.information, scale: String(e.target.value) } }))}
                                                 value={formData.information?.scale}
                                                 margin="normal"
                                             />
@@ -489,7 +483,7 @@ const CreateProject = () => {
                                             <TextField
                                                 label="Tiến độ"
                                                 fullWidth
-                                                onChange={e => setFormData(s => ({ ...s, information: { ...s.information, progressStatus: Number(e.target.value) } }))}
+                                                onChange={e => setFormData(s => ({ ...s, information: { ...s.information, progressStatus: String(e.target.value) } }))}
                                                 value={formData.information?.progressStatus}
                                                 margin="normal"
                                             />
@@ -498,7 +492,7 @@ const CreateProject = () => {
                                             <TextField
                                                 label="Trạng thái"
                                                 fullWidth
-                                                onChange={e => setFormData(s => ({ ...s, information: { ...s.information, status: Number(e.target.value) } }))}
+                                                onChange={e => setFormData(s => ({ ...s, information: { ...s.information, status: String(e.target.value) } }))}
                                                 value={formData.information?.status}
                                                 margin="normal"
                                             />
@@ -735,7 +729,7 @@ const CreateProject = () => {
             </Grid>
             <Modal
                 open={modal.active}
-                onClose={() => setModal(s => ({ ...s, active: !s.active }))}
+                onClose={() => onCloseModal()}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >

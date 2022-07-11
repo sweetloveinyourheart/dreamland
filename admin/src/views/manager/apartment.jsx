@@ -45,6 +45,12 @@ const Apartment = () => {
     }, [data, error])
 
 
+    const onGoBack = useCallback(() => {
+        setSelectedPost(undefined)
+        setMenu(0)
+        refetch()
+    }, [selectedPost, menu])
+
     const onViewPost = useCallback((post) => {
         setSelectedPost(post)
         setMenu(3)
@@ -78,10 +84,10 @@ const Apartment = () => {
                 return <RSList data={items} selectPost={onSelectPost} type="can-ho-chung-cu" viewPost={onViewPost}/>
 
             case 1:
-                return <CreateRSPost type="can-ho-chung-cu" />
+                return <CreateRSPost type="can-ho-chung-cu" goBack={onGoBack}/>
 
             case 2:
-                return <UpdateRSPost type="can-ho-chung-cu" post={selectedPost} />
+                return <UpdateRSPost type="can-ho-chung-cu" post={selectedPost} goBack={onGoBack}/>
 
             case 3:
                 return <PostDetail post={selectedPost} />

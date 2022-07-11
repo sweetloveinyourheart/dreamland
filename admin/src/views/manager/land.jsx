@@ -48,6 +48,12 @@ const Land = () => {
             search: title
         })
     }, [filter, paging, refetch])
+    
+    const onGoBack = useCallback(() => {
+        setSelectedPost(undefined)
+        setMenu(0)
+        refetch()
+    }, [selectedPost, menu])
 
     const onSelectPost = useCallback((post) => {
         setSelectedPost(post)
@@ -65,10 +71,10 @@ const Land = () => {
                 return <RSList data={items} selectPost={onSelectPost} type="dat" viewPost={onViewPost} />
 
             case 1:
-                return <CreateRSPost type="dat" />
+                return <CreateRSPost type="dat" goBack={onGoBack}/>
 
             case 2:
-                return <UpdateRSPost type="dat" post={selectedPost} />
+                return <UpdateRSPost type="dat" post={selectedPost} goBack={onGoBack}/>
 
             case 3:
                 return <PostDetail post={selectedPost} />

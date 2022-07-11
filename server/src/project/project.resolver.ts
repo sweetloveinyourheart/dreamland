@@ -43,8 +43,8 @@ export class ProjectResolver {
   @Mutation(returns => Project)
   async editProject(
     @Args('id') id: string,
-    @Args('data', { nullable: true }) data: CreateProjectInput,
-    @Args('status', { nullable: true }) updateStatus: UpdateStatusInput
+    @Args('data', { nullable: true }) data: CreateProjectInput | null,
+    @Args('status', { nullable: true }) updateStatus: UpdateStatusInput | null
   ) {
     return await this.projectService.editProject(id, data, updateStatus)
   }

@@ -41,10 +41,11 @@ const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
     )
 }
 
-const PendingList = ({ type, data, selectPost }) => {
+const PendingList = ({ type, data, selectPost, goBack }) => {
     const [modal, setModal] = useState({
         message: '',
-        active: false
+        active: false,
+        success: false
     })
 
     const [updateApartment, { data: updateApartmentData, error: updateApartmentErr }] = useMutation(UPDATE_APARTMENT)
@@ -158,18 +159,32 @@ const PendingList = ({ type, data, selectPost }) => {
         }
     }
 
+    const onCloseModal = () => {
+        if (modal.success) {
+            goBack()
+        }
+
+        setModal({
+            message: '',
+            active: false,
+            success: false
+        })
+    }
+
     useEffect(() => {
         if (updateApartmentData || updateHouseData || updateLandData || updateBusinessPremisesData || updateMotalData) {
             setModal({
                 message: "Duyệt thành công !",
-                active: true
+                active: true,
+                success: true
             })
         }
 
         if (updateApartmentErr || updateHouseErr || updateLandErr || updateBusinessPremisesErr || updateMotalErr) {
             setModal({
                 message: "Duyệt thất bại !",
-                active: true
+                active: true,
+                success: false
             })
         }
     }, [
@@ -189,14 +204,16 @@ const PendingList = ({ type, data, selectPost }) => {
         if (deleteApartmentData || deleteHouseData || deleteLandData || deleteBusinessPremisesData || deleteMotalData) {
             setModal({
                 message: "Đã từ chối bài đăng !",
-                active: true
+                active: true,
+                success: true
             })
         }
 
         if (deleteApartmentErr || deleteHouseErr || deleteLandErr || deleteBusinessPremisesErr || deleteMotalErr) {
             setModal({
                 message: "Có lỗi xảy ra, vui lòng refresh trang và thử lại !",
-                active: true
+                active: true,
+                success: false
             })
         }
     }, [
@@ -228,7 +245,7 @@ const PendingList = ({ type, data, selectPost }) => {
             <Grid container spacing={2}>
                 {renderData()}
             </Grid>
-            <Notification active={modal.active} message={modal.message} handleClose={() => setModal(s => ({ ...s, active: false }))} />
+            <Notification active={modal.active} message={modal.message} handleClose={() => onCloseModal()} />
         </>
     );
 }

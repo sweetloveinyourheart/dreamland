@@ -5,10 +5,14 @@ import { Model } from "mongoose"
 import { Blog } from './models/blog.model';
 import { CreateBlogInput } from './dto/create.input';
 import { nonAccentVietnamese } from 'src/project/utils/vietnamese-accent';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class BlogService {
-    constructor(@InjectModel(BlogModel.name) private blogModel: Model<BlogDocument>) { }
+    constructor(
+        @InjectModel(BlogModel.name) private blogModel: Model<BlogDocument>,
+        private cloudinaryService: CloudinaryService
+    ) { }
 
     async createBlog(data: CreateBlogInput): Promise<Blog> {
         try {
@@ -41,7 +45,11 @@ export class BlogService {
 
     async removeBlog(blogId: string): Promise<Blog> {
         try {
-            return await this.blogModel.findByIdAndDelete(blogId)
+            const removed = await this.blogModel.findByIdAndDelete(blogId)
+
+            await this.cloudinaryService.removeFile(removed.image)
+
+            return removed
         } catch (error) {
             throw new NotFoundException()
         }

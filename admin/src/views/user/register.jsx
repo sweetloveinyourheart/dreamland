@@ -17,7 +17,7 @@ function Account() {
         password: "",
         retypePassword: "",
         name: "",
-        birthday: "",
+        birthday: undefined,
         sex: "Male",
         address: "",
         roles: ["User"]

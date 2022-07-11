@@ -41,6 +41,12 @@ const Motal = () => {
 
     }, [data, error])
 
+    const onGoBack = useCallback(() => {
+        setSelectedPost(undefined)
+        setMenu(0)
+        refetch()
+    }, [selectedPost, menu])
+
     const onSearch = useCallback((title) => {
         refetch({
             filter,
@@ -65,10 +71,10 @@ const Motal = () => {
                 return <RSList data={items} selectPost={onSelectPost} type="phong-tro" viewPost={onViewPost}/>
 
             case 1:
-                return <CreateRSPost type="phong-tro" />
+                return <CreateRSPost type="phong-tro" goBack={onGoBack} />
 
             case 2:
-                return <UpdateRSPost type="phong-tro" post={selectedPost} />
+                return <UpdateRSPost type="phong-tro" post={selectedPost} goBack={onGoBack} />
 
             case 3:
                 return <PostDetail post={selectedPost} />

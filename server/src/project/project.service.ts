@@ -8,11 +8,13 @@ import { ProjectFilter } from './dto/filter.input';
 import { PaginationArgs } from 'src/real-estate/dto/inputs/general/paging.input';
 import { nonAccentVietnamese } from './utils/vietnamese-accent';
 import { UpdateStatusInput } from './dto/edit.input';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class ProjectService {
     constructor(
-        @InjectModel(ProjectModel.name) private projectModel: Model<ProjectDocument>
+        @InjectModel(ProjectModel.name) private projectModel: Model<ProjectDocument>,
+        private cloudinaryService: CloudinaryService
     ) { }
 
     async createProject(data: CreateProjectInput): Promise<Project> {
@@ -31,12 +33,37 @@ export class ProjectService {
         }
     }
 
-    async editProject(projectId: string, updateData?: CreateProjectInput, updateState?: UpdateStatusInput): Promise<Project> {
+    async editProject(projectId: string, updateData: CreateProjectInput | null, updateState: UpdateStatusInput | null): Promise<Project> {
         try {
-            return await this.projectModel.findByIdAndUpdate(projectId, {
+            const updated = await this.projectModel.findByIdAndUpdate(projectId, {
                 ...updateData,
                 ...updateState
             })
+
+            if (updateData) {
+                updated.media.images.forEach(async (image) => {
+                    const exist = updateData.media.images.find(img => img === image)
+                    if (!exist) {
+                        await this.cloudinaryService.removeFile(image)
+                    }
+                })
+
+                updated.utilities.forEach(async (util) => {
+                    const exist = updateData.utilities.find(updateUtil => updateUtil.image === util.image)
+                    if (!exist) {
+                        await this.cloudinaryService.removeFile(util.image)
+                    }
+                })
+
+                updated.masterPlan.forEach(async (item) => {
+                    const exist = updateData.masterPlan.find(updateItem => updateItem.image === item.image)
+                    if (!exist) {
+                        await this.cloudinaryService.removeFile(item.image)
+                    }
+                })
+            }
+
+            return updated
         } catch (error) {
             throw new BadRequestException(err => ({
                 ...err,

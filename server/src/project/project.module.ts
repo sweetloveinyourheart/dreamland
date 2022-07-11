@@ -4,9 +4,11 @@ import { ProjectResolver } from './project.resolver';
 import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
 import { Project, projectSchema } from './schemas/project.schema';
 import * as AutoIncrementFactory from 'mongoose-sequence';
+import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
 
 @Module({
   imports: [
+    CloudinaryModule,
     MongooseModule.forFeatureAsync([
       {
         name: Project.name,

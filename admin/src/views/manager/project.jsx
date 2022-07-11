@@ -12,10 +12,16 @@ const Project = () => {
     const [menu, setMenu] = useState(0)
     const [selectedProject, setSelectedProject] = useState(null)
 
-    const { data } = useQuery(GET_ALL_PROJECT_POSTS, {
+    const { data, refetch } = useQuery(GET_ALL_PROJECT_POSTS, {
         notifyOnNetworkStatusChange: true,
         fetchPolicy: 'no-cache'
     })
+
+    const onGoBack = useCallback(() => {
+        setSelectedProject(undefined)
+        setMenu(0)
+        refetch()
+    }, [setSelectedProject, menu])
 
     const onSelectProject = useCallback((project) => {
         setSelectedProject(project)
@@ -28,10 +34,10 @@ const Project = () => {
                 return <ProjectList data={data?.projects} selectProject={onSelectProject} />
 
             case 1:
-                return <CreateProject />
+                return <CreateProject goBack={onGoBack}/>
 
             case 2:
-                return <UpdateProject project={selectedProject} />
+                return <UpdateProject project={selectedProject} goBack={onGoBack}/>
 
             default:
                 return <ProjectList data={data?.projects} selectProject={onSelectProject} />
