@@ -26,20 +26,28 @@ const Item = ({ data, selectPost, onSetOutStanding, onSetActived, viewPost }) =>
                     </CardContent>
                 </Box>
                 <CardActions sx={{ padding: "12px 24px" }}>
-                    <Button
-                        variant="contained"
-                        color="warning"
-                        onClick={() => onSetOutStanding(data)}
-                    >
-                        {data.outstanding ? "Gỡ nổi bật" : "Đặt nổi bật"}
-                    </Button>
+                    {(data.postStatus === 'Available' || data.postStatus === "Disable")
+                        && (
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                onClick={() => onSetOutStanding(data)}
+                            >
+                                {data.outstanding ? "Gỡ nổi bật" : "Đặt nổi bật"}
+                            </Button>
+                        )
+                    }
                     <Button variant="contained" color="success" onClick={() => selectPost(data)}>
                         Chỉnh sửa
                     </Button>
                     &nbsp;
-                    <Button variant="contained" color="error" onClick={() => onSetActived(data)}>
-                        {data.postStatus === 'Available' ? "Khoá" : "Kích hoạt"}
-                    </Button>
+                    {(data.postStatus === 'Available' || data.postStatus === "Disable")
+                        && (
+                            <Button variant="contained" color="error" onClick={() => {onSetActived(data)}}>
+                                {data.postStatus === 'Available' ? "Vô hiệu" : "Kích hoạt"}
+                            </Button>
+                        )
+                    }
                 </CardActions>
             </Card>
 
@@ -122,7 +130,8 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: post.postStatus === 'Available' ? 'Disable' : 'Available',
+                        ...(post.outstanding && { outstanding: false })
                     }
                 }
             })
@@ -133,7 +142,8 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: post.postStatus === 'Available' ? 'Disable' : 'Available',
+                        ...(post.outstanding && { outstanding: false })
                     }
                 }
             })
@@ -144,7 +154,8 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: post.postStatus === 'Available' ? 'Disable' : 'Available',
+                        ...(post.outstanding && { outstanding: false })
                     }
                 }
             })
@@ -155,7 +166,8 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: post.postStatus === 'Available' ? 'Disable' : 'Available',
+                        ...(post.outstanding && { outstanding: false })
                     }
                 }
             })
@@ -166,7 +178,8 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
                 variables: {
                     postId: post._id,
                     status: {
-                        postStatus: post.postStatus === 'Available' ? 'Lock' : 'Available'
+                        postStatus: post.postStatus === 'Available' ? 'Disable' : 'Available',
+                        ...(post.outstanding && { outstanding: false })
                     }
                 }
             })
@@ -204,7 +217,7 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
         let result
         if (data) {
             result = data.map((elm, ind) => {
-                return <Item data={elm} key={ind} selectPost={selectPost} onSetActived={setActived} onSetOutStanding={setOutStanding} viewPost={viewPost}/>
+                return <Item data={elm} key={ind} selectPost={selectPost} onSetActived={setActived} onSetOutStanding={setOutStanding} viewPost={viewPost} />
             })
         }
 

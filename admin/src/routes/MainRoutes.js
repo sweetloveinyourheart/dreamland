@@ -8,6 +8,7 @@ import IntroManagement from 'views/main/intro';
 import BlogManagement from 'views/main/blog';
 import Register from 'views/user/register';
 import PostManager from 'views/user/post';
+import Transaction from 'views/transaction/transaction';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -71,6 +72,10 @@ const MainRoutes = {
         {
             path: '/user/post',
             element: <PostManager />
+        },
+        {
+            path: '/transaction',
+            element: <Transaction />
         },
     ]
 };

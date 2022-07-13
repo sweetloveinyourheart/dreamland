@@ -1,4 +1,4 @@
-import { BadRequestException, CACHE_MANAGER, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, CACHE_MANAGER, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PaginationArgs } from './dto/inputs/general/paging.input';
@@ -18,7 +18,7 @@ import { BusinessPremisesFilter, CreateBusinessPremisesInput } from './dto/input
 import { CreateMotalInput, MotalFilter } from './dto/inputs/motal.input';
 import { Motal } from './models/motal.model';
 import { BusinessPremises } from './models/business-premises.model';
-import { PostStatus, RealEstateCategory } from './enum/real-estate.enum';
+import { PostStatus, RealEstateCategory, RealEstateType } from './enum/real-estate.enum';
 import { RealEstateStats } from 'src/stats/models/stats.model';
 import { Cache } from 'cache-manager';
 import { RealEstatePosts } from './models/parent-models/top';
@@ -27,6 +27,7 @@ import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
 import { UserPayload } from 'src/auth/decorators/user.decorator';
 import { UserRole } from 'src/user/enum/user.enum';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CreateTransactionInput } from 'src/transaction/dto/create.input';
 
 @Injectable()
 export class RealEstateService {
@@ -173,7 +174,7 @@ export class RealEstateService {
         }
     }
 
-    async updateHousePost(postId: string, data: CreateHouseInput | null, updateStatus: UpdatePostStatusInput): Promise<House> {
+    async updateHousePost(postId: string, data: CreateHouseInput | null, updateStatus: UpdatePostStatusInput | null): Promise<House> {
         try {
             const updated = await this.houseModel.findByIdAndUpdate(postId, {
                 ...data,
@@ -577,9 +578,25 @@ export class RealEstateService {
         }
     }
 
+    async getApartmentPostById(id: string): Promise<Apartment> {
+        try {
+            return await this.apartmentModel.findById(id)
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
     async getHousePostByLink(directLink: string): Promise<House> {
         try {
             return await this.houseModel.findOne({ directLink })
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getHousePostById(id: string): Promise<House> {
+        try {
+            return await this.houseModel.findById(id)
         } catch (error) {
             throw new NotFoundException()
         }
@@ -593,6 +610,14 @@ export class RealEstateService {
         }
     }
 
+    async getLandPostById(id: string): Promise<Land> {
+        try {
+            return await this.landModel.findById(id)
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
     async getBusinessPremisesPostByLink(directLink: string): Promise<Apartment> {
         try {
             return await this.businessPremisesModel.findOne({ directLink })
@@ -601,9 +626,25 @@ export class RealEstateService {
         }
     }
 
+    async getBusinessPremisesPostById(id: string): Promise<Apartment> {
+        try {
+            return await this.businessPremisesModel.findById(id)
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
     async getMotalPostByLink(directLink: string): Promise<Land> {
         try {
             return await this.motalModel.findOne({ directLink })
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
+
+    async getMotalPostById(id: string): Promise<Land> {
+        try {
+            return await this.motalModel.findById(id)
         } catch (error) {
             throw new NotFoundException()
         }
@@ -664,6 +705,37 @@ export class RealEstateService {
             }
         } catch (error) {
             throw new NotFoundException()
+        }
+    }
+
+    async processingTransaction(item: CreateTransactionInput, status: PostStatus) {
+        try {
+            switch (item.itemType) {
+                case RealEstateType.CanHo:
+                    await this.apartmentModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
+                    return;
+
+                case RealEstateType.NhaO:
+                    await this.houseModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
+                    return;
+
+                case RealEstateType.Dat:
+                    await this.landModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
+                    return;
+
+                case RealEstateType.VanPhong:
+                    await this.businessPremisesModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
+                    return;
+
+                case RealEstateType.PhongTro:
+                    await this.motalModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
+                    return;
+
+                default:
+                    return;
+            }
+        } catch (error) {
+            throw new InternalServerErrorException()
         }
     }
 }

@@ -54,7 +54,7 @@ export class AuthService {
             }
 
             return {
-                accessToken: await this.jwtService.sign(jwtPayload, { expiresIn: "1h" }),
+                accessToken: await this.jwtService.sign(jwtPayload, { expiresIn: "24h" }),
                 refreshToken: ""
             }
         } catch (error) {

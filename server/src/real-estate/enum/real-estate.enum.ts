@@ -78,6 +78,7 @@ export enum BusinessPremisesType {
 export enum PostStatus {
     Pending = 'pending',
     Available = 'available',
+    Disable = 'disable',
     Lock = 'lock',
     DatCoc = 'dat-coc',
     BanGiao = 'ban-giao'

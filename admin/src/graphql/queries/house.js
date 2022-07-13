@@ -51,3 +51,55 @@ query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
         }
     }
 `
+
+export const GET_HOUSE_BY_ID = gql`
+    query House($id: String!) {
+        house: getHousePostById(id: $id) {
+            _id
+            title
+            description
+            category
+            media {
+                images
+                videos
+            }
+            detail {
+                address {
+                    province
+                    district
+                    ward
+                    street
+                    houseNumber
+                    showHouseNumber
+                }
+                pricing {
+                    total
+                    deposit
+                }
+                acreage {
+                    totalAcreage
+                }
+            }
+            owner {
+                type
+                user {
+                    name
+                    phone
+                }
+            }
+            overview {
+                doorDirection
+                legalDocuments
+                type
+                numberOfBedrooms
+                numberOfBathrooms
+                furniture
+                numberOfFloors
+            }
+            virtual3DLink
+            googleMapsLink
+            outstanding
+            postStatus
+        }
+    }
+`

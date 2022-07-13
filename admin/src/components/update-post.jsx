@@ -316,7 +316,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                     type={"number"}
                                                     margin="normal"
                                                     value={formData.detail?.pricing?.total}
-                                                    onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, pricing: { ...s.detail.pricing, total: Number(e.target.value) } } }))}
+                                                    onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, pricing: { ...s.detail?.pricing, total: Number(e.target.value) } } }))}
                                                 />
                                             </Grid>
                                             <Grid xs={12} xl={6} item>
@@ -328,7 +328,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                     variant="outlined"
                                                     margin="normal"
                                                     value={formData.detail?.pricing?.deposit}
-                                                    onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, pricing: { ...s.detail.pricing, deposit: Number(e.target.value) } } }))}
+                                                    onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, pricing: { ...s.detail?.pricing, deposit: Number(e.target.value) } } }))}
                                                 />
                                             </Grid>
                                         </Grid>
@@ -343,7 +343,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                             variant="outlined"
                                                             margin="normal"
                                                             value={formData.detail?.position?.blockName}
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail.position, blockName: e.target.value } } }))}
+                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail?.position, blockName: e.target.value } } }))}
                                                         />
                                                     </Grid>
                                                 )
@@ -359,7 +359,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                             variant="outlined"
                                                             margin="normal"
                                                             value={formData.detail?.position?.code?.value}
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail.position, code: { ...s.detail.position.code, value: e.target.value } } } }))}
+                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail?.position, code: { ...s.detail?.position?.code, value: e.target.value } } } }))}
                                                         />
                                                     </Grid>
                                                 )
@@ -375,7 +375,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                             variant="outlined"
                                                             margin="normal"
                                                             value={formData.detail?.position?.floorNumber}
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail.position, floorNumber: e.target.value } } }))}
+                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail?.position, floorNumber: e.target.value } } }))}
 
                                                         />
                                                     </Grid>
@@ -508,7 +508,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                     variant="outlined"
                                                     value={formData.detail?.acreage?.totalAcreage}
                                                     margin="normal"
-                                                    onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail.acreage, totalAcreage: Number(e.target.value) } } }))}
+                                                    onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail?.acreage, totalAcreage: Number(e.target.value) } } }))}
                                                 />
                                             </Grid>
                                             {type === "nha-o"
@@ -524,7 +524,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
 
                                                             variant="outlined"
                                                             margin="normal"
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail.acreage, usedAcreage: Number(e.target.value) } } }))}
+                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail?.acreage, usedAcreage: Number(e.target.value) } } }))}
                                                         />
                                                     </Grid>
                                                 )
@@ -542,7 +542,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
 
                                                             variant="outlined"
                                                             margin="normal"
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail.acreage, width: Number(e.target.value) } } }))}
+                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail?.acreage, width: Number(e.target.value) } } }))}
                                                         />
                                                     </Grid>
                                                 )
@@ -560,7 +560,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
 
                                                             variant="outlined"
                                                             margin="normal"
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail.acreage, height: Number(e.target.value) } } }))}
+                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, acreage: { ...s.detail?.acreage, height: Number(e.target.value) } } }))}
                                                         />
                                                     </Grid>
                                                 )

@@ -14,7 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import type { ClientOpts } from 'redis';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
-import * as redisStore from 'cache-manager-redis-store';
+import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -48,7 +48,8 @@ import * as redisStore from 'cache-manager-redis-store';
     BlogModule,
     PageTemplateModule,
     AuthModule,
-    CloudinaryModule
+    CloudinaryModule,
+    TransactionModule
   ],
   controllers: [AppController],
   providers: [AppService],

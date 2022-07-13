@@ -1,5 +1,5 @@
 import { Field, Float, Int, ObjectType, registerEnumType } from "@nestjs/graphql"
-import { ApartmentType, BusinessPremisesType, Furniture, HouseType, LandType, RealEstateCategory, RealEstateStatus,Direction, LegalDocuments, OwnerType, PostStatus } from "../../enum/real-estate.enum"
+import { ApartmentType, BusinessPremisesType, Furniture, HouseType, LandType, RealEstateCategory, RealEstateStatus,Direction, LegalDocuments, OwnerType, PostStatus, RealEstateType } from "../../enum/real-estate.enum"
 
 registerEnumType(ApartmentType, {
     name: "ApartmentType"
@@ -44,6 +44,10 @@ registerEnumType(RealEstateCategory, {
 registerEnumType(PostStatus, {
     name: 'PostStatus',
 });
+
+registerEnumType(RealEstateType, {
+    name: 'RealEstateType'
+})
 
 @ObjectType()
 class UserInfo {

@@ -68,6 +68,9 @@ export class Profile {
     @Field(type => String, { nullable: true })
     address?: string
 
+    @Field(type => [UserRole])
+    roles: UserRole[]
+
     @Field(type => Date)
     createdAt: Date
 }

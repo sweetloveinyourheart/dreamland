@@ -47,3 +47,51 @@ query BusinessPremises($filter: BusinessPremisesFilter!, $paging: PaginationArgs
         }
     }
 `
+
+export const GET_BUSINESS_PREMISES_BY_ID = gql`
+    query BusinessPremises($id: String!) {
+        businessPremises: getBusinessPremisesPostById(id: $id) {
+            _id
+            title
+            description
+            category
+            media {
+                images
+                videos
+            }
+            detail {
+                address {
+                    province
+                    district
+                    ward
+                    street
+                    houseNumber
+                    showHouseNumber
+                }
+                pricing {
+                    total
+                }
+                acreage {
+                    totalAcreage
+                }
+            }
+            owner {
+                type
+                user {
+                    name
+                    phone
+                }
+            }
+            overview {
+                doorDirection
+                legalDocuments
+                type
+                furniture
+            }
+            virtual3DLink
+            googleMapsLink
+            postStatus
+            outstanding
+        }
+    }
+`

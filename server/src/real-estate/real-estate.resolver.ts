@@ -165,6 +165,43 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Query(returns => Apartment)
+  async getApartmentPostById(@Args('id') id: string) {
+    return await this.realEstateService.getApartmentPostById(id);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Query(returns => House)
+  async getHousePostById(@Args('id') id: string) {
+    return await this.realEstateService.getHousePostById(id);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Query(returns => Land)
+  async getLandPostById(@Args('id') id: string) {
+    return await this.realEstateService.getLandPostById(id);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Query(returns => BusinessPremises)
+  async getBusinessPremisesPostById(@Args('id') id: string) {
+    return await this.realEstateService.getBusinessPremisesPostById(id);
+  }
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
+  @Roles(UserRole.Admin)
+  @Query(returns => Motal)
+  async getMotalPostById(@Args('id') id: string) {
+    return await this.realEstateService.getMotalPostById(id);
+  }
+
+  //=================================== Mutation ======================================
+
+  @UseGuards(GqlAuthGuard, RolesGuard)
   @Roles(UserRole.Manager)
   @Mutation(returns => Apartment)
   async createApartmentPost(@Args('data') data: CreateApartmentInput, @AuthenticatedUser() user: UserPayload): Promise<Apartment> {

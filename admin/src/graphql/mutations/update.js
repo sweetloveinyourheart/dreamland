@@ -59,3 +59,11 @@ export const UPDATE_MOTAL = gql`
         }
     }
 `
+
+export const UPDATE_TRANSACTION = gql`
+    mutation UpdateTransaction($id: String!, $status: TransactionStatus!) {
+        updateTransaction(id: $id, status: $status) {
+            _id
+        }
+    }
+`
