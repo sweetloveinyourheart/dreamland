@@ -27,8 +27,11 @@ export class TransactionResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query(returns => [Transaction])
-  async getUserTransaction(@AuthenticatedUser() user: UserPayload): Promise<Transaction[]> {
-    return await this.transactionService.getUserTransation(user)
+  async getUserTransaction(
+    @AuthenticatedUser() user: UserPayload,
+    @Args('status', { type: () => TransactionStatus }) status: TransactionStatus,
+  ): Promise<Transaction[]> {
+    return await this.transactionService.getUserTransation(user, status)
   }
 
   @UseGuards(GqlAuthGuard)

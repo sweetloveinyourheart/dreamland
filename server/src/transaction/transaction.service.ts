@@ -65,9 +65,9 @@ export class TransactionService {
         }
     }
 
-    async getUserTransation(user: UserPayload): Promise<Transaction[]> {
+    async getUserTransation(user: UserPayload, status: TransactionStatus): Promise<Transaction[]> {
         try {
-            return await this.transactionModel.find({ user: user.userId }).populate("user")
+            return await this.transactionModel.find({ user: user.userId, status }).populate("user")
         } catch (error) {
             throw new NotFoundException()
         }
