@@ -13,12 +13,10 @@ import { ConfigModule } from '@nestjs/config';
     ProjectModule,
     CacheModule.register({
       store: redisStore,
-      socket: {
-        host: 'redis',
-        port: 6379,
-      }
+      host: 'redis',
+      port: 6379,
     }),
   ],
   providers: [StatsResolver, StatsService]
 })
-export class StatsModule {}
+export class StatsModule { }

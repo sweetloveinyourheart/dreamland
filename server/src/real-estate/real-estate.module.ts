@@ -39,10 +39,8 @@ import { ConfigModule } from '@nestjs/config';
     CloudinaryModule,
     CacheModule.register({
       store: redisStore,
-      socket: {
-        host: 'redis',
-        port: 6379,
-      }
+      host: 'redis',
+      port: 6379,
     }),
   ],
   providers: [RealEstateResolver, RealEstateService],
