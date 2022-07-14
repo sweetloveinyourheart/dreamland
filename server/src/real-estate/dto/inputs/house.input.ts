@@ -58,6 +58,9 @@ class HouseDetailInput extends DetailInput {
 
     @Field(type => HouseAcreageInput)
     acreage: HouseAcreageInput
+
+    @Field(type => String, { nullable: true })
+    project?: string
 }
 
 @InputType()
@@ -70,9 +73,6 @@ export class CreateHouseInput extends CreateRealEstateInput {
 
     @Field(type => HouseOverviewInput)
     overview: HouseOverviewInput
-
-    @Field(type => String, { nullable: true })
-    project?: string
 }
 
 @InputType()

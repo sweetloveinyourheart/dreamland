@@ -12,7 +12,7 @@ import { BlogModule } from './blog/blog.module';
 import { PageTemplateModule } from './page-template/page-template.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import type { ClientOpts } from 'redis';
+import * as redisStore from 'cache-manager-redis-store';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { TransactionModule } from './transaction/transaction.module';
 
@@ -21,13 +21,13 @@ import { TransactionModule } from './transaction/transaction.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CacheModule.register<ClientOpts>({
+    CacheModule.register({
       isGlobal: true,
-      // store: redisStore,
+      store: redisStore,
 
-      // // Store-specific configuration:
-      // host: process.env.REDIS_HOST,
-      // port: 6379,
+      // Store-specific configuration:
+      host: process.env.REDIS_HOST,
+      port: 6379,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

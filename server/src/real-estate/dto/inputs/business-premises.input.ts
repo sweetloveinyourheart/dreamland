@@ -22,6 +22,9 @@ class BusinessPremisesDetailInput extends DetailInput {
 
     @Field(type => AcreageInput)
     acreage: AcreageInput
+
+    @Field(type => String, { nullable: true })
+    project?: string
 }
 
 
@@ -44,9 +47,6 @@ export class CreateBusinessPremisesInput extends CreateRealEstateInput {
 
     @Field(type => BusinessPremisesOverviewInput)
     overview: BusinessPremisesOverviewInput
-
-    @Field(type => String, { nullable: true })
-    project?: string
 }
 
 @InputType()
