@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { RealEstateService } from './real-estate.service';
 import { RealEstateResolver } from './real-estate.resolver';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -8,9 +8,12 @@ import { Land, LandSchema } from './schemas/land.schema';
 import { BusinessPremises, BusinessPremisesSchema } from './schemas/business-premises.schema';
 import { Motal, MotalSchema } from './schemas/motal.schema';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import * as redisStore from 'cache-manager-redis-store';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MongooseModule.forFeature([
       {
         name: Apartment.name,
@@ -33,7 +36,14 @@ import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
         schema: MotalSchema
       }
     ]),
-    CloudinaryModule
+    CloudinaryModule,
+    CacheModule.register({
+      store: redisStore,
+
+      // Store-specific configuration:
+      host: process.env.REDIS_HOST,
+      port: 6379,
+    }),
   ],
   providers: [RealEstateResolver, RealEstateService],
   exports: [RealEstateService]
