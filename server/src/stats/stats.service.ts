@@ -36,6 +36,8 @@ export class StatsService {
                 motals = await this.cacheManager.get('rentingMotalStats')
             }
 
+            console.log(apartments);
+            
 
             if (apartments === undefined ||
                 houses === undefined ||
