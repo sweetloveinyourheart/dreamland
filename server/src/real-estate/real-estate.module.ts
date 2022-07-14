@@ -31,18 +31,18 @@ import { ConfigModule } from '@nestjs/config';
         name: BusinessPremises.name,
         schema: BusinessPremisesSchema
       },
-      { 
-        name: Motal.name, 
+      {
+        name: Motal.name,
         schema: MotalSchema
       }
     ]),
     CloudinaryModule,
     CacheModule.register({
       store: redisStore,
-
-      // Store-specific configuration:
-      host: process.env.REDIS_HOST,
-      port: 6379,
+      socket: {
+        host: 'redis',
+        port: 6379,
+      }
     }),
   ],
   providers: [RealEstateResolver, RealEstateService],
