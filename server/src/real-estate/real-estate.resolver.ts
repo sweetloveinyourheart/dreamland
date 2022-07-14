@@ -164,36 +164,31 @@ export class RealEstateResolver {
     return await this.realEstateService.getMotalPostByLink(link);
   }
 
-  @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @UseGuards(GqlAuthGuard)
   @Query(returns => Apartment)
   async getApartmentPostById(@Args('id') id: string) {
     return await this.realEstateService.getApartmentPostById(id);
   }
 
-  @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @UseGuards(GqlAuthGuard)
   @Query(returns => House)
   async getHousePostById(@Args('id') id: string) {
     return await this.realEstateService.getHousePostById(id);
   }
 
-  @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @UseGuards(GqlAuthGuard)
   @Query(returns => Land)
   async getLandPostById(@Args('id') id: string) {
     return await this.realEstateService.getLandPostById(id);
   }
 
-  @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @UseGuards(GqlAuthGuard)
   @Query(returns => BusinessPremises)
   async getBusinessPremisesPostById(@Args('id') id: string) {
     return await this.realEstateService.getBusinessPremisesPostById(id);
   }
 
-  @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @UseGuards(GqlAuthGuard)
   @Query(returns => Motal)
   async getMotalPostById(@Args('id') id: string) {
     return await this.realEstateService.getMotalPostById(id);
