@@ -15,13 +15,14 @@ import { ConfigModule } from '@nestjs/config';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { TransactionModule } from './transaction/transaction.module';
 import * as redisStore from 'cache-manager-redis-store'
+import { RedisClientOptions } from 'redis';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CacheModule.registerAsync({
+    CacheModule.registerAsync<RedisClientOptions>({
       isGlobal: true,
       useFactory: () => ({
         store: redisStore,
