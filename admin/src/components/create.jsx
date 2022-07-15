@@ -635,7 +635,7 @@ const CreateRSPost = ({ type, goBack }) => {
                                                     </Grid>
                                                 )
                                             }
-                                            {(type === "nha-o" || type === "can-ho-chung-cu" || type === "van-phong-mat-bang" || 'phong-tro')
+                                            {(type === "nha-o" || type === "can-ho-chung-cu" || type === "van-phong-mat-bang" || type === 'phong-tro')
                                                 && (
                                                     <Grid xs={12} xl={6} item>
                                                         <TextField
