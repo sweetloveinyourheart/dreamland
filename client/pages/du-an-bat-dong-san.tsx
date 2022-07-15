@@ -34,10 +34,13 @@ const RealEstateProjectPage: NextPage<ProjectPage> = ({ data, pagingData }) => {
         limit: INIT_LIMIT,
         cursor: INIT_CURSOR
     })
+    const [search, setSearch] = useState<string | undefined>()
+
     const [getProjects, { data: projectsData, error }] = useLazyQuery<GetAllProjectsData, GetAllProjectsVars>(GET_ALL_PROJECT_POSTS, {
         variables: {
             filter,
-            paging
+            paging,
+            search
         },
         notifyOnNetworkStatusChange: true
     })
@@ -78,6 +81,13 @@ const RealEstateProjectPage: NextPage<ProjectPage> = ({ data, pagingData }) => {
                 // set cursor base on page 
                 setPaging(s => ({ ...s, cursor: (Number(page) - 1) * STEP }))
             }
+
+            // collect search data
+            let search = query?.search
+            if (search) {
+                setSearch(String(search))
+            }
+
         } else {
             setFilter(undefined)
         }

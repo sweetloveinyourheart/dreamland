@@ -80,9 +80,14 @@ export class ProjectService {
         }
     }
 
-    async getProjects(filter: ProjectFilter, paging: PaginationArgs): Promise<Project[]> {
+    async getProjects(filter: ProjectFilter, paging: PaginationArgs, search: string | undefined): Promise<Project[]> {
         try {
-            let query = {
+            let searchQuery = undefined
+            if (search) {
+                searchQuery = new RegExp(search, 'ig')
+            }
+
+            let query = { 
                 actived: true,
                 ...(paging?.cursor && { index: { $gte: paging.cursor } }),
                 ...(filter?.price?.max && { "information.purchaseInfo": { $gte: filter.price.min, $lte: filter.price.max } }),
@@ -90,7 +95,8 @@ export class ProjectService {
                 ...(filter?.address?.district && { "address.district": filter.address.district }),
                 ...(filter?.address?.ward && { "address.ward": filter.address.ward }),
                 ...(filter?.address?.province && { "address.province": filter.address.province }),
-                ...(filter?.handOverYear && { "information.handOverYear": { $gte: filter.handOverYear } })
+                ...(filter?.handOverYear && { "information.handOverYear": { $gte: filter.handOverYear } }),
+                ...(searchQuery && { projectName: { $regex: searchQuery } })
             }
 
             return await this.projectModel.find(query).limit(paging?.limit)

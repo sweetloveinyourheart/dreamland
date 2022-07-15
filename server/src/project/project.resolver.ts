@@ -13,9 +13,10 @@ export class ProjectResolver {
   @Query(returns => [Project])
   async getProjects(
     @Args('filter', { nullable: true }) filter?: ProjectFilter,
-    @Args('paging', { nullable: true }) paging?: PaginationArgs
+    @Args('paging', { nullable: true }) paging?: PaginationArgs ,
+    @Args('search', { nullable: true }) search?: string
   ): Promise<Project[]> {
-    return await this.projectService.getProjects(filter, paging)
+    return await this.projectService.getProjects(filter, paging, search)
   }
 
   @Query(returns => [Project])

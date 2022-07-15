@@ -6,6 +6,7 @@ import { customStyles } from "./filter";
 import { FilterState } from "../../lib/guardFilter";
 import AddressFilter from "./items/address";
 import PricingFilter from "./items/pricing";
+import { useRouter } from "next/router";
 
 interface ProjectFilterProps {
     filter: any
@@ -18,11 +19,24 @@ const ProjectFilter: FunctionComponent<ProjectFilterProps> = ({ filter }) => {
     const [modalType, setModalType] = useState<FilterState>(FilterState.Address)
     const [isMobileActive, setMobileActive] = useState<boolean>(false)
 
+    const [search, setSearch] = useState<string>("")
+
+    const router = useRouter()
 
     const onActiveModal = useCallback((selected?: FilterState) => {
         setIsOpen(s => !s)
         if (selected) setModalType(selected)
     }, [modalIsOpen, modalType])
+
+    const onSearch = useCallback(() => {
+        let currentQuery = router.query
+        router.push({
+            query: {
+                ...currentQuery,
+                search
+            }
+        })
+    }, [search, router])
 
     const renderModalByType = () => {
         switch (modalType) {
@@ -53,8 +67,8 @@ const ProjectFilter: FunctionComponent<ProjectFilterProps> = ({ filter }) => {
                 <div className={`${styles['filter-items']} ${isMobileActive ? styles['filter-items--active'] : ''}`}>
                     <div className={styles['filter-item']}>
                         <div className={styles['search']}>
-                            <input placeholder="Nhập tên dự án" />
-                            <button className={styles['search__btn']}>
+                            <input placeholder="Nhập tên dự án" value={search} onChange={e => setSearch(e.target.value)}/>
+                            <button className={styles['search__btn']} onClick={() => onSearch()}>
                                 <FaSearch />
                             </button>
                         </div>
