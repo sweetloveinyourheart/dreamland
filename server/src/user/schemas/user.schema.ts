@@ -1,8 +1,17 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Sex, UserRole } from "../enum/user.enum";
+import { DeviceOS, Sex, UserRole } from "../enum/user.enum";
 import { Document } from "mongoose"
 
 export type UserDocument = Document & User
+
+@Schema({ _id: false })
+class Device {
+    @Prop({ enum: DeviceOS })
+    OS: DeviceOS
+
+    @Prop()
+    expoPushToken: string
+}
 
 @Schema()
 export class User {
@@ -38,6 +47,9 @@ export class User {
 
     @Prop({ default: true })
     actived: boolean
+
+    @Prop()
+    device?: Device
 }
 
 export const userSchema = SchemaFactory.createForClass(User)

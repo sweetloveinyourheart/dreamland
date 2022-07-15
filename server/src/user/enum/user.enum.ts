@@ -9,3 +9,8 @@ export enum Sex {
     FeMale = 'female',
     Other = 'other'
 }
+
+export enum DeviceOS {
+    iOS = 'iOS',
+    Android = 'android'
+}

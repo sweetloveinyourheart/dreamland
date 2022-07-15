@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Context, Query, Resolver } from '@nestjs/graphql';
+import { UpdateDevice } from 'src/user/dto/update-user.input';
 import { AuthService } from './auth.service';
 import { AuthenticatedUser } from './decorators/user.decorator';
 import { LoginInput } from './dto/login.dto';
@@ -12,8 +13,8 @@ export class AuthResolver {
 
   @Query(returns => Login)
   @UseGuards(LocalAuthGuard)
-  async login(@Args('account') account: LoginInput, @Context() context) { 
-    return await this.authService.login(context.user)
+  async login(@Args('account') account: LoginInput, @Context() context, @Args('device', { nullable: true }) device?: UpdateDevice) { 
+    return await this.authService.login(context.user, device)
   }
 
   @Query(returns => Login)

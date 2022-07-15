@@ -27,3 +27,12 @@ export class UpdateUserInput {
     @Field({ nullable: true })
     address?: string
 }
+
+@InputType()
+export class UpdateDevice {
+    @Field()
+    OS: string
+
+    @Field()
+    expoPushToken: string
+}

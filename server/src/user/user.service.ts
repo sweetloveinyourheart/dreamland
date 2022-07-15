@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { FindUserInput } from './dto/find-user.input';
 import { Profile } from './models/user.model';
 import { UserPayload } from 'src/auth/decorators/user.decorator';
+import { UpdateDevice } from './dto/update-user.input';
 
 @Injectable()
 export class UserService {
@@ -52,6 +53,14 @@ export class UserService {
             return await this.userModel.findById(user.userId)
         } catch (error) {
             throw new NotFoundException()
+        }
+    }
+
+    async updateDevice(id: string, device: UpdateDevice) {
+        try {
+            await this.userModel.findByIdAndUpdate(id, { device })
+        } catch (error) {
+            return;
         }
     }
 }   

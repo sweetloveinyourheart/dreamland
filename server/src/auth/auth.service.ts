@@ -5,6 +5,7 @@ import { AccessToken, Login } from './models/auth.model';
 import { User } from 'src/user/schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { UserRole } from 'src/user/enum/user.enum';
+import { UpdateDevice } from 'src/user/dto/update-user.input';
 
 @Injectable()
 export class AuthService {
@@ -25,8 +26,12 @@ export class AuthService {
         return null;
     }
 
-    async login(user: User & { _id: string }): Promise<Login> {
+    async login(user: User & { _id: string }, device: UpdateDevice | undefined): Promise<Login> {
         try {
+            if(device) {
+                await this.userService.updateDevice(user._id, device)
+            }
+
             const jwtPayload = {
                 phone: user.phone,
                 sub: user._id,
