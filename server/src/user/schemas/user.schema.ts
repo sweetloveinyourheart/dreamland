@@ -5,7 +5,7 @@ import { Document } from "mongoose"
 export type UserDocument = Document & User
 
 @Schema({ _id: false })
-class Device {
+export class Device {
     @Prop({ enum: DeviceOS })
     OS: DeviceOS
 

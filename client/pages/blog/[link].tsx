@@ -30,9 +30,9 @@ function BlogPage({ blog }: BlogPageProps) {
                     <div className={styles['header-area']}>
                         <div className={styles["logo"]} onClick={() => router.push("/")}>
                             <Image
-                                src={"/logo/logo.png"}
+                                src={"https://res.cloudinary.com/dienkhoiland/image/upload/v1656328913/logo/logo_nfdfc7.png"}
                                 alt="#"
-                                width={115}
+                                width={275}
                                 height={50}
                             />
                         </div>
@@ -62,7 +62,7 @@ function BlogPage({ blog }: BlogPageProps) {
                         </div>
                         <div className={styles['image']}>
                             <Image
-                                src={"/blog/download.jpg"}
+                                src={blog.image}
                                 alt="blog-image"
                                 width={1920}
                                 height={1080}

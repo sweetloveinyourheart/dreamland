@@ -33,6 +33,10 @@ export class UserService {
         return this.userModel.findOne({ phone });
     }
 
+    async findById(id: string): Promise<User | undefined> {
+        return this.userModel.findById(id)
+    }
+
     async getUsers(paging: FindUserInput): Promise<User[]> {
         try {
             const result = await this.userModel

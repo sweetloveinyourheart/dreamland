@@ -8,13 +8,17 @@ import { PostStatus } from 'src/real-estate/enum/real-estate.enum';
 import { UserPayload } from 'src/auth/decorators/user.decorator';
 import { TransactionStatus } from './enums/transaction.enum';
 import { PaginationArgs } from 'src/real-estate/dto/inputs/general/paging.input';
+import { NotificationService } from 'src/notification/notification.service';
+import { UserService } from 'src/user/user.service';
 
 
 @Injectable()
 export class TransactionService {
     constructor(
         @InjectModel(Transaction.name) private transactionModel: Model<TransactionDocument>,
-        private realEstateService: RealEstateService
+        private realEstateService: RealEstateService,
+        private notificationService: NotificationService,
+        private userService: UserService
     ) {}
 
     async createTransaction(user: UserPayload,item: CreateTransactionInput): Promise<Transaction> {
@@ -48,6 +52,9 @@ export class TransactionService {
 
             if(status === TransactionStatus.BanGiao) {
                 await this.realEstateService.processingTransaction(transaction.item, PostStatus.BanGiao)
+                // push notification
+                const { device } = await this.userService.findById(transaction.user)
+                await this.notificationService.pushNotification(device)
             }
 
             return transaction

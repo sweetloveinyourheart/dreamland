@@ -16,6 +16,8 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { TransactionModule } from './transaction/transaction.module';
 import * as redisStore from 'cache-manager-redis-store'
 import { RedisClientOptions } from 'redis';
+import { NotificationModule } from './notification/notification.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -29,6 +31,13 @@ import { RedisClientOptions } from 'redis';
         host: process.env.REDIS_HOST,
         port: 6379
       })
+    }),
+    BullModule.forRoot({
+       // @ts-ignore
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: 6379,
+      },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -50,7 +59,8 @@ import { RedisClientOptions } from 'redis';
     PageTemplateModule,
     AuthModule,
     CloudinaryModule,
-    TransactionModule
+    TransactionModule,
+    NotificationModule
   ],
   controllers: [AppController],
   providers: [AppService],

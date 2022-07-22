@@ -24,7 +24,7 @@ export class Transaction {
     status: TransactionStatus
 
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
-    user: User
+    user: any
 
     @Prop()
     createdAt: Date
