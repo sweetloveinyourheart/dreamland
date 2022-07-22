@@ -17,7 +17,6 @@ export class NotificationService {
             return {
                 success: true
             }
-            
         } catch (error) {
             throw new InternalServerErrorException()
         }

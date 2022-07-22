@@ -9,6 +9,7 @@ import { NotificationConsumer } from './notification.consumer';
     HttpModule, 
     BullModule.registerQueue({ name: "notification-queue" })
   ],
-  providers: [NotificationService, NotificationConsumer]
+  providers: [NotificationService, NotificationConsumer],
+  exports: [NotificationService]
 })
 export class NotificationModule {}
