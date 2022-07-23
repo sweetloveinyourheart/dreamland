@@ -1,4 +1,3 @@
-import { HttpService } from '@nestjs/axios';
 import { InjectQueue } from '@nestjs/bull';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Queue } from 'bull';

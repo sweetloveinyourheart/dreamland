@@ -126,6 +126,7 @@ services:
     image: redis:latest
     container_name: bull-redis
     restart: unless-stopped
+    command: --port 6380
     volumes:
       - bull-redis-data:/data
     networks:

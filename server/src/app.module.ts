@@ -33,7 +33,6 @@ import { BullModule } from '@nestjs/bull';
       })
     }),
     BullModule.forRoot({
-       // @ts-ignore
       redis: {
         host: process.env.BULL_REDIS_HOST,
         port: 6380,

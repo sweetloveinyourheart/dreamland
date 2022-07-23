@@ -6,10 +6,12 @@ import { NotificationConsumer } from './notification.consumer';
 
 @Module({
   imports: [
-    HttpModule, 
-    BullModule.registerQueue({ name: "notification-queue" })
+    HttpModule,
+    BullModule.registerQueue({
+      name: "notification-queue"
+    })
   ],
   providers: [NotificationService, NotificationConsumer],
   exports: [NotificationService]
 })
-export class NotificationModule {}
+export class NotificationModule { }
