@@ -140,3 +140,5 @@ networks:
 volumes:
   redis-data:
     driver: local
+  bull-redis-data:
+    driver: local
