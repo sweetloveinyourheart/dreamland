@@ -30,6 +30,7 @@ services:
       - ROLES_KEY=dienkhoiapproles
       - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
       - REDIS_HOST=redis
+      - BULL_REDIS_HOST=bull-redis
       - PORT=9000
       - CLD_CLOUD_NAME=dienkhoiland
       - CLD_API_KEY=579414987748234
@@ -58,6 +59,7 @@ services:
       - ROLES_KEY=dienkhoiapproles
       - ATLAS_URL=mongodb+srv://dkland:dkland2022@dkland.89go6.mongodb.net/?retryWrites=true&w=majority
       - REDIS_HOST=redis
+      - BULL_REDIS_HOST=bull-redis
       - PORT=9001
       - CLD_CLOUD_NAME=dienkhoiland
       - CLD_API_KEY=579414987748234
@@ -119,6 +121,17 @@ services:
       - shared-network
     ports:
       - 6379:6379
+
+  bull-redis:
+    image: redis:latest
+    container_name: bull-redis
+    restart: unless-stopped
+    volumes:
+      - bull-redis-data:/data
+    networks:
+      - shared-network
+    ports:
+      - 6380:6380
 
 networks:
   shared-network:

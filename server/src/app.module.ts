@@ -35,8 +35,8 @@ import { BullModule } from '@nestjs/bull';
     BullModule.forRoot({
        // @ts-ignore
       redis: {
-        host: process.env.REDIS_HOST,
-        port: 6379,
+        host: process.env.BULL_REDIS_HOST,
+        port: 6380,
       },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
