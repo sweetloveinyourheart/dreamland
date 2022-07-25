@@ -24,13 +24,8 @@ import { BullModule } from '@nestjs/bull';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CacheModule.registerAsync<RedisClientOptions>({
-      isGlobal: true,
-      useFactory: () => ({
-        store: redisStore,
-        host: process.env.REDIS_HOST,
-        port: 6379
-      })
+    CacheModule.register({
+      isGlobal: true
     }),
     BullModule.forRoot({
       redis: {

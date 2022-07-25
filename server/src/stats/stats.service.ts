@@ -14,11 +14,11 @@ export class StatsService {
     ) { }
 
     async realEstateStats(category: RealEstateCategory): Promise<RealEstateStats> {
-        let apartments: number | null
-        let houses: number | null
-        let lands: number | null
-        let businessPremises: number | null
-        let motals: number | null
+        let apartments: number | undefined
+        let houses: number | undefined
+        let lands: number | undefined
+        let businessPremises: number | undefined
+        let motals: number | undefined
 
         // Get data from cache
         if (category === RealEstateCategory.MuaBan) {
@@ -35,27 +35,27 @@ export class StatsService {
             motals = await this.cacheManager.get('rentingMotalStats')
         }
 
-        if (apartments === null ||
-            houses === null ||
-            lands === null ||
-            businessPremises === null ||
-            motals === null
+        if (apartments === undefined ||
+            houses === undefined ||
+            lands === undefined ||
+            businessPremises === undefined ||
+            motals === undefined
         ) {
             const dbData = await this.realEstateService.realEstateStats(category)
 
             // Update cache
             if (category === RealEstateCategory.MuaBan) {
-                await this.cacheManager.set('sellingApartmentStats', dbData.apartments, { ttl: 24 * 60 * 60 })
-                await this.cacheManager.set('sellingHouseStats', dbData.houses, { ttl: 24 * 60 * 60 })
-                await this.cacheManager.set('sellingLandStats', dbData.lands, { ttl: 24 * 60 * 60 })
-                await this.cacheManager.set('sellingBusinessPremisesStats', dbData.businessPremises, { ttl: 24 * 60 * 60 })
-                await this.cacheManager.set('sellingMotalStats', dbData.motals, { ttl: 24 * 60 * 60 })
+                await this.cacheManager.set('sellingApartmentStats', dbData.apartments, { ttl: 1 * 60 * 60 })
+                await this.cacheManager.set('sellingHouseStats', dbData.houses, { ttl: 1 * 60 * 60 })
+                await this.cacheManager.set('sellingLandStats', dbData.lands, { ttl: 1 * 60 * 60 })
+                await this.cacheManager.set('sellingBusinessPremisesStats', dbData.businessPremises, { ttl: 1 * 60 * 60 })
+                await this.cacheManager.set('sellingMotalStats', dbData.motals, { ttl: 1 * 60 * 60 })
             } else {
-                await this.cacheManager.set('rentingApartmentStats', dbData.apartments, { ttl: 24 * 60 * 60 })
-                await this.cacheManager.set('rentingHouseStats', dbData.houses, { ttl: 24 * 60 * 60 })
-                await this.cacheManager.set('rentingLandStats', dbData.lands, { ttl: 24 * 60 * 60 })
-                await this.cacheManager.set('rentingBusinessPremisesStats', dbData.businessPremises, { ttl: 24 * 60 * 60 })
-                await this.cacheManager.set('rentingMotalStats', dbData.motals, { ttl: 24 * 60 * 60 })
+                await this.cacheManager.set('rentingApartmentStats', dbData.apartments, { ttl: 1 * 60 * 60 })
+                await this.cacheManager.set('rentingHouseStats', dbData.houses, { ttl: 1 * 60 * 60 })
+                await this.cacheManager.set('rentingLandStats', dbData.lands, { ttl: 1 * 60 * 60 })
+                await this.cacheManager.set('rentingBusinessPremisesStats', dbData.businessPremises, { ttl: 1 * 60 * 60 })
+                await this.cacheManager.set('rentingMotalStats', dbData.motals, { ttl: 1 * 60 * 60 })
             }
 
             apartments = dbData.apartments
@@ -76,9 +76,9 @@ export class StatsService {
     }
 
     async projectStats(): Promise<ProjectStats> {
-        let projects: number | null = await this.cacheManager.get('projectStats')
+        let projects: number | undefined = await this.cacheManager.get('projectStats')
 
-        if (projects === null) {
+        if (projects === undefined) {
             projects = (await this.projectService.projectStats()).projects
 
             await this.cacheManager.set('projectStats', projects, { ttl: 24 * 60 * 60 })

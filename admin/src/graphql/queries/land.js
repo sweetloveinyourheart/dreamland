@@ -55,7 +55,7 @@ query Lands($filter: LandFilter!, $paging: PaginationArgs, $search: String) {
 
 export const GET_LAND_BY_ID = gql`
 query Lands($id: String!) {
-    land: getLandById(id: $id) {
+    land: getLandPostById(id: $id) {
             _id
             title
             description
