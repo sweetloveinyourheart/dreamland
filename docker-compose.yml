@@ -40,10 +40,10 @@ services:
       - 9000:9000
     
     volumes:
-      - ./files:/api/files
+      - ./server/files:/api/files
 
     depends_on:
-      redis:
+      bull-redis:
         condition: service_started
 
     networks:
@@ -72,11 +72,11 @@ services:
       - 9001:9001
 
     depends_on:
-      redis:
+      bull-redis:
         condition: service_started
 
     volumes:
-      - ./files:/api/files
+      - ./server/files:/api/files
 
     networks:
       - shared-network
@@ -110,23 +110,11 @@ services:
         condition: service_started
       api_01:
         condition: service_started
-
       api_02:
         condition: service_started
 
     networks:
       - shared-network
-
-  redis:
-    image: redis:latest
-    container_name: redis
-    restart: unless-stopped
-    volumes:
-      - redis-data:/data
-    networks:
-      - shared-network
-    ports:
-      - 6379:6379
 
   bull-redis:
     image: redis:latest
