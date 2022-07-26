@@ -237,9 +237,10 @@ export class RealEstateResolver {
   async updateApartmentPost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateApartmentInput,
-    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput,
+    @Args('code', { nullable: true }) code: string | undefined
   ): Promise<Apartment> {
-    return await this.realEstateService.updateApartmentPost(postId, data, updateStatus);
+    return await this.realEstateService.updateApartmentPost(postId, data, updateStatus, code);
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
@@ -248,9 +249,10 @@ export class RealEstateResolver {
   async updateHousePost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateHouseInput | null,
-    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput,
+    @Args('code', { nullable: true }) code: string | undefined
   ): Promise<House> {
-    return await this.realEstateService.updateHousePost(postId, data, updateStatus);
+    return await this.realEstateService.updateHousePost(postId, data, updateStatus, code);
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
@@ -259,9 +261,10 @@ export class RealEstateResolver {
   async updateLandPost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateLandInput,
-    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput,
+    @Args('code', { nullable: true }) code: string | undefined
   ): Promise<Land> {
-    return await this.realEstateService.updateLandPost(postId, data, updateStatus);
+    return await this.realEstateService.updateLandPost(postId, data, updateStatus, code);
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
@@ -270,9 +273,10 @@ export class RealEstateResolver {
   async updateBusinessPremisesPost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateBusinessPremisesInput,
-    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput,
+    @Args('code', { nullable: true }) code: string | undefined
   ): Promise<BusinessPremises> {
-    return await this.realEstateService.updateBusinessPremisesPost(postId, data, updateStatus);
+    return await this.realEstateService.updateBusinessPremisesPost(postId, data, updateStatus, code);
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
@@ -281,9 +285,10 @@ export class RealEstateResolver {
   async updateMotalPost(
     @Args('postId') postId: string,
     @Args('data', { nullable: true }) data: CreateMotalInput,
-    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput
+    @Args('status', { nullable: true }) updateStatus: UpdatePostStatusInput,
+    @Args('code', { nullable: true }) code: string | undefined
   ): Promise<Motal> {
-    return await this.realEstateService.updateMotalPost(postId, data, updateStatus);
+    return await this.realEstateService.updateMotalPost(postId, data, updateStatus, code);
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)

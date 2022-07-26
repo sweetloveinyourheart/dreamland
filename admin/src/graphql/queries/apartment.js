@@ -57,6 +57,7 @@ query Apartments($filter: ApartmentFilter!, $paging: PaginationArgs, $search: St
         googleMapsLink
         outstanding
         postStatus
+        code
     }
 }
 `
@@ -118,6 +119,7 @@ query Apartment($id: String!) {
         googleMapsLink
         outstanding
         postStatus
+        code
     }
 }
 `

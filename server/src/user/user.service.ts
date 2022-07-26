@@ -37,13 +37,13 @@ export class UserService {
         return this.userModel.findById(id)
     }
 
-    async getUsers(paging: FindUserInput): Promise<User[]> {
+    async getUsers(paging?: FindUserInput): Promise<User[]> {
         try {
             const result = await this.userModel
                 .find({ actived: true, roles: { $not: { $in: ["admin"] } } })
                 .select({ password: 0 })
-                .skip(paging.cursor)
-                .limit(paging.limit)
+                .skip(paging?.cursor)
+                .limit(paging?.limit)
                 .sort({ createdAt: -1 })
 
             return result

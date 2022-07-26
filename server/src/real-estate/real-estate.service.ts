@@ -18,7 +18,7 @@ import { BusinessPremisesFilter, CreateBusinessPremisesInput } from './dto/input
 import { CreateMotalInput, MotalFilter } from './dto/inputs/motal.input';
 import { Motal } from './models/motal.model';
 import { BusinessPremises } from './models/business-premises.model';
-import { PostStatus, RealEstateCategory, RealEstateType } from './enum/real-estate.enum';
+import { PostStatus, RealEstateCategory, RealEstateType, StatsTime } from './enum/real-estate.enum';
 import { RealEstateStats } from 'src/stats/models/stats.model';
 import { Cache } from 'cache-manager';
 import { RealEstatePosts } from './models/parent-models/top';
@@ -153,11 +153,12 @@ export class RealEstateService {
         }
     }
 
-    async updateApartmentPost(postId: string, data: CreateApartmentInput | null, updateStatus: UpdatePostStatusInput | null): Promise<Apartment> {
+    async updateApartmentPost(postId: string, data: CreateApartmentInput | null, updateStatus: UpdatePostStatusInput | null, code: string | undefined): Promise<Apartment> {
         try {
             const updated = await this.apartmentModel.findByIdAndUpdate(postId, {
                 ...data,
-                ...updateStatus
+                ...updateStatus,
+                code
             })
 
             if (data)
@@ -174,11 +175,12 @@ export class RealEstateService {
         }
     }
 
-    async updateHousePost(postId: string, data: CreateHouseInput | null, updateStatus: UpdatePostStatusInput | null): Promise<House> {
+    async updateHousePost(postId: string, data: CreateHouseInput | null, updateStatus: UpdatePostStatusInput | null, code: string | undefined): Promise<House> {
         try {
             const updated = await this.houseModel.findByIdAndUpdate(postId, {
                 ...data,
-                ...updateStatus
+                ...updateStatus,
+                code
             })
 
             if (data)
@@ -196,11 +198,12 @@ export class RealEstateService {
         }
     }
 
-    async updateLandPost(postId: string, data: CreateLandInput | null, updateStatus: UpdatePostStatusInput | null): Promise<Land> {
+    async updateLandPost(postId: string, data: CreateLandInput | null, updateStatus: UpdatePostStatusInput | null, code: string | undefined): Promise<Land> {
         try {
             const updated = await this.landModel.findByIdAndUpdate(postId, {
                 ...data,
-                ...updateStatus
+                ...updateStatus,
+                code
             })
 
             if (data)
@@ -217,11 +220,12 @@ export class RealEstateService {
         }
     }
 
-    async updateBusinessPremisesPost(postId: string, data: CreateBusinessPremisesInput | null, updateStatus: UpdatePostStatusInput | null): Promise<BusinessPremises> {
+    async updateBusinessPremisesPost(postId: string, data: CreateBusinessPremisesInput | null, updateStatus: UpdatePostStatusInput | null, code: string | undefined): Promise<BusinessPremises> {
         try {
             const updated = await this.businessPremisesModel.findByIdAndUpdate(postId, {
                 ...data,
-                ...updateStatus
+                ...updateStatus,
+                code
             })
 
             if (data)
@@ -238,11 +242,12 @@ export class RealEstateService {
         }
     }
 
-    async updateMotalPost(postId: string, data: CreateMotalInput | null, updateStatus: UpdatePostStatusInput | null): Promise<Motal> {
+    async updateMotalPost(postId: string, data: CreateMotalInput | null, updateStatus: UpdatePostStatusInput | null, code: string | undefined): Promise<Motal> {
         try {
             const updated = await this.motalModel.findByIdAndUpdate(postId, {
                 ...data,
-                ...updateStatus
+                ...updateStatus,
+                code
             })
 
             if (data)
@@ -650,14 +655,25 @@ export class RealEstateService {
         }
     }
 
-    async realEstateStats(category: RealEstateCategory): Promise<RealEstateStats> {
+    async realEstateStats(category: RealEstateCategory, time?: StatsTime): Promise<RealEstateStats> {
         try {
+            const getFirstDayPreviousMonth = () => {
+                const date = new Date();
+                return new Date(date.getFullYear(), date.getMonth(), 1);
+            }
+
+            let countQuery = {
+                category,
+                postStatus: { $ne: PostStatus.Pending },
+                ...((time === StatsTime.Month) && { timeStamp: { $gte: getFirstDayPreviousMonth() } })
+            }
+
             return {
-                apartments: await this.apartmentModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
-                houses: await this.houseModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
-                lands: await this.landModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
-                businessPremises: await this.businessPremisesModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
-                motals: await this.motalModel.countDocuments({ category, postStatus: { $ne: PostStatus.Pending } }),
+                apartments: await this.apartmentModel.countDocuments(countQuery),
+                houses: await this.houseModel.countDocuments(countQuery),
+                lands: await this.landModel.countDocuments(countQuery),
+                businessPremises: await this.businessPremisesModel.countDocuments(countQuery),
+                motals: await this.motalModel.countDocuments(countQuery),
             }
         } catch (error) {
             throw new NotFoundException()
@@ -712,30 +728,42 @@ export class RealEstateService {
         try {
             switch (item.itemType) {
                 case RealEstateType.CanHo:
-                    await this.apartmentModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
-                    return;
+                    return await this.apartmentModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.NhaO:
-                    await this.houseModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
-                    return;
+                    return await this.houseModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.Dat:
-                    await this.landModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
-                    return;
-
+                    return await this.landModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
+                    
                 case RealEstateType.VanPhong:
-                    await this.businessPremisesModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
-                    return;
+                    return await this.businessPremisesModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.PhongTro:
-                    await this.motalModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
-                    return;
+                    return await this.motalModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })              
 
                 default:
-                    return;
+                    return null;
             }
         } catch (error) {
             throw new InternalServerErrorException()
         }
+    }
+
+    async getStatsExportData() {
+        const getFirstDayPreviousMonth = () => {
+            const date = new Date();
+            return new Date(date.getFullYear(), date.getMonth(), 1);
+        }
+
+        const query = { timeStamp: { $gte: getFirstDayPreviousMonth() } }
+
+        return [
+            ... await this.apartmentModel.find(query).sort({ timeStamp: -1 }),
+            ... await this.houseModel.find(query).sort({ timeStamp: -1 }),
+            ... await this.landModel.find(query).sort({ timeStamp: -1 }),
+            ... await this.businessPremisesModel.find(query).sort({ timeStamp: -1 }),
+            ... await this.motalModel.find(query).sort({ timeStamp: -1 })
+        ]
     }
 }

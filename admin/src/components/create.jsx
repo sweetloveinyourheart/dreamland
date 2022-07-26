@@ -854,6 +854,7 @@ const CreateRSPost = ({ type, goBack }) => {
                                             name='category'
                                             select
                                             required
+                                            fullWidth
                                             label="Danh mục"
                                             value={formData.category}
                                             onChange={e => setFormData(s => ({ ...s, category: e.target.value }))}
@@ -867,6 +868,16 @@ const CreateRSPost = ({ type, goBack }) => {
                                                 </MenuItem>
                                             ))}
                                         </TextField>
+                                        <TextField
+                                            id="code"
+                                            name="code"
+                                            required
+                                            label="Mã bài đăng"
+                                            variant="outlined"
+                                            margin="normal"
+                                            value={formData.code}
+                                            onChange={e => setFormData(s => ({ ...s, code: e.target.value }))}
+                                        />
 
                                         <TextField
                                             fullWidth

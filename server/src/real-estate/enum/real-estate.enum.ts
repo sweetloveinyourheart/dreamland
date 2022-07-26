@@ -83,3 +83,8 @@ export enum PostStatus {
     DatCoc = 'dat-coc',
     BanGiao = 'ban-giao'
 }
+
+export enum StatsTime {
+    Month = 'month',
+    All = 'all'   
+}

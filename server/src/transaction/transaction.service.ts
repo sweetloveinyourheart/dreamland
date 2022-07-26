@@ -42,19 +42,23 @@ export class TransactionService {
     async updateTransactionStatus(transactionId: string, status: TransactionStatus): Promise<Transaction> {
         try {
             const transaction = await this.transactionModel.findByIdAndUpdate(transactionId, { status })
+            let post: any
+
             if(status === TransactionStatus.Rejected) {
-                await this.realEstateService.processingTransaction(transaction.item, PostStatus.Available)
+                post = await this.realEstateService.processingTransaction(transaction.item, PostStatus.Available)
             }
 
             if(status === TransactionStatus.DatCoc) {
-                await this.realEstateService.processingTransaction(transaction.item, PostStatus.DatCoc)
+                post = await this.realEstateService.processingTransaction(transaction.item, PostStatus.DatCoc)
+                // push notification
+                const { device } = await this.userService.findById(transaction.user)
+                await this.notificationService.pushNotification(post, device)
             }
 
             if(status === TransactionStatus.BanGiao) {
-                await this.realEstateService.processingTransaction(transaction.item, PostStatus.BanGiao)
-                // push notification
-                const { device } = await this.userService.findById(transaction.user)
-                await this.notificationService.pushNotification(device)
+                post = await this.realEstateService.processingTransaction(transaction.item, PostStatus.BanGiao)
+                // global push notification
+                await this.notificationService.globalPush(post)
             }
 
             return transaction

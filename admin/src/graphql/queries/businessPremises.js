@@ -44,6 +44,7 @@ query BusinessPremises($filter: BusinessPremisesFilter!, $paging: PaginationArgs
             googleMapsLink
             postStatus
             outstanding
+            code
         }
     }
 `
@@ -92,6 +93,7 @@ export const GET_BUSINESS_PREMISES_BY_ID = gql`
             googleMapsLink
             postStatus
             outstanding
+            code
         }
     }
 `

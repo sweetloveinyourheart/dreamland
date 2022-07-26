@@ -213,7 +213,7 @@ function Transaction() {
                         <Box display={"flex"} justifyContent="flex-end">
                             <Tabs value={menu} onChange={(e, value) => onSelectMenu(value)}>
                                 <Tab label="Chờ phê duyệt" id={0} value={0} />
-                                <Tab label="Đã đặt cọc" id={1} value={1} />
+                                <Tab label="Đang giao dịch" id={1} value={1} />
                                 <Tab label="Đã bàn giao" id={2} value={2} />
                             </Tabs>
                         </Box>

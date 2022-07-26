@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, TextField, Typography } from "@mui/material";
 import { DELETE_APARTMENT, DELETE_BUSINESS_PREMISES, DELETE_HOUSE, DELETE_LAND, DELETE_MOTAL } from "graphql/mutations/remove";
 import { UPDATE_APARTMENT, UPDATE_BUSINESS_PREMISES, UPDATE_HOUSE, UPDATE_LAND, UPDATE_MOTAL } from "graphql/mutations/update";
 import { moneyConverter } from "helpers/money";
@@ -7,6 +7,12 @@ import { useEffect, useState } from "react";
 import Notification from "ui-component/notifications/notification";
 
 const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
+    const [code, setCode] = useState("")
+
+    const onAccept = () => {
+        onSetActived(data, code)
+    }
+
     return (
         <Grid md={6} lg={4} xl={3} item>
             <Card variant="outlined">
@@ -17,7 +23,7 @@ const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
                         image={data.media.images[0]}
                         alt="image"
                     />
-                    <CardContent sx={{ padding: "12px 24px" }}>
+                    <CardContent sx={{ padding: "12px 24px 0px 24px" }}>
                         <Typography gutterBottom variant="h4" component="div">
                             {data.title}
                         </Typography>
@@ -25,9 +31,25 @@ const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
                             {moneyConverter(data.detail.pricing.total)}
                         </Typography>
                     </CardContent>
+
+                </Box>
+                <Box>
+                    <CardContent sx={{ padding: "12px 24px" }}>
+                        <TextField
+                            placeholder="Mã bất động sản"
+                            required
+                            value={code}
+                            onChange={e => setCode(e.target.value)}
+                        />
+                    </CardContent>
                 </Box>
                 <CardActions sx={{ padding: "12px 24px" }}>
-                    <Button variant="contained" color="warning" onClick={() => onSetActived(data)}>
+                    <Button
+                        variant="contained"
+                        color="warning"
+                        onClick={() => onAccept()}
+                        disabled={code.length === 0}
+                    >
                         Duyệt
                     </Button>
                     &nbsp;
@@ -60,14 +82,15 @@ const PendingList = ({ type, data, selectPost, goBack }) => {
     const [deleteBusinessPremises, { data: deleteBusinessPremisesData, error: deleteBusinessPremisesErr }] = useMutation(DELETE_BUSINESS_PREMISES)
     const [deleteMotal, { data: deleteMotalData, error: deleteMotalErr }] = useMutation(DELETE_MOTAL)
 
-    const setActived = (post) => {
+    const setActived = (post, code) => {
         if (type === "can-ho-chung-cu") {
             updateApartment({
                 variables: {
                     postId: post._id,
                     status: {
                         postStatus: 'Available'
-                    }
+                    },
+                    code
                 }
             })
         }
@@ -78,7 +101,8 @@ const PendingList = ({ type, data, selectPost, goBack }) => {
                     postId: post._id,
                     status: {
                         postStatus: 'Available'
-                    }
+                    },
+                    code
                 }
             })
         }
@@ -89,7 +113,8 @@ const PendingList = ({ type, data, selectPost, goBack }) => {
                     postId: post._id,
                     status: {
                         postStatus: 'Available'
-                    }
+                    },
+                    code
                 }
             })
         }
@@ -100,7 +125,8 @@ const PendingList = ({ type, data, selectPost, goBack }) => {
                     postId: post._id,
                     status: {
                         postStatus: 'Available'
-                    }
+                    },
+                    code
                 }
             })
         }
@@ -111,7 +137,8 @@ const PendingList = ({ type, data, selectPost, goBack }) => {
                     postId: post._id,
                     status: {
                         postStatus: 'Available'
-                    }
+                    },
+                    code
                 }
             })
         }

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_REAL_ESTATE_STATS = gql`
-    query {
-        sellingPosts: realEstateStats(category: MuaBan) {
+    query Stats($time: StatsTime) {
+        sellingPosts: realEstateStats(category: MuaBan, time: $time) {
             apartments
             houses
             lands
@@ -10,7 +10,7 @@ export const GET_REAL_ESTATE_STATS = gql`
             motals
         }
         
-        rentingPosts: realEstateStats(category: ChoThue) {
+        rentingPosts: realEstateStats(category: ChoThue, time: $time) {
             apartments
             houses
             lands

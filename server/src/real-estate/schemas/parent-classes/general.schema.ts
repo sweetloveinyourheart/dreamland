@@ -1,5 +1,6 @@
 import { Direction, LegalDocuments, OwnerType, PostStatus } from "../../enum/real-estate.enum"
 import { Prop, Schema } from '@nestjs/mongoose';
+import { User } from "src/user/schemas/user.schema";
 
 @Schema({ _id: false, id: false })
 class UserInfo {
@@ -131,4 +132,7 @@ export class RealEstate {
 
     @Prop()
     index: number
+
+    @Prop()
+    code?: string
 }

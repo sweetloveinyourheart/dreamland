@@ -114,7 +114,7 @@ const TransactionList = ({ items, onSelect }) => {
                                                 onClick={() => onUpdate(row._id, TransactionStatus.DatCoc)}
                                                 color="success"
                                             >
-                                                Đặt cọc
+                                                Xác nhận GD
                                             </Button>
                                         )
                                     }

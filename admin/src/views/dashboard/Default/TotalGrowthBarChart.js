@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import { Grid, Typography } from '@mui/material';
+import { Button, Grid, MenuItem, TextField, Typography } from '@mui/material';
 
 // third-party
 import Chart from 'react-apexcharts';
@@ -13,10 +10,22 @@ import Chart from 'react-apexcharts';
 import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
+import { API_ENDPOINT } from 'constants/apollo';
+
+const status = [
+    {
+        value: 'Month',
+        label: 'Tháng này'
+    },
+    {
+        value: 'All',
+        label: 'Tất cả'
+    }
+];
 
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
-const TotalGrowthBarChart = ({ isLoading, rentingData, sellingData }) => {
+const TotalGrowthBarChart = ({ isLoading, rentingData, sellingData, statsTime, setStatsTime }) => {
     const [chartData, setChartData] = useState({
         height: 400,
         type: 'bar',
@@ -89,19 +98,6 @@ const TotalGrowthBarChart = ({ isLoading, rentingData, sellingData }) => {
             }
         ]
     })
-    const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
-
-    const { navType } = customization;
-    const { primary } = theme.palette.text;
-    const darkLight = theme.palette.dark.light;
-    const grey200 = theme.palette.grey[200];
-    const grey500 = theme.palette.grey[500];
-
-    const primary200 = theme.palette.primary[200];
-    const primaryDark = theme.palette.primary.dark;
-    const secondaryMain = theme.palette.secondary.main;
-    const secondaryLight = theme.palette.secondary.light;
 
     useEffect(() => {
         setChartData(s => ({
@@ -121,6 +117,10 @@ const TotalGrowthBarChart = ({ isLoading, rentingData, sellingData }) => {
         }))
     }, [rentingData, sellingData]);
 
+    const onExportFile = async () => {
+        window.open(API_ENDPOINT+'/stats/export')
+    }
+
     return (
         <>
             {isLoading ? (
@@ -139,6 +139,29 @@ const TotalGrowthBarChart = ({ isLoading, rentingData, sellingData }) => {
                                             <Typography variant="h3">Tin đăng bất động sản</Typography>
                                         </Grid>
                                     </Grid>
+                                </Grid>
+                                <Grid item>
+                                    {statsTime === "Month"
+                                        && (
+                                            <Button variant='contained' onClick={() => onExportFile()}>
+                                                Xuất dữ liệu
+                                            </Button>
+                                        )
+                                    }
+                                </Grid>
+                                <Grid item>
+                                    <TextField
+                                        id="standard-select-currency"
+                                        select
+                                        value={statsTime}
+                                        onChange={(e) => setStatsTime(e.target.value)}
+                                    >
+                                        {status.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
                                 </Grid>
                             </Grid>
                         </Grid>

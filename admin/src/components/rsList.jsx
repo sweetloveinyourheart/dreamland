@@ -4,8 +4,9 @@ import { UPDATE_APARTMENT, UPDATE_BUSINESS_PREMISES, UPDATE_HOUSE, UPDATE_LAND, 
 import { moneyConverter } from "helpers/money";
 import { useEffect, useState } from "react";
 import Notification from "ui-component/notifications/notification";
+import { DELETE_APARTMENT, DELETE_BUSINESS_PREMISES, DELETE_HOUSE, DELETE_LAND, DELETE_MOTAL } from "graphql/mutations/remove";
 
-const Item = ({ data, selectPost, onSetOutStanding, onSetActived, viewPost }) => {
+const Item = ({ data, selectPost, onSetOutStanding, onSetActived, viewPost, onDelete }) => {
     return (
         <Grid md={6} lg={4} xl={3} item>
             <Card variant="outlined">
@@ -26,28 +27,47 @@ const Item = ({ data, selectPost, onSetOutStanding, onSetActived, viewPost }) =>
                     </CardContent>
                 </Box>
                 <CardActions sx={{ padding: "12px 24px" }}>
-                    {(data.postStatus === 'Available' || data.postStatus === "Disable")
-                        && (
-                            <Button
-                                variant="contained"
-                                color="warning"
-                                onClick={() => onSetOutStanding(data)}
-                            >
-                                {data.outstanding ? "Gỡ nổi bật" : "Đặt nổi bật"}
+                    <Grid container spacing={1}>
+                        {(data.postStatus === 'Available' || data.postStatus === "Disable")
+                            && (
+                                <Grid item md={6}>
+                                    <Button
+                                        variant="contained"
+                                        color="warning"
+                                        onClick={() => onSetOutStanding(data)}
+                                        fullWidth
+                                    >
+                                        {data.outstanding ? "Gỡ nổi bật" : "Đặt nổi bật"}
+                                    </Button>
+                                </Grid>
+                            )
+                        }
+                        <Grid item md={6}>
+                            <Button variant="contained" color="success" onClick={() => selectPost(data)} fullWidth>
+                                Chỉnh sửa
                             </Button>
-                        )
-                    }
-                    <Button variant="contained" color="success" onClick={() => selectPost(data)}>
-                        Chỉnh sửa
-                    </Button>
-                    &nbsp;
-                    {(data.postStatus === 'Available' || data.postStatus === "Disable")
-                        && (
-                            <Button variant="contained" color="error" onClick={() => {onSetActived(data)}}>
-                                {data.postStatus === 'Available' ? "Vô hiệu" : "Kích hoạt"}
-                            </Button>
-                        )
-                    }
+                        </Grid>
+
+                        {(data.postStatus === 'Available' || data.postStatus === "Disable")
+                            && (
+                                <Grid item md={6}>
+                                    <Button variant="contained" color="error" onClick={() => { onSetActived(data) }} fullWidth>
+                                        {data.postStatus === 'Available' ? "Vô hiệu" : "Kích hoạt"}
+                                    </Button>
+                                </Grid>
+                            )
+                        }
+
+                        {(data.postStatus === 'Available' || data.postStatus === "Disable")
+                            && (
+                                <Grid item md={6}>
+                                    <Button variant="contained" color="secondary" onClick={() => onDelete(data)} fullWidth>
+                                        Xoá bỏ
+                                    </Button>
+                                </Grid>
+                            )
+                        }
+                    </Grid>
                 </CardActions>
             </Card>
 
@@ -66,6 +86,12 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
     const [updateLand, { data: updateLandData, error: updateLandErr }] = useMutation(UPDATE_LAND)
     const [updateBusinessPremises, { data: updateBusinessPremisesData, error: updateBusinessPremisesErr }] = useMutation(UPDATE_BUSINESS_PREMISES)
     const [updateMotal, { data: updateMotalData, error: updateMotalErr }] = useMutation(UPDATE_MOTAL)
+
+    const [deleteApartment, { data: deleteApartmentData, error: deleteApartmentErr }] = useMutation(DELETE_APARTMENT)
+    const [deleteHouse, { data: deleteHouseData, error: deleteHouseErr }] = useMutation(DELETE_HOUSE)
+    const [deleteLand, { data: deleteLandData, error: deleteLandErr }] = useMutation(DELETE_LAND)
+    const [deleteBusinessPremises, { data: deleteBusinessPremisesData, error: deleteBusinessPremisesErr }] = useMutation(DELETE_BUSINESS_PREMISES)
+    const [deleteMotal, { data: deleteMotalData, error: deleteMotalErr }] = useMutation(DELETE_MOTAL)
 
     const setOutStanding = (post) => {
         if (type === "can-ho-chung-cu") {
@@ -186,6 +212,48 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
         }
     }
 
+    const deletePost = (post) => {
+        if (type === "can-ho-chung-cu") {
+            deleteApartment({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+
+        if (type === "nha-o") {
+            deleteHouse({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+
+        if (type === "dat") {
+            deleteLand({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+
+        if (type === "van-phong-mat-bang") {
+            deleteBusinessPremises({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+
+        if (type === "phong-tro") {
+            deleteMotal({
+                variables: {
+                    postId: post._id
+                }
+            })
+        }
+    }
+
     useEffect(() => {
         if (updateApartmentData || updateHouseData || updateLandData || updateBusinessPremisesData || updateMotalData) {
             setModal({
@@ -213,11 +281,41 @@ const RSList = ({ type, data, selectPost, viewPost }) => {
         updateMotalErr
     ])
 
+    useEffect(() => {
+        if (deleteApartmentData || deleteHouseData || deleteLandData || deleteBusinessPremisesData || deleteMotalData) {
+            setModal({
+                message: "Đã xoá bài đăng !",
+                active: true,
+                success: true
+            })
+        }
+
+        if (deleteApartmentErr || deleteHouseErr || deleteLandErr || deleteBusinessPremisesErr || deleteMotalErr) {
+            setModal({
+                message: "Có lỗi xảy ra, vui lòng refresh trang và thử lại !",
+                active: true,
+                success: false
+            })
+        }
+    }, [
+        deleteApartmentData,
+        deleteApartmentErr,
+        deleteHouseData,
+        deleteHouseErr,
+        deleteLandData,
+        deleteLandErr,
+        deleteBusinessPremisesData,
+        deleteBusinessPremisesErr,
+        deleteMotalData,
+        deleteMotalErr
+    ])
+
+
     const renderData = () => {
         let result
         if (data) {
             result = data.map((elm, ind) => {
-                return <Item data={elm} key={ind} selectPost={selectPost} onSetActived={setActived} onSetOutStanding={setOutStanding} viewPost={viewPost} />
+                return <Item data={elm} key={ind} selectPost={selectPost} onSetActived={setActived} onSetOutStanding={setOutStanding} viewPost={viewPost} onDelete={deletePost}/>
             })
         }
 

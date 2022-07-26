@@ -45,6 +45,7 @@ export const GET_MOTAL_POSTS = gql`
             googleMapsLink
             outstanding
             postStatus
+            code
         }
     }
 `
@@ -94,6 +95,7 @@ export const GET_MOTAL_BY_ID = gql`
             googleMapsLink
             outstanding
             postStatus
+            code
         }
     }
 `

@@ -48,6 +48,7 @@ query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
             googleMapsLink
             outstanding
             postStatus
+            code
         }
     }
 `
@@ -100,6 +101,7 @@ export const GET_HOUSE_BY_ID = gql`
             googleMapsLink
             outstanding
             postStatus
+            code
         }
     }
 `

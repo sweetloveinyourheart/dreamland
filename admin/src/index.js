@@ -3,11 +3,6 @@ import ReactDOM from 'react-dom';
 // third party
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloProvider
-} from "@apollo/client";
 
 // project imports
 import * as serviceWorker from 'serviceWorker';

@@ -109,10 +109,13 @@ export class CreateRealEstateInput {
 
     @Field(type => OwnerInput)
     owner: OwnerInput
-    
+
     @Field(type => String, { nullable: true })
     virtual3DLink?: string
 
     @Field(type => String, { nullable: true })
     googleMapsLink?: string
+
+    @Field({ nullable: true })
+    code?: string
 }

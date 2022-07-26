@@ -49,6 +49,7 @@ query Lands($filter: LandFilter!, $paging: PaginationArgs, $search: String) {
             virtual3DLink
             googleMapsLink
             postStatus
+            code
         }
     }
 `
@@ -102,6 +103,7 @@ query Lands($id: String!) {
             virtual3DLink
             googleMapsLink
             postStatus
+            code
         }
     }
 `

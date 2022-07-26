@@ -32,7 +32,9 @@ const Dashboard = () => {
         motal: 0
     })
 
-    const { data: rsStatsData } = useQuery(GET_REAL_ESTATE_STATS)
+    const [time, setTime] = useState('All');
+
+    const { data: rsStatsData } = useQuery(GET_REAL_ESTATE_STATS, { variables: { time }, notifyOnNetworkStatusChange: true, fetchPolicy: 'network-only' })
     const { data: pjStatsData } = useQuery(GET_PROJECT_STATS)
 
     useEffect(() => {
@@ -67,7 +69,13 @@ const Dashboard = () => {
 
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <TotalGrowthBarChart isLoading={isLoading} rentingData={rentingRsStats} sellingData={sellingRsStats}/>
+                        <TotalGrowthBarChart 
+                            isLoading={isLoading} 
+                            rentingData={rentingRsStats} 
+                            sellingData={sellingRsStats}
+                            statsTime={time}
+                            setStatsTime={setTime}
+                        />
                     </Grid>
                 </Grid>
 

@@ -8,4 +8,7 @@ export class UpdatePostStatusInput {
 
     @Field(type => Boolean,{ nullable: true })
     outstanding?: boolean
+
+    @Field({ nullable: true })
+    code?: string
 }

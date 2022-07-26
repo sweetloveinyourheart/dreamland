@@ -18,16 +18,16 @@ export const EDIT_PROJECT = gql`
 `
 
 export const UPDATE_APARTMENT = gql`
-    mutation Update($data: CreateApartmentInput, $postId: String!, $status: UpdatePostStatusInput) {
-        apartment: updateApartmentPost(data: $data, postId: $postId, status: $status) {
+    mutation Update($data: CreateApartmentInput, $postId: String!, $status: UpdatePostStatusInput, $code: String) {
+        apartment: updateApartmentPost(data: $data, postId: $postId, status: $status, code: $code) {
             title
         }
     }
 `
 
 export const UPDATE_HOUSE = gql`
-    mutation Update($data: CreateHouseInput, $postId: String!, $status: UpdatePostStatusInput) {
-        house: updateHousePost(data: $data, postId: $postId, status: $status) {
+    mutation Update($data: CreateHouseInput, $postId: String!, $status: UpdatePostStatusInput, $code: String) {
+        house: updateHousePost(data: $data, postId: $postId, status: $status, code: $code) {
             title
         }
     }
@@ -35,8 +35,8 @@ export const UPDATE_HOUSE = gql`
 
 
 export const UPDATE_LAND = gql`
-    mutation Update($data: CreateLandInput, $postId: String!, $status: UpdatePostStatusInput) {
-        land: updateLandPost(data: $data, postId: $postId, status: $status) {
+    mutation Update($data: CreateLandInput, $postId: String!, $status: UpdatePostStatusInput, $code: String) {
+        land: updateLandPost(data: $data, postId: $postId, status: $status, code: $code) {
             title
         }
     }
@@ -44,8 +44,8 @@ export const UPDATE_LAND = gql`
 
 
 export const UPDATE_BUSINESS_PREMISES = gql`
-    mutation Update($data: CreateBusinessPremisesInput, $postId: String!, $status: UpdatePostStatusInput) {
-        businessPremises: updateBusinessPremisesPost(data: $data, postId: $postId, status: $status) {
+    mutation Update($data: CreateBusinessPremisesInput, $postId: String!, $status: UpdatePostStatusInput, $code: String) {
+        businessPremises: updateBusinessPremisesPost(data: $data, postId: $postId, status: $status, code: $code) {
             title
         }
     }
@@ -53,8 +53,8 @@ export const UPDATE_BUSINESS_PREMISES = gql`
 
 
 export const UPDATE_MOTAL = gql`
-    mutation Update($data: CreateMotalInput, $postId: String!, $status: UpdatePostStatusInput) {
-        motal: updateMotalPost(data: $data, postId: $postId, status: $status) {
+    mutation Update($data: CreateMotalInput, $postId: String!, $status: UpdatePostStatusInput, $code: String) {
+        motal: updateMotalPost(data: $data, postId: $postId, status: $status, code: $code) {
             title
         }
     }

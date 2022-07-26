@@ -270,6 +270,12 @@ const PostDetail = ({ post }) => {
                                 </Box>
                             </Grid>
                             <Grid xs={12} xl={12} item marginY={1}>
+                                <Typography fontWeight={600} marginBottom={1}>Mã bài đăng</Typography>
+                                <Box borderRadius={2} border="1px solid #dcdcdc" paddingX={2} paddingY={1}>
+                                    <Typography>{post.code}</Typography>
+                                </Box>
+                            </Grid>
+                            <Grid xs={12} xl={12} item marginY={1}>
                                 <Typography fontWeight={600} marginBottom={1}>Link thực tế ảo</Typography>
                                 <Box borderRadius={2} border="1px solid #dcdcdc" paddingX={2} paddingY={1}>
                                     <Typography whiteSpace={"pre-wrap"}>{post.virtual3DLink}</Typography>
