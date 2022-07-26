@@ -14,7 +14,7 @@ export class StatsController {
         // -${new Date().getTime()}
         await this.statsService.exportRealEstateStat()
 
-        const file = createReadStream(join(process.cwd(), 'export.xlsx'));
+        const file = createReadStream(join(process.cwd(), 'files' ,'export.xlsx'));
 
         res.set({
           'Content-Type': 'text/xlsx',

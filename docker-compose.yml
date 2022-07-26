@@ -38,6 +38,9 @@ services:
 
     ports:
       - 9000:9000
+    
+    volumes:
+      - ./files:/api/files
 
     depends_on:
       redis:
@@ -71,6 +74,9 @@ services:
     depends_on:
       redis:
         condition: service_started
+
+    volumes:
+      - ./files:/api/files
 
     networks:
       - shared-network
