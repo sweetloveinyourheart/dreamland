@@ -46,3 +46,18 @@ export const GET_ALL_PROJECT_POSTS = gql`
         }
     }
 `
+
+export const GET_PROJECT_PRODUCT = gql`
+    query Product($project: String!) {
+        products: getProjectProducts(project: $project) {
+            _id
+            code
+            totalAcreage
+            quantity
+            price
+            usedAcreage
+            description
+            status
+        }
+    }
+`

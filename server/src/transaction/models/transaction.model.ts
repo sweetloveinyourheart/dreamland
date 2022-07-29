@@ -8,7 +8,7 @@ registerEnumType(TransactionStatus, {
 })
 
 @ObjectType()
-class TranSactionItem {
+class RealEstateTransaction {
     @Field()
     itemId: string
 
@@ -17,12 +17,21 @@ class TranSactionItem {
 }
 
 @ObjectType()
+class ProjectTransaction {
+    @Field()
+    itemId: string
+}
+
+@ObjectType()
 export class Transaction {
     @Field()
     _id?: string
 
-    @Field(type => TranSactionItem)
-    item: TranSactionItem
+    @Field(type => RealEstateTransaction, { nullable: true })
+    realEstate: RealEstateTransaction
+
+    @Field(type => ProjectTransaction, { nullable: true })
+    project: ProjectTransaction
 
     @Field(type => TransactionStatus)
     status: TransactionStatus

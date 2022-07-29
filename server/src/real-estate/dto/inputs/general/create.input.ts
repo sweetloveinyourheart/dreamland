@@ -107,9 +107,6 @@ export class CreateRealEstateInput {
     @Field(type => MediaInput)
     media: MediaInput
 
-    @Field(type => OwnerInput)
-    owner: OwnerInput
-
     @Field(type => String, { nullable: true })
     virtual3DLink?: string
 

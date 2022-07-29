@@ -292,26 +292,20 @@ const PostDetail = ({ post }) => {
 
                     <Box margin={"12px 0"}>
                         <Typography variant='h4' marginBottom={1}>
-                            Chủ sở hữu
+                            Nguời đăng
                         </Typography>
                         <Divider />
                         <Grid container marginBottom={4} spacing={1}>
                             <Grid xs={12} xl={6} item marginY={1}>
-                                <Typography fontWeight={600} marginBottom={1}>Tên chủ sở hữu</Typography>
+                                <Typography fontWeight={600} marginBottom={1}>Tên người đăng</Typography>
                                 <Box borderRadius={2} border="1px solid #dcdcdc" paddingX={2} paddingY={1}>
-                                    <Typography>{post.owner?.user?.name}</Typography>
+                                    <Typography>{post.owner?.name}</Typography>
                                 </Box>
                             </Grid>
                             <Grid xs={12} xl={6} item marginY={1}>
                                 <Typography fontWeight={600} marginBottom={1}>Số điện thoại</Typography>
                                 <Box borderRadius={2} border="1px solid #dcdcdc" paddingX={2} paddingY={1}>
-                                    <Typography>{post.owner?.user?.phone}</Typography>
-                                </Box>
-                            </Grid>
-                            <Grid xs={12} xl={6} item marginY={1}>
-                                <Typography fontWeight={600} marginBottom={1}>Số điện thoại</Typography>
-                                <Box borderRadius={2} border="1px solid #dcdcdc" paddingX={2} paddingY={1}>
-                                    <Typography>{ownerType.find(v => v.value === post.owner?.type).label}</Typography>
+                                    <Typography>{post.owner?.phone}</Typography>
                                 </Box>
                             </Grid>
                         </Grid>

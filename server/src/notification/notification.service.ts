@@ -4,6 +4,7 @@ import { Queue } from 'bull';
 import { RealEstate } from 'src/real-estate/schemas/parent-classes/general.schema';
 import { Device } from 'src/user/schemas/user.schema';
 import { UserService } from 'src/user/user.service';
+import { PushData } from './classes/notification.class';
 
 @Injectable()
 export class NotificationService {
@@ -12,9 +13,9 @@ export class NotificationService {
         private userService: UserService
     ) { }
 
-    async pushNotification(post: RealEstate, device: Device): Promise<{ success: boolean }> {
+    async pushNotification(data: PushData, device: Device): Promise<{ success: boolean }> {
         try {
-            await this.queue.add('push-notification-job', { post, device });
+            await this.queue.add('push-notification-job', { data, device });
 
             return {
                 success: true
@@ -24,10 +25,10 @@ export class NotificationService {
         }
     }
 
-    async globalPush(post: RealEstate) {
+    async globalPush(data: PushData) {
         try {
             const users = await this.userService.getUsers()
-            await this.queue.add('global-push-job', { post, users });
+            await this.queue.add('global-push-job', { data, users });
 
             return {
                 success: true

@@ -71,3 +71,11 @@ export function ProjectUtilitiesTranslate(type: ProjectUtilities): string {
             return "Khác"
     }
 }
+
+export enum ProjectProductStatus {
+    Available = 'available',
+    Disable = 'disable',
+    Lock = 'lock',
+    DatCoc = 'dat-coc',
+    BanGiao = 'ban-giao'
+}

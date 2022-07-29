@@ -100,3 +100,27 @@ export class CreateProjectInput {
     @Field(type => String, { nullable: true })
     googleMapsLink?: string
 }
+
+@InputType()
+export class CreateProjectProductInput {
+    @Field(type => String)
+    project: string
+
+    @Field(type => String)
+    code: string
+
+    @Field(type => Float)
+    totalAcreage: number
+
+    @Field(type => Float)
+    quantity: number
+
+    @Field(type => Float)
+    price: number
+
+    @Field(type => Float)
+    usedAcreage: number
+
+    @Field()
+    description: string
+}

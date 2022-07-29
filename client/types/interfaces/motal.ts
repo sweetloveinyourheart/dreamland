@@ -3,7 +3,6 @@ import { ProjectInterface } from "./project"
 import { RealEstateFilter } from "./realEstate"
 
 interface Address {
-    projectName?: string
     houseNumber?: string
     showHouseNumber?: boolean
     province: string
@@ -54,8 +53,8 @@ export interface MotalInterface {
     }
 
     owner: {
-        type: OwnerType
-        user: any
+        name: string
+        phone: string
     }
 
     timeStamp: Date

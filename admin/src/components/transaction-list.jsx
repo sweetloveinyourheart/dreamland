@@ -22,7 +22,6 @@ function typeReader(type) {
     }
 }
 
-
 const TransactionList = ({ items, onSelect }) => {
     const [modal, setModal] = useState({
         message: '',

@@ -6,3 +6,8 @@ export class Notification {
     body: string
     data: any
 }
+
+export class PushData {
+    title: string
+    body: string
+}

@@ -4,9 +4,12 @@ export const GET_TRANSACTIONS = gql`
 query Transaction($paging: PaginationArgs, $status: TransactionStatus!) {
     transactions: getAllTransaction(status: $status, paging: $paging) {
             _id
-            item {
+            realEstate {
                 itemId
                 itemType
+            }
+            project {
+                itemId
             }
             user {
                 phone

@@ -42,9 +42,7 @@ export const GET_ALL_POSTS = gql`
                     address {
                         province
                     }
-                    project {
-                        projectName
-                    }
+                    
                 }
                 
                 overview {
@@ -54,7 +52,7 @@ export const GET_ALL_POSTS = gql`
                 timeStamp
                 category
                 directLink
-                index
+
             }
 
             houses {
@@ -73,9 +71,7 @@ export const GET_ALL_POSTS = gql`
                     address {
                         province
                     }
-                    project {
-                        projectName
-                    }
+                    
                 }
                 
                 overview {
@@ -85,7 +81,7 @@ export const GET_ALL_POSTS = gql`
                 timeStamp
                 category
                 directLink
-                index
+
             }
 
             
@@ -105,15 +101,13 @@ export const GET_ALL_POSTS = gql`
                     address {
                         province
                     }
-                    project {
-                        projectName
-                    }
+                    
                 }
 
                 timeStamp
                 category
                 directLink
-                index
+
             }
 
             businessPremises {
@@ -132,15 +126,13 @@ export const GET_ALL_POSTS = gql`
                     address {
                         province
                     }
-                    project {
-                        projectName
-                    }
+                    
                 }
 
                 timeStamp
                 category
                 directLink
-                index
+
             }
 
             motals {
@@ -164,7 +156,7 @@ export const GET_ALL_POSTS = gql`
                 timeStamp
                 category
                 directLink
-                index
+
             }
         }
     }
@@ -263,7 +255,6 @@ export const GET_HOUSE_POSTS = gql`
             timeStamp
             category
             directLink
-            index
         }
     }
 `
@@ -302,7 +293,6 @@ export const GET_LAND_POSTS = gql`
             timeStamp
             category
             directLink
-            index
         }
     }
 `
@@ -342,7 +332,6 @@ export const GET_BUSINESS_PREMISES_POSTS = gql`
             timeStamp
             category
             directLink
-            index
         }
     }
 `
@@ -379,7 +368,6 @@ export const GET_MOTAL_POSTS = gql`
             timeStamp
             category
             directLink
-            index
         }
     }
 `

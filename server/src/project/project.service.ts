@@ -2,19 +2,24 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Project as ProjectModel, ProjectDocument } from './schemas/project.schema';
 import { Model } from 'mongoose';
-import { CreateProjectInput } from './dto/create.input';
+import { CreateProjectInput, CreateProjectProductInput } from './dto/create.input';
 import { Project } from './models/project.model';
 import { ProjectFilter } from './dto/filter.input';
 import { PaginationArgs } from 'src/real-estate/dto/inputs/general/paging.input';
 import { nonAccentVietnamese } from './utils/vietnamese-accent';
-import { UpdateStatusInput } from './dto/edit.input';
+import { UpdateProductStatus, UpdateStatusInput } from './dto/edit.input';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { ProjectProduct, ProjectProductDocument } from './schemas/project-product.schema';
+import { ProjectProductStatus } from './enum/pj.enum';
+import { CreateProjectTransaction } from 'src/transaction/dto/create.input';
 
 @Injectable()
 export class ProjectService {
     constructor(
         @InjectModel(ProjectModel.name) private projectModel: Model<ProjectDocument>,
-        private cloudinaryService: CloudinaryService
+        @InjectModel(ProjectProduct.name) private projectProductModel: Model<ProjectProductDocument>,
+        private cloudinaryService: CloudinaryService,
+
     ) { }
 
     async createProject(data: CreateProjectInput): Promise<Project> {
@@ -26,6 +31,21 @@ export class ProjectService {
             })
 
             return await newPj.save()
+        } catch (error) {
+            throw new BadRequestException({
+                message: error
+            })
+        }
+    }
+
+    async createProjectProduct(data: CreateProjectProductInput): Promise<ProjectProduct> {
+        try {
+            const newProduct = await this.projectProductModel.create({
+                ...data,
+                timeStamp: new Date()
+            })
+
+            return await newProduct.save()
         } catch (error) {
             throw new BadRequestException({
                 message: error
@@ -70,6 +90,11 @@ export class ProjectService {
                 message: "Update failed !"
             }))
         }
+    }
+
+    async editProjectProduct(id: string, updateState: UpdateProductStatus | null) {
+        const updated = await this.projectProductModel.findByIdAndUpdate(id, updateState)
+        return updated
     }
 
     async getProjectByDirectLink(link: string): Promise<Project> {
@@ -119,6 +144,16 @@ export class ProjectService {
         }
     }
 
+    async getProjectProducts(project: string): Promise<ProjectProduct[]> {
+        const products = await this.projectProductModel.find({ project })
+        return products
+    }
+
+    async getProjectProductById(id: string): Promise<ProjectProduct> {
+        const product = await this.projectProductModel.findById(id)
+        return product
+    }
+
     async getOutstandingProjects(paging: PaginationArgs): Promise<Project[]> {
         try {
             return await this.projectModel.find({ actived: true, outstanding: true }).limit(paging?.limit).skip(paging?.cursor)
@@ -126,8 +161,6 @@ export class ProjectService {
             throw new NotFoundException()
         }
     }
-
-
 
     async projectStats() {
         try {
@@ -138,4 +171,42 @@ export class ProjectService {
             throw new NotFoundException()
         }
     }
+
+    async processingTransaction(item: CreateProjectTransaction, status: ProjectProductStatus) {
+        return await this.projectProductModel.findByIdAndUpdate(item.itemId, { status })
+    }
+
+    async removeProject(id: string) {
+        const deleted = await this.projectModel.findByIdAndDelete(id)
+
+        if (deleted) {
+            deleted.media.images.forEach(async (image) => {
+                const exist = deleted.media.images.find(img => img === image)
+                if (!exist) {
+                    await this.cloudinaryService.removeFile(image)
+                }
+            })
+
+            deleted.utilities.forEach(async (util) => {
+                const exist = deleted.utilities.find(updateUtil => updateUtil.image === util.image)
+                if (!exist) {
+                    await this.cloudinaryService.removeFile(util.image)
+                }
+            })
+
+            deleted.masterPlan.forEach(async (item) => {
+                const exist = deleted.masterPlan.find(updateItem => updateItem.image === item.image)
+                if (!exist) {
+                    await this.cloudinaryService.removeFile(item.image)
+                }
+            })
+        }
+
+        return deleted
+    }
+
+    async removeProjectProduct(id: string): Promise<ProjectProduct> {
+        return await this.projectProductModel.findByIdAndDelete(id)
+    }
+
 }

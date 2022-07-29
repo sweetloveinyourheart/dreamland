@@ -44,9 +44,6 @@ class ApartmentDetailInput extends DetailInput {
 
     @Field(type => AcreageInput)
     acreage: AcreageInput
-
-    @Field(type => String, { nullable: true })
-    project?: string
 }
 
 @InputType()
@@ -80,7 +77,4 @@ export class ApartmentFilter extends RealEstateFilter {
 
     @Field(type => Furniture, { nullable: true })
     furniture?: Furniture
-
-    @Field(type => String, { nullable: true })
-    project?: string
 }

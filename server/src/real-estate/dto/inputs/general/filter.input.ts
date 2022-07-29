@@ -4,9 +4,6 @@ import { RealEstateCategory } from "src/real-estate/enum/real-estate.enum";
 @InputType()
 export class AddressFilter {
     @Field(type => String, { nullable: true })
-    projectName?: string
-
-    @Field(type => String, { nullable: true })
     houseNumber?: string
 
     @Field(type => Boolean, { defaultValue: false })
@@ -59,7 +56,4 @@ export class RealEstateFilter {
 
     @Field(type => AcreageFilter, { nullable: true })
     acreage?: AcreageFilter 
-
-    @Field(type => String, { nullable: true })
-    project?: string
 }

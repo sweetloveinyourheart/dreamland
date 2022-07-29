@@ -22,9 +22,6 @@ class BusinessPremisesDetailInput extends DetailInput {
 
     @Field(type => AcreageInput)
     acreage: AcreageInput
-
-    @Field(type => String, { nullable: true })
-    project?: string
 }
 
 
@@ -59,7 +56,4 @@ export class BusinessPremisesFilter extends RealEstateFilter {
 
     @Field(type => LegalDocuments, { nullable: true })
     legalDocuments?: LegalDocuments
-
-    @Field(type => String , { nullable: true })
-    project?: string
 }

@@ -27,7 +27,7 @@ import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
 import { UserPayload } from 'src/auth/decorators/user.decorator';
 import { UserRole } from 'src/user/enum/user.enum';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { CreateTransactionInput } from 'src/transaction/dto/create.input';
+import { CreateRealEstateTransaction } from 'src/transaction/dto/create.input';
 
 @Injectable()
 export class RealEstateService {
@@ -48,7 +48,8 @@ export class RealEstateService {
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.apartmentModel.countDocuments({ category: data.category }) + 1,
-                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending,
+                owner: user.userId
             })
 
             // Clear current stats cache
@@ -71,7 +72,8 @@ export class RealEstateService {
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.houseModel.countDocuments({ category: data.category }) + 1,
-                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending,
+                owner: user.userId
             })
             // Clear current stats cache
             if (data.category === RealEstateCategory.MuaBan) {
@@ -93,7 +95,8 @@ export class RealEstateService {
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.landModel.countDocuments({ category: data.category }) + 1,
-                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending,
+                owner: user.userId
             })
 
             // Clear current stats cache
@@ -116,7 +119,8 @@ export class RealEstateService {
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.businessPremisesModel.countDocuments({ category: data.category }) + 1,
-                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending,
+                owner: user.userId
             })
             // Clear current stats cache
             if (data.category === RealEstateCategory.MuaBan) {
@@ -138,7 +142,8 @@ export class RealEstateService {
                 timeStamp: new Date(),
                 directLink: nonAccentVietnamese(data.title + " " + data.detail.address.province + " " + data.detail.address.district).replace(/\s|\/|\?|\,|\%|\*|\@|\!|\#|\$|\^|\&|\(|\)/g, "-"),
                 index: await this.motalModel.countDocuments({ category: data.category }) + 1,
-                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending
+                postStatus: user.roles.find(role => role === UserRole.Admin) ? PostStatus.Available : PostStatus.Pending,
+                owner: user.userId
             })
             // Clear current stats cache
             if (data.category === RealEstateCategory.MuaBan) {
@@ -363,8 +368,7 @@ export class RealEstateService {
                 ...(filter?.doorDirection && { "overview.doorDirection": filter.doorDirection }),
                 ...(filter?.legalDocuments && { "overview.legalDocuments": filter.legalDocuments }),
                 ...(filter?.numberOfBedrooms && { "overview.numberOfBedrooms": filter.numberOfBedrooms > 10 ? { $gte: filter.numberOfBedrooms } : filter.numberOfBedrooms }),
-                ...(filter?.balconyDirection && { "overview.balconyDirection": filter.balconyDirection }),
-                ...(filter?.project && { "detail.project": filter.project })
+                ...(filter?.balconyDirection && { "overview.balconyDirection": filter.balconyDirection })
             }
 
             return await this.apartmentModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -386,7 +390,7 @@ export class RealEstateService {
                 ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
-            return await this.apartmentModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+            return await this.apartmentModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -412,8 +416,7 @@ export class RealEstateService {
                 ...(filter?.numberOfBedrooms && { "overview.numberOfBedrooms": filter.numberOfBedrooms > 10 ? { $gte: filter.numberOfBedrooms } : filter.numberOfBedrooms }),
                 ...(filter?.noHau && { "overview.noHau": filter.noHau }),
                 ...(filter?.carAlley && { "overview.carAlley": filter.carAlley }),
-                ...(filter?.frontispiece && { "overview.frontispiece": filter.frontispiece }),
-                ...(filter?.project && { "detail.project": filter.project })
+                ...(filter?.frontispiece && { "overview.frontispiece": filter.frontispiece })
             }
 
             return await this.houseModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -435,7 +438,7 @@ export class RealEstateService {
                 ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
-            return await this.houseModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+            return await this.houseModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -459,8 +462,7 @@ export class RealEstateService {
                 ...(filter?.legalDocuments && { "overview.legalDocuments": filter.legalDocuments }),
                 ...(filter?.noHau && { "overview.noHau": filter.noHau }),
                 ...(filter?.carAlley && { "overview.carAlley": filter.carAlley }),
-                ...(filter?.frontispiece && { "overview.frontispiece": filter.frontispiece }),
-                ...(filter?.project && { "detail.project": filter.project })
+                ...(filter?.frontispiece && { "overview.frontispiece": filter.frontispiece })
             }
 
             return await this.landModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -482,7 +484,7 @@ export class RealEstateService {
                 ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
-            return await this.landModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+            return await this.landModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -503,8 +505,7 @@ export class RealEstateService {
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
                 ...(filter?.type && { "overview.type": filter.type }),
                 ...(filter?.doorDirection && { "overview.doorDirection": filter.doorDirection }),
-                ...(filter?.legalDocuments && { "overview.legalDocuments": filter.legalDocuments }),
-                ...(filter?.project && { "detail.project": filter.project })
+                ...(filter?.legalDocuments && { "overview.legalDocuments": filter.legalDocuments })
             }
 
             return await this.businessPremisesModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
@@ -526,7 +527,7 @@ export class RealEstateService {
                 ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
-            return await this.businessPremisesModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+            return await this.businessPremisesModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -569,7 +570,7 @@ export class RealEstateService {
                 ...(pending ? { postStatus: PostStatus.Pending } : { postStatus: { $ne: PostStatus.Pending } })
             }
 
-            return await this.motalModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 })
+            return await this.motalModel.find(query).skip(paging?.cursor).limit(paging?.limit).sort({ timeStamp: -1 }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -577,7 +578,7 @@ export class RealEstateService {
 
     async getApartmentPostByLink(directLink: string): Promise<Apartment> {
         try {
-            return await this.apartmentModel.findOne({ directLink })
+            return await this.apartmentModel.findOne({ directLink }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -585,7 +586,7 @@ export class RealEstateService {
 
     async getApartmentPostById(id: string): Promise<Apartment> {
         try {
-            return await this.apartmentModel.findById(id)
+            return await this.apartmentModel.findById(id).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -593,7 +594,7 @@ export class RealEstateService {
 
     async getHousePostByLink(directLink: string): Promise<House> {
         try {
-            return await this.houseModel.findOne({ directLink })
+            return await this.houseModel.findOne({ directLink }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -601,7 +602,7 @@ export class RealEstateService {
 
     async getHousePostById(id: string): Promise<House> {
         try {
-            return await this.houseModel.findById(id)
+            return await this.houseModel.findById(id).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -609,7 +610,7 @@ export class RealEstateService {
 
     async getLandPostByLink(directLink: string): Promise<Land> {
         try {
-            return await this.landModel.findOne({ directLink })
+            return await this.landModel.findOne({ directLink }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -617,7 +618,7 @@ export class RealEstateService {
 
     async getLandPostById(id: string): Promise<Land> {
         try {
-            return await this.landModel.findById(id)
+            return await this.landModel.findById(id).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -625,7 +626,7 @@ export class RealEstateService {
 
     async getBusinessPremisesPostByLink(directLink: string): Promise<Apartment> {
         try {
-            return await this.businessPremisesModel.findOne({ directLink })
+            return await this.businessPremisesModel.findOne({ directLink }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -633,7 +634,7 @@ export class RealEstateService {
 
     async getBusinessPremisesPostById(id: string): Promise<Apartment> {
         try {
-            return await this.businessPremisesModel.findById(id)
+            return await this.businessPremisesModel.findById(id).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -641,7 +642,7 @@ export class RealEstateService {
 
     async getMotalPostByLink(directLink: string): Promise<Land> {
         try {
-            return await this.motalModel.findOne({ directLink })
+            return await this.motalModel.findOne({ directLink }).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -649,7 +650,7 @@ export class RealEstateService {
 
     async getMotalPostById(id: string): Promise<Land> {
         try {
-            return await this.motalModel.findById(id)
+            return await this.motalModel.findById(id).populate('owner')
         } catch (error) {
             throw new NotFoundException()
         }
@@ -708,7 +709,6 @@ export class RealEstateService {
                 ...(filter?.address?.district && { "detail.address.district": filter.address.district }),
                 ...(filter?.address?.ward && { "detail.address.ward": filter.address.ward }),
                 ...(filter?.address?.province && { "detail.address.province": filter.address.province }),
-                ...(filter?.project && { "detail.project": filter.project }),
                 ...(searchQuery && { title: { $regex: searchQuery } })
             }
 
@@ -724,7 +724,7 @@ export class RealEstateService {
         }
     }
 
-    async processingTransaction(item: CreateTransactionInput, status: PostStatus) {
+    async processingTransaction(item: CreateRealEstateTransaction, status: PostStatus) {
         try {
             switch (item.itemType) {
                 case RealEstateType.CanHo:

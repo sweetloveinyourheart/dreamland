@@ -28,11 +28,8 @@ query BusinessPremises($filter: BusinessPremisesFilter!, $paging: PaginationArgs
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection
@@ -77,11 +74,8 @@ export const GET_BUSINESS_PREMISES_BY_ID = gql`
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection

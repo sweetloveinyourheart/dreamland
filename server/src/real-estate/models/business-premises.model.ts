@@ -22,9 +22,6 @@ export class BusinessPremisesDetail extends Detail {
 
     @Field(type => Acreage)
     acreage: Acreage
-
-    @Field(type => Project, { nullable: true })
-    project?: Project
 }
 
 @ObjectType()

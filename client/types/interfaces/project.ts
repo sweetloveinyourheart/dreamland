@@ -1,4 +1,4 @@
-import { ProjectType} from "../enums/project"
+import { ProjectProductStatus, ProjectType } from "../enums/project"
 import { AddressInterface } from "./realEstate"
 
 export interface ProjectUtilities {
@@ -7,7 +7,7 @@ export interface ProjectUtilities {
 }
 
 export interface ProjectInterface {
-    _id?: string
+    _id: string
     media: {
         images: string[]
     }
@@ -45,4 +45,16 @@ export interface ProjectInterface {
     virtual3DLink?: string
     timeStamp: Date
     actived: boolean
+}
+
+export interface ProjectProduct {
+    project: ProjectInterface
+    code: string
+    totalAcreage: number
+    quantity: number
+    price: number
+    usedAcreage: number
+    description: string
+    status: ProjectProductStatus
+    timeStamp: Date
 }

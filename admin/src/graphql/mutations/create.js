@@ -69,3 +69,11 @@ export const CREATE_USER = gql`
         }
     }
 `
+
+export const CREATE_PROJECT_PRODUCT = gql`
+    mutation Create($data: CreateProjectProductInput!) {
+        createProjectProduct(data: $data) {
+            code
+        }
+    }
+`

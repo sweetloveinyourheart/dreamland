@@ -14,8 +14,6 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { TransactionModule } from './transaction/transaction.module';
-import * as redisStore from 'cache-manager-redis-store'
-import { RedisClientOptions } from 'redis';
 import { NotificationModule } from './notification/notification.module';
 import { BullModule } from '@nestjs/bull';
 

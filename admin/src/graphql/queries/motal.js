@@ -29,11 +29,8 @@ export const GET_MOTAL_POSTS = gql`
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection
@@ -79,11 +76,8 @@ export const GET_MOTAL_BY_ID = gql`
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection

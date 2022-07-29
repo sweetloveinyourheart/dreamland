@@ -1,13 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { TransactionStatus } from "../enums/transaction.enum";
 import { Schema as MongooseSchema, Document } from 'mongoose'
-import { User } from "src/user/schemas/user.schema";
 import { RealEstateType } from "src/real-estate/enum/real-estate.enum";
 
 export type TransactionDocument = Transaction & Document
 
 @Schema({ _id: false })
-class TranSactionItem {
+class RealEstateTransaction {
     @Prop()
     itemId: string
 
@@ -15,10 +14,19 @@ class TranSactionItem {
     itemType: RealEstateType
 }
 
+@Schema({ _id: false })
+class ProjectTransaction {
+    @Prop()
+    itemId: string
+}
+
 @Schema()
 export class Transaction {
     @Prop()
-    item: TranSactionItem
+    realEstate: RealEstateTransaction
+
+    @Prop()
+    project: ProjectTransaction
 
     @Prop({ enum: TransactionStatus })
     status: TransactionStatus

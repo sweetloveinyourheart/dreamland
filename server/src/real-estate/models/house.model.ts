@@ -31,9 +31,6 @@ export class HouseDetail extends Detail {
 
     @Field(type => HouseAcreage)
     acreage: HouseAcreage
-
-    @Field(type => Project, { nullable: true })
-    project?: Project
 }
 
 @ObjectType()

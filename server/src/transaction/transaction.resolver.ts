@@ -6,7 +6,7 @@ import { GqlAuthGuard } from 'src/auth/guards/graphql.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { PaginationArgs } from 'src/real-estate/dto/inputs/general/paging.input';
 import { UserRole } from 'src/user/enum/user.enum';
-import { CreateTransactionInput } from './dto/create.input';
+import { CreateRealEstateTransaction, CreateProjectTransaction } from './dto/create.input';
 import { TransactionStatus } from './enums/transaction.enum';
 import { Transaction } from './models/transaction.model';
 import { TransactionService } from './transaction.service';
@@ -36,8 +36,12 @@ export class TransactionResolver {
 
   @UseGuards(GqlAuthGuard)
   @Mutation(returns => Transaction)
-  async newTransaction(@AuthenticatedUser() user: UserPayload, @Args('item') item: CreateTransactionInput): Promise<Transaction> {
-    return await this.transactionService.createTransaction(user, item)
+  async newTransaction(
+    @AuthenticatedUser() user: UserPayload, 
+    @Args('realEstate', { nullable: true }) realEstate: CreateRealEstateTransaction,
+    @Args('project', { nullable: true }) project: CreateProjectTransaction,
+  ): Promise<Transaction> {
+    return await this.transactionService.createTransaction(user, realEstate, project)
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)

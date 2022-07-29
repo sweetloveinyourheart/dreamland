@@ -45,13 +45,12 @@ const Projects: FunctionComponent<ProjectsProps> = ({ vertical, data }) => {
                                     <FaMapMarkedAlt />
                                     {el.address.district}, {el.address.province}
                                 </div>
-                                <div className={styles['item-detail__price']}>{moneyConverter(el.information?.purchaseInfo ?? 0)}/m²</div>
+                                <div className={styles['item-detail__price']}>{moneyConverter(el.information?.purchaseInfo ?? 0)}</div>
                             </div>
                             {vertical
                                 && (
                                     <div className={styles['actions']}>
-                                        <button onClick={() => router.push(`/mua-ban/bat-dong-san?project=${el._id}`)}>Xem tin mua bán</button>
-                                        <button onClick={() => router.push(`/cho-thue/bat-dong-san?project=${el._id}`)}>Xem tin cho thuê</button>
+                                        <button onClick={() => router.push(`du-an/${el.directLink}`)}>Xem thông tin dự án</button>
                                     </div>
                                 )
                             }

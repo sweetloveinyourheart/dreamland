@@ -34,12 +34,9 @@ query Apartments($filter: ApartmentFilter!, $paging: PaginationArgs, $search: St
         }
         
     	owner {
-            type
-            user {
-                phone
                 name
+                phone
             }
-        }
     
         overview {
           	doorDirection
@@ -96,12 +93,9 @@ query Apartment($id: String!) {
         }
         
     	owner {
-            type
-            user {
-                phone
                 name
+                phone
             }
-        }
     
         overview {
           	doorDirection

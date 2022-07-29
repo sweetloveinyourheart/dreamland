@@ -35,8 +35,6 @@ class HouseDetail extends Detail {
     @Prop({ type: HouseAcreage })
     acreage: HouseAcreage
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
-    project?: Project
 }
 
 @Schema({ _id: false, id: false })

@@ -18,13 +18,6 @@ const CreateRSPost = ({ type, goBack }) => {
         description: "",
         category: "MuaBan",
         overview: {},
-        owner: {
-            type: "CaNhan",
-            user: {
-                name: "",
-                phone: ""
-            }
-        },
         detail: {},
         media: {
             images: [],
@@ -373,30 +366,6 @@ const CreateRSPost = ({ type, goBack }) => {
                                                             onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail?.position, floorNumber: Number(e.target.value) } } }))}
 
                                                         />
-                                                    </Grid>
-                                                )
-                                            }
-                                            {type !== "phong-tro"
-                                                && (
-                                                    <Grid xs={12} xl={6} item>
-                                                        <TextField
-                                                            id="project"
-                                                            select
-                                                            name='project'
-                                                            fullWidth
-                                                            label="Dự án"
-                                                            variant="outlined"
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, project: e.target.value } }))}
-                                                            margin="normal"
-                                                            value={formData.detail?.project ?? ""}
-                                                            defaultValue=""
-                                                        >
-                                                            {projects.map((option, index) => (
-                                                                <MenuItem key={index} value={option._id} >
-                                                                    {option.projectName}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </TextField>
                                                     </Grid>
                                                 )
                                             }
@@ -896,60 +865,6 @@ const CreateRSPost = ({ type, goBack }) => {
                                             defaultValue={""}
                                             margin="normal"
                                         />
-                                    </Box>
-
-                                    <Box margin={"12px 0"}>
-                                        <Typography variant='h4' marginBottom={1}>
-                                            Chủ sở hữu
-                                        </Typography>
-                                        <Divider />
-                                        <Grid container marginBottom={4} spacing={1}>
-                                            <Grid xl={6} item>
-                                                <TextField
-                                                    id="owner.user.name"
-                                                    name='owner.user.name'
-                                                    fullWidth
-                                                    label="Tên chủ sở hữu"
-                                                    required
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, user: { ...s.owner?.user, name: e.target.value } } }))}
-                                                    value={formData.owner?.user?.name ?? ""}
-                                                />
-                                            </Grid>
-                                            <Grid xl={6} item>
-                                                <TextField
-                                                    id="owner.user.phone"
-                                                    name='owner.user.phone'
-                                                    fullWidth
-                                                    label="Số điện thoại"
-                                                    required
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, user: { ...s.owner?.user, phone: e.target.value } } }))}
-                                                    value={formData.owner?.user?.phone ?? ""}
-                                                />
-                                            </Grid>
-                                            <Grid xl={6} item>
-                                                <TextField
-                                                    id="owner.type"
-                                                    name='owner.type'
-                                                    fullWidth
-                                                    required
-                                                    select
-                                                    label="Cá nhân/Môi giới"
-                                                    value={formData.owner?.type ?? ""}
-                                                    onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, type: e.target.value } }))}
-                                                    margin="normal"
-                                                >
-                                                    {ownerType.map((option) => (
-                                                        <MenuItem key={option.value} value={option.value}>
-                                                            {option.label}
-                                                        </MenuItem>
-                                                    ))}
-                                                </TextField>
-                                            </Grid>
-                                        </Grid>
                                     </Box>
 
                                     <Grid justifyContent="flex-end" container>

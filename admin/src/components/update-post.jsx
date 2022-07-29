@@ -12,19 +12,11 @@ import { GET_ALL_PROJECT_POSTS } from 'graphql/queries/project';
 import { UPDATE_APARTMENT, UPDATE_BUSINESS_PREMISES, UPDATE_HOUSE, UPDATE_LAND, UPDATE_MOTAL } from 'graphql/mutations/update';
 
 const UpdateRSPost = ({ type, post, goBack }) => {
-    const [projects, setProjects] = useState([])
     const [formData, setFormData] = useState({
         title: "",
         description: "",
         category: "MuaBan",
         overview: {},
-        owner: {
-            type: "CaNhan",
-            user: {
-                name: "",
-                phone: ""
-            }
-        },
         detail: {},
         media: {
             images: [],
@@ -46,10 +38,6 @@ const UpdateRSPost = ({ type, post, goBack }) => {
 
     const [isUploading, setIsUploading] = useState(false)
 
-    const { data: projectsData, error: projectsErr } = useQuery(GET_ALL_PROJECT_POSTS, {
-        notifyOnNetworkStatusChange: true
-    })
-
     const { provinces } = useAddress()
 
     const [images, setImages] = useState([]);
@@ -60,12 +48,6 @@ const UpdateRSPost = ({ type, post, goBack }) => {
     const [updateLand, { data: updateLandData, error: updateLandErr }] = useMutation(UPDATE_LAND)
     const [updateBusinessPremises, { data: updateBusinessPremisesData, error: updateBusinessPremisesErr }] = useMutation(UPDATE_BUSINESS_PREMISES)
     const [updateMotal, { data: updateMotalData, error: updateMotalErr }] = useMutation(UPDATE_MOTAL)
-
-    useEffect(() => {
-        if (projectsData) {
-            setProjects(projectsData.projects)
-        }
-    }, [projectsData, projectsErr])
 
     useEffect(() => {
         if (post) {
@@ -378,30 +360,6 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                             onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, position: { ...s.detail?.position, floorNumber: e.target.value } } }))}
 
                                                         />
-                                                    </Grid>
-                                                )
-                                            }
-                                            {type !== "phong-tro"
-                                                && (
-                                                    <Grid xs={12} xl={6} item>
-                                                        <TextField
-                                                            id="project"
-                                                            select
-                                                            name='project'
-                                                            fullWidth
-                                                            label="Dự án"
-                                                            variant="outlined"
-                                                            onChange={e => setFormData(s => ({ ...s, detail: { ...s.detail, project: e.target.value } }))}
-                                                            margin="normal"
-                                                            value={formData.detail?.project}
-                                                            defaultValue=""
-                                                        >
-                                                            {projects.map((option, index) => (
-                                                                <MenuItem key={index} value={option._id} >
-                                                                    {option.projectName}
-                                                                </MenuItem>
-                                                            ))}
-                                                        </TextField>
                                                     </Grid>
                                                 )
                                             }

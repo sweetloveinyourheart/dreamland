@@ -8,7 +8,6 @@ import { categorySpeaker, realEstateTypeSpeaker } from "../../lib/converter";
 import CategoryFilter from "./items/category";
 import TypeFilter from "./items/type";
 import PricingFilter from "./items/pricing";
-import ProjectFilter from "./items/project";
 import AcreageFilter from "./items/acreage";
 import { FilterState, GuardFilter } from "../../lib/guardFilter";
 import SpecialFilter from "./items/special";
@@ -73,9 +72,6 @@ const Filter: FunctionComponent<FilterProps> = ({ filter, type }) => {
             case FilterState.Pricing:
                 return <PricingFilter config={{ min: 0, max: 30000000000 }} price={filter?.price} onActive={onActiveModal} />
 
-            case FilterState.Project:
-                return <ProjectFilter project={filter?.project} onActive={onActiveModal} />
-
             case FilterState.Acreage:
                 return <AcreageFilter acreage={filter?.acreage} onActive={onActiveModal} />
 
@@ -128,12 +124,6 @@ const Filter: FunctionComponent<FilterProps> = ({ filter, type }) => {
                         <button className={filter?.price ? "" : styles['btn--disable']} onClick={() => onActiveModal(FilterState.Pricing)}>
                             <p>Giá </p>
                             {filter?.price ? <FaCheck /> : <FaPlus />}
-                        </button>
-                    </div>
-                    <div className={styles['filter-item']}>
-                        <button className={filter?.project ? "" : styles['btn--disable']} onClick={() => onActiveModal(FilterState.Project)}>
-                            <p>Dự án</p>
-                            <FaPlus />
                         </button>
                     </div>
                     {(GuardFilter(FilterState.Acreage, type))

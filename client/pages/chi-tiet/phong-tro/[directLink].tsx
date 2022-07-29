@@ -90,8 +90,8 @@ const HousePage: FunctionComponent<HousePageProps> = ({ data }) => {
                                     <div className={styles['contact-owner']}>
                                         <Image src={'https://res.cloudinary.com/dienkhoiland/image/upload/v1656326293/icons/profile_om2daw.png'} width={50} height={50} />
                                         <div className={styles['contact-owner__info']}>
-                                            <h5>{data.owner.user.name}</h5>
-                                            <span>{userTypeSpeaker(data.owner.type)}</span>
+                                            <h5>{data.owner.name}</h5>
+             
                                         </div>
                                     </div>
                                     <div className={styles['contact-phone']}>
@@ -100,8 +100,8 @@ const HousePage: FunctionComponent<HousePageProps> = ({ data }) => {
                                                 <BiPhone />
                                                 <span>
                                                     {showPhoneNumber
-                                                        ? (data.owner.user.phone)
-                                                        : (`${data.owner.user.phone.slice(0, 4)}******`)
+                                                        ? (data.owner.phone)
+                                                        : (`${data.owner.phone.slice(0, 4)}******`)
                                                     }
                                                 </span>
                                             </div>
@@ -192,7 +192,6 @@ const HousePage: FunctionComponent<HousePageProps> = ({ data }) => {
                                     , {data.detail.address.district}
                                     , {data.detail.address.province}
                                 </p>
-                                <a href={data.googleMapsLink} target="_blank" rel="noreferrer">Xem bản đồ</a>
                             </div>
                             <div className={styles['description']}>
                                 {data.description}

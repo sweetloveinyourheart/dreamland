@@ -6,7 +6,6 @@ export enum FilterState {
     Category = "category",
     Type = "type",
     Pricing = "pricing",
-    Project = "project",
     Acreage = "acreage",
     SpecialType = "special-type",
     NumberOfBedrooms = 'bedroom',

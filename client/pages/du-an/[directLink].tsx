@@ -14,6 +14,7 @@ import { useState } from "react"
 import { useRouter } from "next/router"
 import { Md360 } from 'react-icons/md'
 import { moneyConverter } from "../../lib/converter"
+import ProjectProducts from "../../components/table/product-table"
 // import Maps from "../../components/maps/maps"
 
 interface RealEstateProjectPageProps {
@@ -82,11 +83,11 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
             <main>
                 <div className={styles['project']}>
                     <div className={styles['images']}>
-                        
-                            <Carousel showThumbs={false} showIndicators={false}>
-                                {renderImage()}
-                            </Carousel>
-                        
+
+                        <Carousel showThumbs={false} showIndicators={false}>
+                            {renderImage()}
+                        </Carousel>
+
                     </div>
                     <div className="container">
                         <div className={styles['project-header']}>
@@ -103,8 +104,6 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                 </p>
                             </div>
                             <div className={styles['project-header__links']}>
-                                <button onClick={() => router.push(`/mua-ban/bat-dong-san?project=${project._id}`)}>Xem tin đăng bán</button>
-                                <button onClick={() => router.push(`/cho-thue/bat-dong-san?project=${project._id}`)}>Xem tin cho thuê</button>
                                 {project.virtual3DLink && <button onClick={() => window.open(project.virtual3DLink)}> <Md360 /> Xem 3D</button>}
                             </div>
                         </div>
@@ -243,6 +242,17 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
                                 {/* <div className={styles['owner-decr']}>
                                 {project?.investor.about}
                             </div> */}
+                            </div>
+
+                            <div>
+                                <div className={styles["content-title"]}>
+                                    <h3>Sản phẩm dự án</h3>
+                                    <h4>{project.projectName}  {project.address.province}</h4>
+                                    <div className={styles["hr"]}>
+                                        <img src="https://batdongsanexpress.vn/template/detail/images/line.gif" alt="#" />
+                                    </div>
+                                </div>
+                                <ProjectProducts project={project._id}/>
                             </div>
 
                             {/* <div className={styles['pj-items']} id="tindangban">

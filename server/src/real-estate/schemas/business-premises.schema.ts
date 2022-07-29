@@ -26,8 +26,7 @@ export class BusinessPremisesDetail extends Detail {
     @Prop({ type: Acreage })
     acreage: Acreage
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
-    project?: Project
+
 }
 
 @Schema({ _id: false, id: false })

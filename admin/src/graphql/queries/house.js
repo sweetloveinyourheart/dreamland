@@ -29,11 +29,8 @@ query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection
@@ -82,11 +79,8 @@ export const GET_HOUSE_BY_ID = gql`
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection

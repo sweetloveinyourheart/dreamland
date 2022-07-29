@@ -3,12 +3,13 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
-import Project from 'views/manager/project';
+import Project from 'views/project/project';
 import IntroManagement from 'views/main/intro';
 import BlogManagement from 'views/main/blog';
 import Register from 'views/user/register';
 import PostManager from 'views/user/post';
 import Transaction from 'views/transaction/transaction';
+import ProjectProduct from 'views/project/product';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
@@ -54,8 +55,12 @@ const MainRoutes = {
             element: <Motal />
         },
         {
-            path: '/manager/project',
+            path: '/project/list',
             element: <Project />
+        },
+        {
+            path: '/project/product',
+            element: <ProjectProduct />
         },
         {
             path: '/main/banner',

@@ -50,3 +50,19 @@ export const DELETE_MOTAL = gql`
         }
     }
 `
+
+export const DELETE_PROJECT = gql`
+    mutation delete($id: String!) {
+        project: removeProject(id: $id) {
+            title
+        }
+    }
+`
+
+export const DELETE_PROJECT_PRODUCT = gql`
+    mutation delete($id: String!) {
+        product: removeProjectProduct(id: $id) {
+            code
+        }
+    }
+`

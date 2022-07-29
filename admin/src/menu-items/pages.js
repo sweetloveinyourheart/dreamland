@@ -1,5 +1,5 @@
 // assets
-import { IconKey, IconBuilding, IconHome, IconSquare, IconBuildingCommunity, IconBuildingSkyscraper } from '@tabler/icons';
+import { IconKey, IconBuilding, IconHome, IconSquare, IconBuildingCommunity } from '@tabler/icons';
 
 // constant
 const icons = {
@@ -7,8 +7,7 @@ const icons = {
     IconBuilding,
     IconHome,
     IconSquare,
-    IconBuildingCommunity,
-    IconBuildingSkyscraper
+    IconBuildingCommunity
 };
 
 // ==============================|| EXTRA PAGES MENU ITEMS ||============================== //
@@ -19,14 +18,6 @@ const pages = {
     caption: 'Quản lý bất động sản',
     type: 'group',
     children: [
-        {
-            id: 'project',
-            title: 'Dự án',
-            type: 'item',
-            url: '/manager/project',
-            icon: icons.IconBuildingSkyscraper,
-            breadcrumbs: false
-        },
         {
             id: 'apartment',
             title: 'Căn hộ / Chung cư',

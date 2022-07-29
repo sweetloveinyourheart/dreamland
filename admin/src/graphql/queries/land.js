@@ -31,11 +31,8 @@ query Lands($filter: LandFilter!, $paging: PaginationArgs, $search: String) {
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection
@@ -85,11 +82,8 @@ query Lands($id: String!) {
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection

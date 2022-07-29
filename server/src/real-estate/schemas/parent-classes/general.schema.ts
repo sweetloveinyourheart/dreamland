@@ -1,24 +1,7 @@
 import { Direction, LegalDocuments, OwnerType, PostStatus } from "../../enum/real-estate.enum"
 import { Prop, Schema } from '@nestjs/mongoose';
+import { Schema as MongooseSchema } from 'mongoose'
 import { User } from "src/user/schemas/user.schema";
-
-@Schema({ _id: false, id: false })
-class UserInfo {
-    @Prop(String)
-    name: string
-
-    @Prop(String)
-    phone: string
-}
-
-@Schema({ _id: false, id: false })
-export class Owner {
-    @Prop({ enum: OwnerType })
-    type: OwnerType
-
-    @Prop({ type: UserInfo })
-    user: UserInfo
-}
 
 @Schema({ _id: false, id: false })
 class Pricing {
@@ -103,11 +86,11 @@ export class RealEstate {
     @Prop({ required: true })
     description: string
 
-    @Prop({type: Media})
+    @Prop({ type: Media })
     media: Media
 
-    @Prop({type: Owner})
-    owner: Owner
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "User" })
+    owner: User
 
     @Prop()
     timeStamp: Date

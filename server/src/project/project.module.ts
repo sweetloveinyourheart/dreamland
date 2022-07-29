@@ -5,6 +5,7 @@ import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
 import { Project, projectSchema } from './schemas/project.schema';
 import * as AutoIncrementFactory from 'mongoose-sequence';
 import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { ProjectProduct, projectProductSchema } from './schemas/project-product.schema';
 
 @Module({
   imports: [
@@ -19,7 +20,15 @@ import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
           return schema;
         },
         inject: [getConnectionToken()]
-      }
+      },
+      {
+        name: ProjectProduct.name,
+        useFactory: (connection: any) => {
+          const schema = projectProductSchema;
+          return schema;
+        },
+        inject: [getConnectionToken()]
+      },
     ])
   ],
   providers: [ProjectResolver, ProjectService],

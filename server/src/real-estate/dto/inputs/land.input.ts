@@ -28,9 +28,6 @@ class LandDetailInput extends DetailInput {
 
     @Field(type => LandAcreageInput)
     acreage: LandAcreageInput
-
-    @Field(type => String, { nullable: true })
-    project?: string
 }
 
 
@@ -80,7 +77,4 @@ export class LandFilter extends RealEstateFilter {
 
     @Field(type => Boolean, { nullable: true })
     frontispiece?: boolean
-
-    @Field(type => String, { nullable: true })
-    project?: string
 }

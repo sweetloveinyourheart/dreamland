@@ -1,4 +1,5 @@
 import { Field, Float, Int, ObjectType, registerEnumType } from "@nestjs/graphql"
+import { User } from "src/user/models/user.model";
 import { ApartmentType, BusinessPremisesType, Furniture, HouseType, LandType, RealEstateCategory, RealEstateStatus,Direction, LegalDocuments, OwnerType, PostStatus, RealEstateType, StatsTime } from "../../enum/real-estate.enum"
 
 registerEnumType(ApartmentType, {
@@ -52,24 +53,6 @@ registerEnumType(RealEstateType, {
 registerEnumType(StatsTime, {
     name: 'StatsTime'
 })
-
-@ObjectType()
-class UserInfo {
-    @Field(type => String)
-    name: string
-
-    @Field(type => String)
-    phone: string
-}
-
-@ObjectType()
-export class Owner {
-    @Field(type => OwnerType)
-    type: OwnerType
-
-    @Field(type => UserInfo)
-    user: UserInfo
-}
 
 @ObjectType()
 class Pricing {
@@ -162,8 +145,8 @@ export class RealEstate {
     @Field(type => RealEstateMedia)
     media: RealEstateMedia
 
-    @Field(type => Owner)
-    owner: Owner
+    @Field(type => User)
+    owner: User
 
     @Field(type => Date)
     timeStamp: Date

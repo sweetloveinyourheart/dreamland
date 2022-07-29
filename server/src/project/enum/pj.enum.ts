@@ -3,3 +3,11 @@ export enum ProjectType {
     KhuDoThiMoi = 'khu-do-thi-moi',
     DatNen = 'dat-nen'
 }
+
+export enum ProjectProductStatus {
+    Available = 'available',
+    Disable = 'disable',
+    Lock = 'lock',
+    DatCoc = 'dat-coc',
+    BanGiao = 'ban-giao'
+}

@@ -25,9 +25,6 @@ class ApartmentDetail extends Detail {
 
     @Prop(Acreage)
     acreage: Acreage
-
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Project", autopopulate: true })
-    project?: Project
 }
 
 @Schema({ _id: false, id: false })
