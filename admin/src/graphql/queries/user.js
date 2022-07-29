@@ -43,11 +43,8 @@ export const GET_PENDING_POST = gql`
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection
@@ -90,11 +87,8 @@ export const GET_PENDING_POST = gql`
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection
@@ -137,11 +131,8 @@ export const GET_PENDING_POST = gql`
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection
@@ -184,11 +175,8 @@ export const GET_PENDING_POST = gql`
                 }
             }
             owner {
-                type
-                user {
-                    name
-                    phone
-                }
+                name
+                phone
             }
             overview {
                 doorDirection
