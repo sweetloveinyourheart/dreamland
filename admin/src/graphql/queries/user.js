@@ -222,11 +222,8 @@ export const GET_PENDING_POST = gql`
             }
             
             owner {
-                type
-                user {
-                    phone
-                    name
-                }
+                name
+                phone
             }
         
             overview {
