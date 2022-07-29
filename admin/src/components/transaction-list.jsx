@@ -86,12 +86,12 @@ const TransactionList = ({ items, onSelect }) => {
                                 key={index}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 }, ":hover": { backgroundColor: "#eee" }, cursor: 'pointer' }}
                             >
-                                <TableCell component="th" scope="row" onClick={() => onSelect(row.item)}>
-                                    {typeReader(row.item.itemType)}
+                                <TableCell component="th" scope="row" onClick={() => onSelect(row)}>
+                                    {row.realEstate ? typeReader(row.realEstate.itemType) : 'Sản phẩm dự án'}
                                 </TableCell>
-                                <TableCell align="right" onClick={() => onSelect(row.item)}>{row.user.name}</TableCell>
-                                <TableCell align="right" onClick={() => onSelect(row.item)}>{row.user.phone}</TableCell>
-                                <TableCell align="right" onClick={() => onSelect(row.item)}>{row.createdAt.slice(0, row.createdAt.indexOf("T"))}</TableCell>
+                                <TableCell align="right" onClick={() => onSelect(row)}>{row.user.name}</TableCell>
+                                <TableCell align="right" onClick={() => onSelect(row)}>{row.user.phone}</TableCell>
+                                <TableCell align="right" onClick={() => onSelect(row)}>{row.createdAt.slice(0, row.createdAt.indexOf("T"))}</TableCell>
                                 <TableCell align="right">
                                     {row.status === TransactionStatus.DatCoc
                                         && (

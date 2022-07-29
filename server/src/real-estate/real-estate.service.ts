@@ -767,10 +767,11 @@ export class RealEstateService {
         ]
     }
 
-    async getUploadedPosts(user: UserPayload): Promise<RealEstatePosts> {
+    async getUploadedPosts(user: UserPayload, status: PostStatus): Promise<RealEstatePosts> {
         try {
             let query = {
-                owner: user.userId
+                owner: user.userId,
+                postStatus: status
             }
 
             return {

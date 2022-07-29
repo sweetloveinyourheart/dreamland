@@ -1,5 +1,5 @@
 import { useLazyQuery, useQuery } from "@apollo/client";
-import { Box, Button, CircularProgress, Divider, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
 import TransactionList from "components/transaction-list";
 import { TransactionStatus } from "constants/transaction";
 import { GET_TRANSACTIONS } from "graphql/queries/transaction";
@@ -13,8 +13,9 @@ import { GET_LAND_BY_ID } from "graphql/queries/land";
 import { GET_BUSINESS_PREMISES_BY_ID } from "graphql/queries/businessPremises";
 import { GET_MOTAL_BY_ID } from "graphql/queries/motal";
 import PostDetail from "components/post";
+import { GET_PROJECT_PRODUCT } from "graphql/queries/project";
 
-const TransactionViewer = ({ item }) => {
+const RSTransactionViewer = ({ realEstate }) => {
     const [post, setPost] = useState()
 
     const [apartmentQuery, { data: apartmentData }] = useLazyQuery(GET_APARTMENT_BY_ID)
@@ -24,11 +25,11 @@ const TransactionViewer = ({ item }) => {
     const [motalQuery, { data: motalData }] = useLazyQuery(GET_MOTAL_BY_ID)
 
     useEffect(() => {
-        switch (item.itemType) {
+        switch (realEstate.itemType) {
             case "CanHo":
                 apartmentQuery({
                     variables: {
-                        id: item.itemId
+                        id: realEstate.itemId
                     }
                 })
                 return;
@@ -36,7 +37,7 @@ const TransactionViewer = ({ item }) => {
             case "NhaO":
                 houseQuery({
                     variables: {
-                        id: item.itemId
+                        id: realEstate.itemId
                     }
                 })
                 return;
@@ -44,7 +45,7 @@ const TransactionViewer = ({ item }) => {
             case "Dat":
                 landQuery({
                     variables: {
-                        id: item.itemId
+                        id: realEstate.itemId
                     }
                 })
                 return;
@@ -52,7 +53,7 @@ const TransactionViewer = ({ item }) => {
             case "VanPhong":
                 premisesQuery({
                     variables: {
-                        id: item.itemId
+                        id: realEstate.itemId
                     }
                 })
                 return;
@@ -60,7 +61,7 @@ const TransactionViewer = ({ item }) => {
             case "PhongTro":
                 motalQuery({
                     variables: {
-                        id: item.itemId
+                        id: realEstate.itemId
                     }
                 })
                 return;
@@ -68,26 +69,26 @@ const TransactionViewer = ({ item }) => {
             default:
                 return;
         }
-    }, [item])
+    }, [realEstate])
 
     useEffect(() => {
-        if (apartmentData && item.itemType === "CanHo") {
+        if (apartmentData && realEstate.itemType === "CanHo") {
             setPost(apartmentData.apartment)
         }
 
-        if (houseData && item.itemType === "NhaO") {
+        if (houseData && realEstate.itemType === "NhaO") {
             setPost(houseData.house)
         }
 
-        if (landData && item.itemType === "Dat") {
+        if (landData && realEstate.itemType === "Dat") {
             setPost(landData.land)
         }
 
-        if (premisesData && item.itemType === "VanPhong") {
+        if (premisesData && realEstate.itemType === "VanPhong") {
             setPost(premisesData.businessPremises)
         }
 
-        if (motalData && item.itemType === "PhongTro") {
+        if (motalData && realEstate.itemType === "PhongTro") {
             setPost(motalData.motal)
         }
     }, [apartmentData, houseData, landData, premisesData, motalData])
@@ -101,6 +102,58 @@ const TransactionViewer = ({ item }) => {
     }
 
     return <PostDetail post={post} />
+}
+
+const ProjectTransactionViewer = ({ project }) => {
+    const [products, setProducts] = useState()
+
+    const { data } = useQuery(GET_PROJECT_PRODUCT, { variables: { project }, fetchPolicy: 'network-only' })
+
+    useEffect(() => {
+        if (data) {
+            setProducts(data.products)
+        }
+    }, [data])
+
+    return (
+        <Grid container>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>STT</TableCell>
+                            <TableCell align="right">Mã</TableCell>
+                            <TableCell align="right">Diện tích</TableCell>
+                            <TableCell align="right">Số thửa</TableCell>
+                            <TableCell align="right">Giá bán</TableCell>
+                            <TableCell align="right">Thổ cư</TableCell>
+                            <TableCell align="right">Ghi chú</TableCell>
+                            <TableCell align="right">Trạng thái</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {products.map((row, index) => (
+                            <TableRow
+                                key={index}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 }, ":hover": { backgroundColor: "#eee" }, cursor: 'pointer' }}
+                            >
+                                <TableCell component="th" scope="row" onClick={() => { }}>
+                                    {index + 1}
+                                </TableCell>
+                                <TableCell align="right" onClick={() => { }}>{row.code}</TableCell>
+                                <TableCell align="right" onClick={() => { }}>{row.totalAcreage}</TableCell>
+                                <TableCell align="right" onClick={() => { }}>{row.quantity}</TableCell>
+                                <TableCell align="right" onClick={() => { }}>{moneyConverter(row.price)}</TableCell>
+                                <TableCell align="right" onClick={() => { }}>{row.usedAcreage}</TableCell>
+                                <TableCell align="right" onClick={() => { }}>{row.description}</TableCell>
+                                <TableCell align="right" onClick={() => { }}>{statusReader(row.status)}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Grid>
+    )
 }
 
 function Transaction() {
@@ -179,7 +232,16 @@ function Transaction() {
 
     const onSelectItem = (item) => {
         setSelectedItem(item)
-        setMenu(3)
+
+        console.log(item);
+
+        if (item.realEstate) {
+            setMenu(3)
+        }
+
+        if (item.project) {
+            setMenu(4)
+        }
     }
 
     const onReload = () => {
@@ -193,6 +255,20 @@ function Transaction() {
             limit: 20
         })
         setCanShowMore(true)
+    }
+
+    const renderMenu = () => {
+        if(menu < 3) {
+            return <TransactionList items={items} onSelect={onSelectItem} />
+        }
+
+        if(menu === 3) {
+            return <RSTransactionViewer realEstate={selectedItem.realEstate} />
+        }
+
+        if(menu === 4) {
+            return <ProjectTransactionViewer project={selectedItem.project}/>
+        }
     }
 
     return (
@@ -221,10 +297,7 @@ function Transaction() {
                 </Grid>
             </Grid>
             <Divider sx={{ margin: 2 }} />
-            {menu < 3
-                ? (<TransactionList items={items} onSelect={onSelectItem} />)
-                : (<TransactionViewer item={selectedItem} />)
-            }
+            {renderMenu()}
             {menu < 3
                 && (
                     <Grid lg={12} display={"flex"} mt={2} justifyContent="center">

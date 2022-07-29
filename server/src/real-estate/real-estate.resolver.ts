@@ -20,6 +20,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserRole } from 'src/user/enum/user.enum';
 import { AuthenticatedUser, UserPayload } from 'src/auth/decorators/user.decorator';
+import { PostStatus } from './enum/real-estate.enum';
 
 @Resolver()
 export class RealEstateResolver {
@@ -41,8 +42,11 @@ export class RealEstateResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query(returns => RealEstatePosts)
-  async getUploadedPosts(@AuthenticatedUser() user: UserPayload): Promise<RealEstatePosts> {
-    return await this.realEstateService.getUploadedPosts(user)
+  async getUploadedPosts(
+    @AuthenticatedUser() user: UserPayload, 
+    @Args('status', { type: () => PostStatus }) status: PostStatus
+  ): Promise<RealEstatePosts> {
+    return await this.realEstateService.getUploadedPosts(user, status)
   }
 
   @Query(returns => [House])
