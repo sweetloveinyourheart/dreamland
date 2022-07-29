@@ -5,14 +5,12 @@ import { Box } from '@mui/system';
 import { apartmentType, businessPremisesType, categories, directions, furniture, houseType, landType, legalDocuments, ownerType, realEstateStatus } from 'constants/realestate';
 import ImageUploading from 'react-images-uploading';
 import { useAddress } from 'contexts/address';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { CREATE_APARTMENT_POST, CREATE_BUSINESS_PREMISES_POST, CREATE_HOUSE_POST, CREATE_LAND_POST, CREATE_MOTAL_POST } from 'graphql/mutations/create';
 import axios from 'axios'
 import { CloudName } from 'constants/cloudinary';
-import { GET_ALL_PROJECT_POSTS } from 'graphql/queries/project';
 
 const CreateRSPost = ({ type, goBack }) => {
-    const [projects, setProjects] = useState([])
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -41,10 +39,6 @@ const CreateRSPost = ({ type, goBack }) => {
 
     const [isUploading, setIsUploading] = useState(false)
 
-    const { data: projectsData, error: projectsErr } = useQuery(GET_ALL_PROJECT_POSTS, {
-        notifyOnNetworkStatusChange: true
-    })
-
     const { provinces } = useAddress()
 
     const [images, setImages] = useState([]);
@@ -55,12 +49,6 @@ const CreateRSPost = ({ type, goBack }) => {
     const [createLand, { data: createLandData, error: createLandErr }] = useMutation(CREATE_LAND_POST)
     const [createBusinessPremises, { data: createBusinessPremisesData, error: createBusinessPremisesErr }] = useMutation(CREATE_BUSINESS_PREMISES_POST)
     const [createMotal, { data: createMotalData, error: createMotalErr }] = useMutation(CREATE_MOTAL_POST)
-
-    useEffect(() => {
-        if (projectsData) {
-            setProjects(projectsData.projects)
-        }
-    }, [projectsData, projectsErr])
 
     const onChange = (imageList) => {
         // data for submit
@@ -73,7 +61,6 @@ const CreateRSPost = ({ type, goBack }) => {
             description: "",
             category: "MuaBan",
             overview: {},
-            owner: {},
             detail: {},
             media: {
                 images: [],

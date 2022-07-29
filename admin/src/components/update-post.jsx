@@ -5,10 +5,9 @@ import { Box } from '@mui/system';
 import { apartmentType, businessPremisesType, categories, directions, furniture, houseType, landType, legalDocuments, ownerType, realEstateStatus } from 'constants/realestate';
 import ImageUploading from 'react-images-uploading';
 import { useAddress } from 'contexts/address';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import axios from 'axios'
 import { CloudName } from 'constants/cloudinary';
-import { GET_ALL_PROJECT_POSTS } from 'graphql/queries/project';
 import { UPDATE_APARTMENT, UPDATE_BUSINESS_PREMISES, UPDATE_HOUSE, UPDATE_LAND, UPDATE_MOTAL } from 'graphql/mutations/update';
 
 const UpdateRSPost = ({ type, post, goBack }) => {
@@ -51,7 +50,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
 
     useEffect(() => {
         if (post) {
-            const { _id, outstanding, postStatus, ...result } = post
+            const { _id, outstanding, postStatus, owner, ...result } = post
             setFormData(result)
         }
     }, [post])
@@ -67,7 +66,6 @@ const UpdateRSPost = ({ type, post, goBack }) => {
             description: "",
             category: "MuaBan",
             overview: {},
-            owner: {},
             detail: {},
             media: {
                 images: [],
