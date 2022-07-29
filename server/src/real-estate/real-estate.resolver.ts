@@ -39,6 +39,12 @@ export class RealEstateResolver {
     return await this.realEstateService.getRealEstatePosts(filter, paging, search)
   }
 
+  @UseGuards(GqlAuthGuard)
+  @Query(returns => RealEstatePosts)
+  async getUploadedPosts(@AuthenticatedUser() user: UserPayload): Promise<RealEstatePosts> {
+    return await this.realEstateService.getUploadedPosts(user)
+  }
+
   @Query(returns => [House])
   async getHouses(
     @Args('filter') filter: HouseFilter,

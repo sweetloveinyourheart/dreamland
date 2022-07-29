@@ -77,7 +77,7 @@ export class AuthService {
                     {
                         phone: payload.phone,
                         sub: payload.sub,
-                        roles: payload.sub
+                        roles: payload.roles
                     },
                     { expiresIn: "1h" }
                 ),

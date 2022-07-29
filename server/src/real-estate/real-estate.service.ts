@@ -766,4 +766,22 @@ export class RealEstateService {
             ... await this.motalModel.find(query).sort({ timeStamp: -1 })
         ]
     }
+
+    async getUploadedPosts(user: UserPayload): Promise<RealEstatePosts> {
+        try {
+            let query = {
+                owner: user.userId
+            }
+
+            return {
+                apartments: await this.apartmentModel.find(query).sort({ timeStamp: -1 }),
+                houses: await this.houseModel.find(query).sort({ timeStamp: -1 }),
+                lands: await this.landModel.find(query).sort({ timeStamp: -1 }),
+                businessPremises: await this.businessPremisesModel.find(query).sort({ timeStamp: -1 }),
+                motals: await this.motalModel.find(query).sort({ timeStamp: -1 })
+            }
+        } catch (error) {
+            throw new NotFoundException()
+        }
+    }
 }
