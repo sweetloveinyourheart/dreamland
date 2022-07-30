@@ -1,5 +1,5 @@
 import { useLazyQuery, useQuery } from "@apollo/client";
-import { Box, Button, CircularProgress, Divider, Grid, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Divider, Grid, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
 import TransactionList from "components/transaction-list";
 import { TransactionStatus } from "constants/transaction";
 import { GET_TRANSACTIONS } from "graphql/queries/transaction";
@@ -13,7 +13,9 @@ import { GET_LAND_BY_ID } from "graphql/queries/land";
 import { GET_BUSINESS_PREMISES_BY_ID } from "graphql/queries/businessPremises";
 import { GET_MOTAL_BY_ID } from "graphql/queries/motal";
 import PostDetail from "components/post";
-import { GET_PROJECT_PRODUCT } from "graphql/queries/project";
+import { GET_PROJECT_PRODUCT, GET_PROJECT_PRODUCT_BY_ID } from "graphql/queries/project";
+import { moneyConverter } from "helpers/money";
+import { statusReader } from "components/project-products";
 
 const RSTransactionViewer = ({ realEstate }) => {
     const [post, setPost] = useState()
@@ -105,13 +107,13 @@ const RSTransactionViewer = ({ realEstate }) => {
 }
 
 const ProjectTransactionViewer = ({ project }) => {
-    const [products, setProducts] = useState()
+    const [product, setProduct] = useState()
 
-    const { data } = useQuery(GET_PROJECT_PRODUCT, { variables: { project }, fetchPolicy: 'network-only' })
+    const { data } = useQuery(GET_PROJECT_PRODUCT_BY_ID, { variables: { id: project.itemId }, fetchPolicy: 'network-only' })
 
     useEffect(() => {
         if (data) {
-            setProducts(data.products)
+            setProduct(data.product)
         }
     }, [data])
 
@@ -121,7 +123,6 @@ const ProjectTransactionViewer = ({ project }) => {
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>STT</TableCell>
                             <TableCell align="right">Mã</TableCell>
                             <TableCell align="right">Diện tích</TableCell>
                             <TableCell align="right">Số thửa</TableCell>
@@ -132,27 +133,21 @@ const ProjectTransactionViewer = ({ project }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {products.map((row, index) => (
-                            <TableRow
-                                key={index}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 }, ":hover": { backgroundColor: "#eee" }, cursor: 'pointer' }}
-                            >
-                                <TableCell component="th" scope="row" onClick={() => { }}>
-                                    {index + 1}
-                                </TableCell>
-                                <TableCell align="right" onClick={() => { }}>{row.code}</TableCell>
-                                <TableCell align="right" onClick={() => { }}>{row.totalAcreage}</TableCell>
-                                <TableCell align="right" onClick={() => { }}>{row.quantity}</TableCell>
-                                <TableCell align="right" onClick={() => { }}>{moneyConverter(row.price)}</TableCell>
-                                <TableCell align="right" onClick={() => { }}>{row.usedAcreage}</TableCell>
-                                <TableCell align="right" onClick={() => { }}>{row.description}</TableCell>
-                                <TableCell align="right" onClick={() => { }}>{statusReader(row.status)}</TableCell>
-                            </TableRow>
-                        ))}
+                        <TableRow
+                            sx={{ '&:last-child td, &:last-child th': { border: 0 }, ":hover": { backgroundColor: "#eee" }, cursor: 'pointer' }}
+                        >
+                            <TableCell align="right">{product?.code}</TableCell>
+                            <TableCell align="right">{product?.totalAcreage}</TableCell>
+                            <TableCell align="right">{product?.quantity}</TableCell>
+                            <TableCell align="right">{moneyConverter(product?.price || 0)}</TableCell>
+                            <TableCell align="right">{product?.usedAcreage}</TableCell>
+                            <TableCell align="right">{product?.description}</TableCell>
+                            <TableCell align="right">{statusReader(product?.status)}</TableCell>
+                        </TableRow>
                     </TableBody>
                 </Table>
             </TableContainer>
-        </Grid>
+        </Grid >
     )
 }
 
@@ -258,16 +253,16 @@ function Transaction() {
     }
 
     const renderMenu = () => {
-        if(menu < 3) {
+        if (menu < 3) {
             return <TransactionList items={items} onSelect={onSelectItem} />
         }
 
-        if(menu === 3) {
+        if (menu === 3) {
             return <RSTransactionViewer realEstate={selectedItem.realEstate} />
         }
 
-        if(menu === 4) {
-            return <ProjectTransactionViewer project={selectedItem.project}/>
+        if (menu === 4) {
+            return <ProjectTransactionViewer project={selectedItem.project} />
         }
     }
 

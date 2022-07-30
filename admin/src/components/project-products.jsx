@@ -7,7 +7,7 @@ import { moneyConverter } from "helpers/money";
 import { useEffect, useState } from "react";
 import Notification from "ui-component/notifications/notification";
 
-function statusReader(type) {
+export function statusReader(type) {
     switch (type) {
         case "Available":
             return "Sẵn sàng"

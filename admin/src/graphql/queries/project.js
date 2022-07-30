@@ -48,8 +48,23 @@ export const GET_ALL_PROJECT_POSTS = gql`
 `
 
 export const GET_PROJECT_PRODUCT = gql`
-    query Product($project: String!) {
+    query Products($project: String!) {
         products: getProjectProducts(project: $project) {
+            _id
+            code
+            totalAcreage
+            quantity
+            price
+            usedAcreage
+            description
+            status
+        }
+    }
+`
+
+export const GET_PROJECT_PRODUCT_BY_ID = gql`
+    query Product($id: String!) {
+        product: getProjectProductById(id: $id) {
             _id
             code
             totalAcreage
