@@ -39,8 +39,8 @@ export class StatsService {
                 total_pricing: value.detail.pricing.total,
                 address: value.detail.address.province + " - " + value.detail.address.district + " - " + value.detail.address.ward,
                 time_stamp: value.timeStamp,
-                owner_name: value.owner.user.name,
-                owner_phone: value.owner.user.phone
+                owner_name: value.owner.name,
+                owner_phone: value.owner.phone
             })
         })
         

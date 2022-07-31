@@ -759,11 +759,11 @@ export class RealEstateService {
         const query = { timeStamp: { $gte: getFirstDayPreviousMonth() } }
 
         return [
-            ... await this.apartmentModel.find(query).sort({ timeStamp: -1 }),
-            ... await this.houseModel.find(query).sort({ timeStamp: -1 }),
-            ... await this.landModel.find(query).sort({ timeStamp: -1 }),
-            ... await this.businessPremisesModel.find(query).sort({ timeStamp: -1 }),
-            ... await this.motalModel.find(query).sort({ timeStamp: -1 })
+            ... await this.apartmentModel.find(query).populate('owner').sort({ timeStamp: -1 }),
+            ... await this.houseModel.find(query).populate('owner').sort({ timeStamp: -1 }),
+            ... await this.landModel.find(query).populate('owner').sort({ timeStamp: -1 }),
+            ... await this.businessPremisesModel.find(query).populate('owner').sort({ timeStamp: -1 }),
+            ... await this.motalModel.find(query).populate('owner').sort({ timeStamp: -1 })
         ]
     }
 

@@ -11,7 +11,6 @@ export class NotificationConsumer {
         private httpService: HttpService
     ) { }
 
-    
 
     @Process('push-notification-job')
     pushNotificationJob(job: Job<{ data: PushData, device: Device }>) {
@@ -24,6 +23,7 @@ export class NotificationConsumer {
                 sound: 'default',
                 title: job.data.data.title,
                 body: job.data.data.body,
+                "content-available": 1
             },
             {
                 headers: {
@@ -49,6 +49,7 @@ export class NotificationConsumer {
                         sound: 'default',
                         title: job.data.data.title,
                         body: job.data.data.body,
+                        "content-available": 1
                     },
                     {
                         headers: {
