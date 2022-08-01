@@ -1,5 +1,7 @@
 export enum UserRole {
     Admin = "admin",
+    TransactionManager = 'transaction-manager',
+    ProductManager = 'product-manager',
     User = "user",
     Manager = "manager"
 }

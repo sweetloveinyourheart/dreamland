@@ -4,7 +4,10 @@ export const UPDATE_PAGE_TEMPLATE = gql`
     mutation UpdatePageTemplate($pageName: String!, $data: UpdateTemplateInput!) {
         updatePageTemplate(pageName: $pageName, data: $data) {
             pageName,
-            banner
+            banner {
+                imgUrl
+                directLink
+            }
         }
     }
 `

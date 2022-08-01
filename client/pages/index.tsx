@@ -19,7 +19,10 @@ import Moment from "react-moment";
 
 interface AboutPageProps {
     template: {
-        banner: string | null
+        banner: {
+            imgUrl: string
+            directLink: string | null
+        } | null
     }
     blogs: BlogInterface[]
     projects: ProjectInterface[]
@@ -120,7 +123,7 @@ const AboutPage: NextPage<AboutPageProps> = ({ template, blogs, projects }) => {
             <section>
                 {template.banner
                     && (
-                        <div className={styles['banner']} style={{ backgroundImage: `url(${template.banner})` }}>
+                        <div className={styles['banner']} style={{ backgroundImage: `url(${template.banner.imgUrl})` }}>
                             <div className={styles['scroll-down']}>
                                 <div className={styles['scroll-down__item']} onClick={() => router.push('/#tin-tuc')}>
                                     <span>Khám phá</span>

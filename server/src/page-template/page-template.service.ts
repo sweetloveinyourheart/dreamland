@@ -34,7 +34,7 @@ export class PageTemplateService {
 
             const updated = await this.templageModel.findOneAndUpdate({ pageName }, data)
 
-            await this.cloudinaryService.removeFile(updated.banner)
+            await this.cloudinaryService.removeFile(updated.banner.imgUrl)
 
             return updated
 

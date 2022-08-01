@@ -53,21 +53,21 @@ export class ProjectResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Project)
   async createProject(@Args('data') data: CreateProjectInput) {
     return await this.projectService.createProject(data)
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => ProjectProduct)
   async createProjectProduct(@Args('data') data: CreateProjectProductInput) {
     return await this.projectService.createProjectProduct(data)
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Project)
   async editProject(
     @Args('id') id: string,
@@ -78,14 +78,14 @@ export class ProjectResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Project)
   async removeProject(@Args('id') id: string) {
     return await this.projectService.removeProject(id)
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => ProjectProduct)
   async removeProjectProduct(@Args('id') id: string) {
     return await this.projectService.removeProjectProduct(id)

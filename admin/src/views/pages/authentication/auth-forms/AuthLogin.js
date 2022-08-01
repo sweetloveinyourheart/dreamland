@@ -26,6 +26,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { useAuth } from 'contexts/auth';
 import { useNavigate } from 'react-router';
+import { useApollo } from 'contexts/graphql';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
@@ -45,7 +46,7 @@ const FirebaseLogin = ({ ...others }) => {
     };
 
     useEffect(() => {
-        if (user) {
+        if (user) { 
             navigate('/dashboard')
         }
     }, [user])

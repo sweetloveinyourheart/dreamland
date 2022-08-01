@@ -1,5 +1,19 @@
 import { gql } from "@apollo/client";
 
+export const GET_PROFILE = gql`
+    query {
+        profile: getProfile {
+            phone
+            name
+            address
+            birthday
+            sex
+            createdAt
+            roles
+        }
+    }
+`
+
 export const GET_USERS = gql`
     query ($paging: FindUserInput!) {
         users: getUsers(paging: $paging) {

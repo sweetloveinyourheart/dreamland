@@ -18,7 +18,10 @@ import styles from './../styles/pages/home.module.scss'
 
 interface HomePageProps {
   template: {
-    banner: string | null
+    banner: {
+      imgUrl: string
+      directLink: string | null
+    } | null
   }
   projects: ProjectInterface[]
   posts: TopPostsResult

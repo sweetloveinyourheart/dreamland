@@ -751,12 +751,17 @@ export class RealEstateService {
     }
 
     async getStatsExportData() {
+        // export data since last month
+
         const getFirstDayPreviousMonth = () => {
             const date = new Date();
             return new Date(date.getFullYear(), date.getMonth(), 1);
         }
 
-        const query = { timeStamp: { $gte: getFirstDayPreviousMonth() } }
+        const query = { 
+            timeStamp: { $gte: getFirstDayPreviousMonth() },
+            postStatus: { $ne: PostStatus.Pending }
+        }
 
         return [
             ... await this.apartmentModel.find(query).populate('owner').sort({ timeStamp: -1 }),
@@ -767,7 +772,7 @@ export class RealEstateService {
         ]
     }
 
-    async getUploadedPosts(user: UserPayload, status: PostStatus): Promise<RealEstatePosts> {
+    async getUploadedPosts(user: UserPayload, paging: PaginationArgs | undefined, status: PostStatus): Promise<RealEstatePosts> {
         try {
             let query = {
                 owner: user.userId,
@@ -775,11 +780,11 @@ export class RealEstateService {
             }
 
             return {
-                apartments: await this.apartmentModel.find(query).sort({ timeStamp: -1 }),
-                houses: await this.houseModel.find(query).sort({ timeStamp: -1 }),
-                lands: await this.landModel.find(query).sort({ timeStamp: -1 }),
-                businessPremises: await this.businessPremisesModel.find(query).sort({ timeStamp: -1 }),
-                motals: await this.motalModel.find(query).sort({ timeStamp: -1 })
+                apartments: await this.apartmentModel.find(query).sort({ timeStamp: -1 }).skip(paging?.cursor).limit(paging?.limit),
+                houses: await this.houseModel.find(query).sort({ timeStamp: -1 }).skip(paging?.cursor).limit(paging?.limit),
+                lands: await this.landModel.find(query).sort({ timeStamp: -1 }).skip(paging?.cursor).limit(paging?.limit),
+                businessPremises: await this.businessPremisesModel.find(query).sort({ timeStamp: -1 }).skip(paging?.cursor).limit(paging?.limit),
+                motals: await this.motalModel.find(query).sort({ timeStamp: -1 }).skip(paging?.cursor).limit(paging?.limit)
             }
         } catch (error) {
             throw new NotFoundException()

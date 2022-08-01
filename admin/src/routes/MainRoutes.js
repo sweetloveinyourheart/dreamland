@@ -22,7 +22,7 @@ const Motal = Loadable(lazy(() => import("views/manager/motal")))
 
 // ==============================|| MAIN ROUTING ||============================== //
 
-const MainRoutes = {
+export const MainRoutes = {
     path: '/',
     element: <MainLayout />,
     children: [
@@ -85,4 +85,68 @@ const MainRoutes = {
     ]
 };
 
-export default MainRoutes;
+export const ProductManagerRoutes = {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+        {
+            path: '/',
+            element: <DashboardDefault />
+        },
+        {
+            path: '/dashboard',
+            element: <DashboardDefault />
+        },
+        {
+            path: '/manager/apartment',
+            element: <Apartment />
+        },
+        {
+            path: '/manager/house',
+            element: <House />
+        },
+        {
+            path: '/manager/land',
+            element: <Land />
+        },
+        {
+            path: '/manager/business-premises',
+            element: <BusinessPremises />
+        },
+        {
+            path: '/manager/motal',
+            element: <Motal />
+        },
+        {
+            path: '/project/list',
+            element: <Project />
+        },
+        {
+            path: '/project/product',
+            element: <ProjectProduct />
+        },
+        {
+            path: '/user/post',
+            element: <PostManager />
+        }
+    ]
+};
+
+export const TransactionRoutes = {
+    path: '/',
+    element: <MainLayout />,
+    children: [
+        {
+            path: '/',
+            element: <DashboardDefault />
+        },
+        {
+            path: '/dashboard',
+            element: <DashboardDefault />
+        },
+        {
+            path: '/transaction',
+            element: <Transaction />
+        },
+    ]
+};

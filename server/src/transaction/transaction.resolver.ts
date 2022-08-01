@@ -16,7 +16,7 @@ export class TransactionResolver {
   constructor(private readonly transactionService: TransactionService) { }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.TransactionManager)
   @Query(returns => [Transaction])
   async getAllTransaction(
     @Args('status', { type: () => TransactionStatus }) status: TransactionStatus,
@@ -45,7 +45,7 @@ export class TransactionResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.TransactionManager)
   @Mutation(returns => Transaction)
   async updateTransaction(
     @Args('id') id: string,

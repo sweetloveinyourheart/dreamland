@@ -28,7 +28,7 @@ export class AuthService {
 
     async login(user: User & { _id: string }, device: UpdateDevice | undefined): Promise<Login> {
         try {
-            if(device) {
+            if (device) {
                 await this.userService.updateDevice(user._id, device)
             }
 
@@ -40,7 +40,7 @@ export class AuthService {
 
             return {
                 accessToken: await this.jwtService.sign(jwtPayload, { expiresIn: "1h" }),
-                refreshToken: await this.jwtService.sign(jwtPayload, { expiresIn: "7d", secret: process.env.REFRESH_TOKEN_SECRET })
+                refreshToken: await this.jwtService.sign(jwtPayload, { expiresIn: "30d", secret: process.env.REFRESH_TOKEN_SECRET })
             }
         } catch (error) {
             throw new UnauthorizedException()
@@ -48,22 +48,21 @@ export class AuthService {
     }
 
     async adminLogin(user: User & { _id: string }): Promise<Login> {
-        try {
-            if (!user.roles.includes(UserRole.Admin))
-                throw new Error('Forbidden resource !')
+        const requiredRoles = [UserRole.Admin, UserRole.TransactionManager, UserRole.ProductManager]
+        const validLogin = requiredRoles.some((role) => user.roles?.includes(role))
 
-            const jwtPayload = {
-                phone: user.phone,
-                sub: user._id,
-                roles: user.roles
-            }
+        if (!validLogin)
+            throw new Error('Forbidden resource !')
 
-            return {
-                accessToken: await this.jwtService.sign(jwtPayload, { expiresIn: "24h" }),
-                refreshToken: ""
-            }
-        } catch (error) {
-            throw new UnauthorizedException()
+        const jwtPayload = {
+            phone: user.phone,
+            sub: user._id,
+            roles: user.roles
+        }
+
+        return {
+            accessToken: await this.jwtService.sign(jwtPayload, { expiresIn: "24h" }),
+            refreshToken: ""
         }
     }
 

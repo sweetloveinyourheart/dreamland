@@ -4,12 +4,21 @@ import { Document } from "mongoose"
 export type PageTemplateDocument = PageTemplate & Document
 
 @Schema()
+class Banner {
+    @Prop()
+    imgUrl: string
+
+    @Prop()
+    directLink: string
+}
+
+@Schema()
 export class PageTemplate {
     @Prop({ required: true, unique: true })
     pageName: string
 
     @Prop()
-    banner: string
+    banner: Banner
 }
 
 export const templateSchema = SchemaFactory.createForClass(PageTemplate)

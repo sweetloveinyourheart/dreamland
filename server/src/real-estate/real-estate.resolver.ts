@@ -43,10 +43,11 @@ export class RealEstateResolver {
   @UseGuards(GqlAuthGuard)
   @Query(returns => RealEstatePosts)
   async getUploadedPosts(
-    @AuthenticatedUser() user: UserPayload, 
+    @AuthenticatedUser() user: UserPayload,
+    @Args('paging', { nullable: true }) paging: PaginationArgs,
     @Args('status', { type: () => PostStatus }) status: PostStatus
   ): Promise<RealEstatePosts> {
-    return await this.realEstateService.getUploadedPosts(user, status)
+    return await this.realEstateService.getUploadedPosts(user, paging, status)
   }
 
   @Query(returns => [House])
@@ -58,7 +59,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Query(returns => [House])
   async getAllHouses(
     @Args('filter') filter: HouseFilter,
@@ -78,7 +79,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Query(returns => [Apartment])
   async getAllApartments(
     @Args('filter') filter: ApartmentFilter,
@@ -98,7 +99,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Query(returns => [Land])
   async getAllLands(
     @Args('filter') filter: LandFilter,
@@ -118,7 +119,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Query(returns => [BusinessPremises])
   async getAllBusinessPremises(
     @Args('filter') filter: BusinessPremisesFilter,
@@ -138,7 +139,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Query(returns => [Motal])
   async getAllMotals(
     @Args('filter') filter: MotalFilter,
@@ -242,7 +243,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Manager)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Apartment)
   async updateApartmentPost(
     @Args('postId') postId: string,
@@ -254,7 +255,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Manager)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => House)
   async updateHousePost(
     @Args('postId') postId: string,
@@ -266,7 +267,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Manager)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Land)
   async updateLandPost(
     @Args('postId') postId: string,
@@ -278,7 +279,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Manager)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => BusinessPremises)
   async updateBusinessPremisesPost(
     @Args('postId') postId: string,
@@ -290,7 +291,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Manager)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Motal)
   async updateMotalPost(
     @Args('postId') postId: string,
@@ -302,7 +303,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Apartment)
   async deleteApartmentPost(
     @Args('postId') postId: string
@@ -311,7 +312,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => House)
   async deleteHousePost(
     @Args('postId') postId: string
@@ -320,7 +321,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Land)
   async deleteLandPost(
     @Args('postId') postId: string
@@ -329,7 +330,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => BusinessPremises)
   async deleteBusinessPremisesPost(
     @Args('postId') postId: string
@@ -338,7 +339,7 @@ export class RealEstateResolver {
   }
 
   @UseGuards(GqlAuthGuard, RolesGuard)
-  @Roles(UserRole.Admin)
+  @Roles(UserRole.ProductManager)
   @Mutation(returns => Motal)
   async deleteMotalPost(
     @Args('postId') postId: string

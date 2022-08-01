@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { Box, Button, ButtonGroup, CircularProgress, Divider, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, CircularProgress, Divider, Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { IconEdit } from "@tabler/icons";
 import axios from "axios";
 import { CloudName } from "constants/cloudinary";
@@ -13,7 +13,8 @@ import Notification from "ui-component/notifications/notification";
 
 function BannerManagement() {
     const [banner, setBanner] = useState({
-        url: null,
+        imgUrl: null,
+        directLink: null,
         edit: false
     })
     const [bannerImages, setBannerImages] = useState([]);
@@ -26,13 +27,14 @@ function BannerManagement() {
     const { data, error } = useQuery(GET_PAGE_TEMPLATE, {
         variables: {
             pageName: "introduction"
-        }
+        },
+        fetchPolicy: 'network-only'
     })
     const [update, { data: updateResult, error: updateErr }] = useMutation(UPDATE_PAGE_TEMPLATE)
 
     useEffect(() => {
         if (data && !error) {
-            setBanner(s => ({ ...s, url: data.template?.banner }))
+            setBanner(s => ({ ...s, ...data.template?.banner }))
         }
     }, [data, error])
 
@@ -47,7 +49,7 @@ function BannerManagement() {
             setBanner(s => ({ ...s, edit: false }))
         }
 
-        if(updateErr) {
+        if (updateErr) {
             setIsUploading(false)
             setModal({
                 message: "Cập nhật banner thất bại, vui lòng thử lại",
@@ -81,6 +83,12 @@ function BannerManagement() {
         }
     }
 
+    const onClickBanner = () => {
+        if (banner.directLink) {
+            window.open(banner.directLink, '_blank')
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -91,7 +99,10 @@ function BannerManagement() {
                 variables: {
                     pageName: "introduction",
                     data: {
-                        banner: presets[0]
+                        banner: {
+                            imgUrl: presets[0],
+                            directLink: banner.directLink
+                        }
                     }
                 }
             })
@@ -140,10 +151,10 @@ function BannerManagement() {
                 </Grid>
                 <Divider sx={{ margin: 2 }} />
                 <SubCard title="Quản lý hình ảnh hiển thị">
-                    <Grid container spacing={1}>
+                    <Grid container spacing={2}>
                         <Grid xl={banner.edit ? 6 : 12} borderRight="1px solid #eee" item>
-                            {banner.url
-                                ? (<img src={banner.url} alt="banner" width={"100%"} />)
+                            {banner.imgUrl
+                                ? (<img src={banner.imgUrl} onClick={() => onClickBanner()} alt="banner" width={"100%"} />)
                                 : (
                                     <Box minHeight={300} display="flex" alignItems={"center"} justifyContent="center">
                                         <Typography textAlign={"center"} variant="h4" color={"#777"}>
@@ -181,7 +192,7 @@ function BannerManagement() {
                                                         variant="contained"
                                                         color="secondary"
                                                     >
-                                                        Thêm banner mới
+                                                        {banner.imgUrl ? "Chỉnh sửa banner" : "Thêm banner mới"}
                                                     </Button>
                                                     &nbsp;
                                                     <Button
@@ -204,6 +215,16 @@ function BannerManagement() {
                                                             </div>
                                                         </Grid>
                                                     ))}
+                                                    <Grid item xs={12} lg={12}>
+                                                        <TextField
+                                                            fullWidth
+                                                            label="Link điều hướng"
+                                                            variant="outlined"
+                                                            margin="normal"
+                                                            onChange={(e) => setBanner(s => ({ ...s, directLink: e.target.value }))}
+                                                            value={banner.directLink}
+                                                        />
+                                                    </Grid>
                                                 </Grid>
                                             </div>
                                         )}

@@ -27,4 +27,21 @@ const user = {
     ]
 };
 
+export const productManager = {
+    id: 'user',
+    title: 'Người dùng',
+    caption: 'Quản lý người dùng',
+    type: 'group',
+    children: [
+        {
+            id: 'post',
+            title: 'Bài đăng',
+            type: 'item',
+            url: '/user/post',
+            icon: IconBookmarks,
+            breadcrumbs: false
+        }
+    ]
+}
+
 export default user;
