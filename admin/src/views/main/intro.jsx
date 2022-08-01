@@ -108,6 +108,20 @@ function BannerManagement() {
             })
         }
 
+        if(!presets && banner.directLink && banner.imgUrl) {
+            update({
+                variables: {
+                    pageName: "introduction",
+                    data: {
+                        banner: {
+                            imgUrl: banner.imgUrl,
+                            directLink: banner.directLink
+                        }
+                    }
+                }
+            })
+        }
+
     }
 
 
