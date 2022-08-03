@@ -6,7 +6,7 @@ import { moneyConverter } from "helpers/money";
 import { useEffect, useState } from "react";
 import Notification from "ui-component/notifications/notification";
 
-const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
+const PendingItem = ({ type, data, selectPost, onSetActived, viewPost, onDelete }) => {
     const [code, setCode] = useState("")
 
     const onAccept = () => {
@@ -16,7 +16,7 @@ const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
     return (
         <Grid md={6} lg={4} xl={3} item>
             <Card variant="outlined">
-                <Box onClick={() => selectPost(data)} sx={{ cursor: 'pointer' }}>
+                <Box onClick={() => viewPost(data)} sx={{ cursor: 'pointer' }}>
                     <CardMedia
                         component="img"
                         height="240"
@@ -53,6 +53,10 @@ const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
                         Duyệt
                     </Button>
                     &nbsp;
+                    <Button variant="contained" color="success" onClick={() => selectPost(data, type)}>
+                        Chỉnh sửa
+                    </Button>
+                    &nbsp;
                     <Button variant="contained" color="error" onClick={() => onDelete(data)}>
                         Từ chối
                     </Button>
@@ -63,7 +67,7 @@ const PendingItem = ({ data, selectPost, onSetActived, onDelete }) => {
     )
 }
 
-const PendingList = ({ type, data, selectPost, goBack }) => {
+const PendingList = ({ type, data, selectPost, viewPost, goBack }) => {
     const [modal, setModal] = useState({
         message: '',
         active: false,
@@ -260,7 +264,7 @@ const PendingList = ({ type, data, selectPost, goBack }) => {
         let result
         if (data) {
             result = data.map((elm, ind) => {
-                return <PendingItem data={elm} key={ind} selectPost={selectPost} onSetActived={setActived} onDelete={deletePost} />
+                return <PendingItem data={elm} key={ind} type={type} viewPost={viewPost} selectPost={selectPost} onSetActived={setActived} onDelete={deletePost} />
             })
         }
 

@@ -431,7 +431,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                     id="street"
                                                     name='street'
                                                     fullWidth
-                                                    label={formData.detail?.address?.street ?? "Tên đường"}
+                                                    label={"Tên đường"}
 
                                                     variant="outlined"
                                                     margin="normal"
@@ -444,7 +444,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                     id="houseNumber"
                                                     name='houseNumber'
                                                     fullWidth
-                                                    label={formData.detail?.address?.houseNumber ?? "Số nhà"}
+                                                    label={"Số nhà"}
                                                     variant="outlined"
                                                     value={formData.detail?.address?.houseNumber}
                                                     margin="normal"
@@ -843,60 +843,6 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                             defaultValue={""}
                                             margin="normal"
                                         />
-                                    </Box>
-
-                                    <Box margin={"12px 0"}>
-                                        <Typography variant='h4' marginBottom={1}>
-                                            Chủ sở hữu
-                                        </Typography>
-                                        <Divider />
-                                        <Grid container marginBottom={4} spacing={1}>
-                                            <Grid xl={6} item>
-                                                <TextField
-                                                    id="owner.user.name"
-                                                    name='owner.user.name'
-                                                    fullWidth
-                                                    label="Tên chủ sở hữu"
-
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, user: { ...s.owner.user, name: e.target.value } } }))}
-                                                    value={formData.owner?.user?.name}
-                                                />
-                                            </Grid>
-                                            <Grid xl={6} item>
-                                                <TextField
-                                                    id="owner.user.phone"
-                                                    name='owner.user.phone'
-                                                    fullWidth
-                                                    label="Số điện thoại"
-
-                                                    variant="outlined"
-                                                    margin="normal"
-                                                    onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, user: { ...s.owner.user, phone: e.target.value } } }))}
-                                                    value={formData.owner?.user?.phone}
-                                                />
-                                            </Grid>
-                                            <Grid xl={6} item>
-                                                <TextField
-                                                    id="owner.type"
-                                                    name='owner.type'
-                                                    fullWidth
-
-                                                    select
-                                                    label="Cá nhân/Môi giới"
-                                                    value={formData.owner.type}
-                                                    onChange={e => setFormData(s => ({ ...s, owner: { ...s.owner, type: e.target.value } }))}
-                                                    margin="normal"
-                                                >
-                                                    {ownerType.map((option) => (
-                                                        <MenuItem key={option.value} value={option.value}>
-                                                            {option.label}
-                                                        </MenuItem>
-                                                    ))}
-                                                </TextField>
-                                            </Grid>
-                                        </Grid>
                                     </Box>
 
                                     <Grid justifyContent="flex-end" container>

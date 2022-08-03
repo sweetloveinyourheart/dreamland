@@ -12,7 +12,8 @@ export const ProjectSelector = ({ value, setValue }) => {
     const [projects, setProjects] = useState([])
 
     const { data: projectsData, error: projectsErr } = useQuery(GET_ALL_PROJECT_POSTS, {
-        notifyOnNetworkStatusChange: true
+        notifyOnNetworkStatusChange: true,
+        fetchPolicy: 'network-only'
     })
 
     useEffect(() => {

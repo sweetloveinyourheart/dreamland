@@ -22,6 +22,7 @@ query BusinessPremises($filter: BusinessPremisesFilter!, $paging: PaginationArgs
                 }
                 pricing {
                     total
+                    deposit
                 }
                 acreage {
                     totalAcreage

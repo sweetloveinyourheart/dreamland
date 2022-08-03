@@ -26,6 +26,7 @@ query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
                 }
                 acreage {
                     totalAcreage
+                    usedAcreage
                 }
             }
             owner {

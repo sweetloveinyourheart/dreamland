@@ -54,7 +54,7 @@ export const DELETE_MOTAL = gql`
 export const DELETE_PROJECT = gql`
     mutation delete($id: String!) {
         project: removeProject(id: $id) {
-            title
+            projectName
         }
     }
 `
