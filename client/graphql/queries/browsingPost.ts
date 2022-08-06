@@ -201,9 +201,6 @@ export const GET_APARTMENT_POSTS = gql`
                 address {
                     province
                 }
-                project {
-                    projectName
-                }
             }
             
             overview {
@@ -242,9 +239,6 @@ export const GET_HOUSE_POSTS = gql`
                 }
                 address {
                     province
-                }
-                project {
-                    projectName
                 }
             }
             
@@ -285,9 +279,6 @@ export const GET_LAND_POSTS = gql`
                 address {
                     province
                 }
-                project {
-                    projectName
-                }
             }
 
             timeStamp
@@ -323,9 +314,6 @@ export const GET_BUSINESS_PREMISES_POSTS = gql`
                 }
                 address {
                     province
-                }
-                project {
-                    projectName
                 }
             }
 

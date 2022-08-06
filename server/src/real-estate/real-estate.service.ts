@@ -726,27 +726,43 @@ export class RealEstateService {
 
     async processingTransaction(item: CreateRealEstateTransaction, status: PostStatus) {
         try {
+            let postStatus
             switch (item.itemType) {
                 case RealEstateType.CanHo:
+                    postStatus = (await this.apartmentModel.findById(item.itemId)).postStatus
+                    if(postStatus !== PostStatus.Available) throw new BadRequestException()
+
                     return await this.apartmentModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.NhaO:
+                    postStatus = (await this.houseModel.findById(item.itemId)).postStatus
+                    if(postStatus !== PostStatus.Available) throw new BadRequestException()
+
                     return await this.houseModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.Dat:
+                    postStatus = (await this.landModel.findById(item.itemId)).postStatus
+                    if(postStatus !== PostStatus.Available) throw new BadRequestException()
+
                     return await this.landModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
                     
                 case RealEstateType.VanPhong:
+                    postStatus = (await this.businessPremisesModel.findById(item.itemId)).postStatus
+                    if(postStatus !== PostStatus.Available) throw new BadRequestException()
+
                     return await this.businessPremisesModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.PhongTro:
+                    postStatus = (await this.motalModel.findById(item.itemId)).postStatus
+                    if(postStatus !== PostStatus.Available) throw new BadRequestException()
+
                     return await this.motalModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })              
 
                 default:
                     return null;
             }
         } catch (error) {
-            throw new InternalServerErrorException()
+            throw new BadRequestException()
         }
     }
 

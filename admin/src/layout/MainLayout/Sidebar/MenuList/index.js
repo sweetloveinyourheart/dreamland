@@ -10,9 +10,7 @@ import { useAuth } from 'contexts/auth';
 
 const MenuList = () => {
     const { user } = useAuth()
-
-    console.log(user);
-
+    
     const navItems = () => {
 
         if (user?.roles.includes("Admin"))
