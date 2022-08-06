@@ -36,7 +36,9 @@ const Paging: FunctionComponent<PagingProps> = ({ type, data, paging }) => {
                 return setItems(data.motals)
 
             default:
-                return setItems([data.apartments, data.businessPremises, data.houses, data.lands, data.motals].sort((a, b) => a + b)[0] ?? 0)
+                const items = [data.apartments, data.businessPremises, data.houses, data.lands, data.motals]
+                const step = Math.max(...items)
+                return setItems(step)
         }
 
     }, [type, data])

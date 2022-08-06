@@ -46,8 +46,8 @@ interface BrowsingPageProps {
 }
 
 export const INIT_CURSOR = 0
-export const INIT_LIMIT = 2
-export const STEP = 2
+export const INIT_LIMIT = 5
+export const STEP = 5
 
 const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, pagingData }) => {
     const [posts, setPosts] = useState<ItemDataDisplay[]>([])
@@ -322,8 +322,6 @@ const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, p
                     <div className={styles['filter-area']}>
                         <div className={styles['filter']}>
                             <div className={`${styles['filter__item']} ${styles['filter__item--active']}`}>Tất cả</div>
-                            {/* <div className={styles['filter__item']}>Cá nhân</div>
-                            <div className={styles['filter__item']}>Môi giới</div> */}
                         </div>
                         <div className={styles['display']}>
                             <button onClick={() => setVerticalDisplay(s => !s)}><FaGripHorizontal /></button>
