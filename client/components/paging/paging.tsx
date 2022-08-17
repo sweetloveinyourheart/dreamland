@@ -6,6 +6,7 @@ import { STEP } from "../../pages/[category]/bat-dong-san";
 import { RealEstateType } from "../../types/enums/realEstate";
 import { PaginationFilter } from "../../types/interfaces/realEstate";
 import styles from './paging.module.scss'
+import ReactPaginate from 'react-paginate';
 
 interface PagingProps {
     type: RealEstateType | "All" | undefined
@@ -14,31 +15,38 @@ interface PagingProps {
 }
 
 const Paging: FunctionComponent<PagingProps> = ({ type, data, paging }) => {
-    const [items, setItems] = useState<number>(STEP)
+    const [pageCount, setPageCount] = useState(0)
 
     const router = useRouter()
 
     useEffect(() => {
+        let groupCount = 0
         switch (type) {
             case RealEstateType.CanHo:
-                return setItems(data.apartments)
+                groupCount = Math.ceil(data.apartments / STEP)
+                return setPageCount(groupCount)
 
             case RealEstateType.NhaO:
-                return setItems(data.houses)
+                groupCount = Math.ceil(data.houses / STEP)
+                return setPageCount(groupCount)
 
             case RealEstateType.Dat:
-                return setItems(data.lands)
+                groupCount = Math.ceil(data.lands / STEP)
+                return setPageCount(groupCount)
 
             case RealEstateType.VanPhong:
-                return setItems(data.businessPremises)
+                groupCount = Math.ceil(data.businessPremises / STEP)
+                return setPageCount(groupCount)
 
             case RealEstateType.PhongTro:
-                return setItems(data.motals)
+                groupCount = Math.ceil(data.motals / STEP)
+                return setPageCount(groupCount)
 
             default:
                 const items = [data.apartments, data.businessPremises, data.houses, data.lands, data.motals]
                 const step = Math.max(...items)
-                return setItems(step)
+                groupCount = Math.ceil(step / STEP)
+                return setPageCount(groupCount)
         }
 
     }, [type, data])
@@ -52,43 +60,32 @@ const Paging: FunctionComponent<PagingProps> = ({ type, data, paging }) => {
         })
     }, [paging, router])
 
-    const renderItems = () => {
-        const groupCount = Math.ceil(items / STEP)
-
-        const arr = new Array(groupCount).fill("")
-        return arr.map((elm, id) => {
-            return (
-                <div
-                    className={
-                        styles['paging__number'] +
-                        (Math.ceil((paging?.cursor ?? 0) / STEP) === id
-                            ? ` ${styles['paging__number--active']}`
-                            : ""
-                        )
-                    }
-                    key={id}
-                    onClick={() => selectPage(id + 1)}
-                >
-                    <span>{id + 1}</span>
-                </div>
-            )
-        })
-    }
 
     return (
         <div className={styles['paging-area']}>
             <div className="container">
                 <div className={styles['paging']}>
-                    <div className={styles['paging__prev'] + ` ${styles['paging__prev--disable']}`}>
-                        <FaAngleLeft />
-                    </div>
-                    {/* <div className={styles['paging__number'] + ` ${styles['paging__number--active']}`}>
-                        <span>1</span>
-                    </div> */}
-                    {renderItems()}
-                    <div className={styles['paging__next']}>
-                        <FaAngleRight />
-                    </div>
+                    <ReactPaginate
+                        className={styles.paging}
+                        pageClassName={styles['paging__number']}
+                        activeClassName={styles['paging__number--active']}
+                        disabledClassName={styles['paging__prev--disable']}
+                        breakLabel="..."
+                        nextLabel={
+                            <div className={styles['paging__next']}>
+                                <FaAngleRight />
+                            </div>
+                        }
+                        onPageChange={({ selected }) => selectPage(selected + 1)}
+                        pageRangeDisplayed={5}
+                        pageCount={pageCount}
+                        previousLabel={
+                            <div className={styles['paging__prev']}>
+                                <FaAngleLeft />
+                            </div>
+                        }
+                    />
+
                 </div>
             </div>
         </div>

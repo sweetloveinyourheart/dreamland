@@ -46,8 +46,8 @@ interface BrowsingPageProps {
 }
 
 export const INIT_CURSOR = 0
-export const INIT_LIMIT = 5
-export const STEP = 5
+export const INIT_LIMIT = 2
+export const STEP = 2
 
 const RealEstateBrowsingPage: NextPage<BrowsingPageProps> = ({ data, category, pagingData }) => {
     const [posts, setPosts] = useState<ItemDataDisplay[]>([])

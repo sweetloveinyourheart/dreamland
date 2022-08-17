@@ -4,6 +4,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { STEP } from "../../pages/du-an-bat-dong-san";
 import { PaginationFilter } from "../../types/interfaces/realEstate";
 import styles from './paging.module.scss'
+import ReactPaginate from 'react-paginate';
 
 interface PagingProps {
     data: { projects: number }
@@ -11,12 +12,13 @@ interface PagingProps {
 }
 
 const ProjectPaging: FunctionComponent<PagingProps> = ({ data, paging }) => {
-    const [items, setItems] = useState<number>(STEP)
+    const [pageCount, setPageCount] = useState(0)
 
     const router = useRouter()
 
     useEffect(() => {
-        setItems(data.projects)
+        let groupCount = Math.ceil(data.projects / STEP)
+        setPageCount(groupCount)
     }, [data])
 
     const selectPage = useCallback((page: number) => {
@@ -28,40 +30,30 @@ const ProjectPaging: FunctionComponent<PagingProps> = ({ data, paging }) => {
         })
     }, [paging, router])
 
-    const renderItems = () => {
-        const groupCount = Math.ceil(items / STEP)
-
-        const arr = new Array(groupCount).fill("")
-        return arr.map((elm, id) => {
-            return (
-                <div
-                    className={
-                        styles['paging__number'] +
-                        (Math.ceil((paging?.cursor ?? 0) / STEP) === id
-                            ? ` ${styles['paging__number--active']}`
-                            : ""
-                        )
-                    }
-                    key={id}
-                    onClick={() => selectPage(id + 1)}
-                >
-                    <span>{id + 1}</span>
-                </div>
-            )
-        })
-    }
-
     return (
         <div className={styles['paging-area']}>
             <div className="container">
                 <div className={styles['paging']}>
-                    <div className={styles['paging__prev'] + ` ${styles['paging__prev--disable']}`}>
-                        <FaAngleLeft />
-                    </div>
-                    {renderItems()}
-                    <div className={styles['paging__next']}>
-                        <FaAngleRight />
-                    </div>
+                    <ReactPaginate
+                        className={styles.paging}
+                        pageClassName={styles['paging__number']}
+                        activeClassName={styles['paging__number--active']}
+                        disabledClassName={styles['paging__prev--disable']}
+                        breakLabel="..."
+                        nextLabel={
+                            <div className={styles['paging__next']}>
+                                <FaAngleRight />
+                            </div>
+                        }
+                        onPageChange={({ selected }) => selectPage(selected + 1)}
+                        pageRangeDisplayed={5}
+                        pageCount={pageCount}
+                        previousLabel={
+                            <div className={styles['paging__prev']}>
+                                <FaAngleLeft />
+                            </div>
+                        }
+                    />
                 </div>
             </div>
         </div>

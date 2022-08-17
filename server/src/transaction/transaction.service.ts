@@ -85,7 +85,8 @@ export class TransactionService {
                     post = await this.realEstateService.processingTransaction(transaction.realEstate, PostStatus.DatCoc)
                     // push notification
                     const { device } = await this.userService.findById(transaction.user)
-                    await this.notificationService.pushNotification({ title: 'Trạng thái bất động sản 🏣', body: `Đã xác nhận giao dịch với "${this.postNameCustomize(post.title)}"` }, device)
+                    if(device)
+                        await this.notificationService.pushNotification({ title: 'Trạng thái bất động sản 🏣', body: `Đã xác nhận giao dịch với "${this.postNameCustomize(post.title)}"` }, device)
                 }
 
                 if (status === TransactionStatus.BanGiao) {
@@ -107,7 +108,8 @@ export class TransactionService {
                     product = await this.projectService.processingTransaction(transaction.project, ProjectProductStatus.DatCoc)
                     // push notification
                     const { device } = await this.userService.findById(transaction.user)
-                    await this.notificationService.pushNotification({ title: `Trạng thái bất động sản 🏣`, body: `Đã xác nhận giao dịch với sản phẩm mã ${product.code}` }, device)
+                    if(device)
+                        await this.notificationService.pushNotification({ title: `Trạng thái bất động sản 🏣`, body: `Đã xác nhận giao dịch với sản phẩm mã ${product.code}` }, device)
                 }
 
                 if (status === TransactionStatus.BanGiao) {
@@ -120,7 +122,7 @@ export class TransactionService {
             return transaction
 
         } catch (error) {
-            throw new InternalServerErrorException(err => ({ ...err, message: 'Update transaction failed!' }))
+            throw new InternalServerErrorException('Update transaction failed!')
         }
     }
 

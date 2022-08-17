@@ -228,8 +228,6 @@ function Transaction() {
     const onSelectItem = (item) => {
         setSelectedItem(item)
 
-        console.log(item);
-
         if (item.realEstate) {
             setMenu(3)
         }
