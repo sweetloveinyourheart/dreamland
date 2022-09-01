@@ -92,7 +92,7 @@ const UserList = ({ count, handlePageClick, userList }) => {
             </Grid>
             <Box display={"flex"} justifyContent="center" mt={4}>
                     <Pagination
-                        count={count / ITEMS_PER_PAGE}
+                        count={Math.round(count / ITEMS_PER_PAGE)}
                         color="primary"
                         onChange={(e, page) => onPageClick(page)}
                     />
