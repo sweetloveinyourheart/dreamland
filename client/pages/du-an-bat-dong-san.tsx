@@ -131,6 +131,14 @@ const RealEstateProjectPage: NextPage<ProjectPage> = ({ data, pagingData }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
     try {
+        // === DISABLE PAGE
+        return {
+            redirect: {
+                destination: '/404',
+                permanent: false
+            }
+        }
+        
         const client = initializeApollo()
 
         const result = await client.query<GetAllProjectsData, GetAllProjectsVars>({

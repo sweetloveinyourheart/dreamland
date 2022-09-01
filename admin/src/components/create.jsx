@@ -39,10 +39,12 @@ const CreateRSPost = ({ type, goBack }) => {
 
     const [isUploading, setIsUploading] = useState(false)
 
-    const { provinces } = useAddress()
 
     const [images, setImages] = useState([]);
+    const [certImages, setCertImages] = useState([]);
     const maxNumber = 10;
+
+    const { provinces } = useAddress()
 
     const [createApartment, { data: createApartmentData, error: createApartmentErr }] = useMutation(CREATE_APARTMENT_POST)
     const [createHouse, { data: createHouseData, error: createHouseErr }] = useMutation(CREATE_HOUSE_POST)
@@ -53,6 +55,11 @@ const CreateRSPost = ({ type, goBack }) => {
     const onChange = (imageList) => {
         // data for submit
         setImages(imageList);
+    };
+
+    const onChangeCert = (imageList) => {
+        // data for submit
+        setCertImages(imageList);
     };
 
     const resetForm = () => {
@@ -68,6 +75,7 @@ const CreateRSPost = ({ type, goBack }) => {
             }
         })
         setImages([])
+        setCertImages([])
         setSelectedAdress({
             province: undefined,
             district: undefined,
@@ -81,28 +89,45 @@ const CreateRSPost = ({ type, goBack }) => {
                 setIsUploading(false)
                 setModal({
                     message: 'Chưa có hình ảnh !',
-                    active: false,
+                    active: true,
                     success: false
                 })
                 return null
             }
 
-            let formData = new FormData()
 
-            const presets = Promise.all(images.map(async image => {
-                formData.append("file", image.file)
-                formData.append("upload_preset", "realestate")
-                const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${CloudName}/image/upload`, formData)
-                return data?.secure_url
-            }))
+            const imagePresets = await (() => {
+                let formData = new FormData()
 
-            return presets
+                return Promise.all(images.map(async image => {
+                    formData.append("file", image.file)
+                    formData.append("upload_preset", "realestate")
+                    const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${CloudName}/image/upload`, formData)
+                    return data?.secure_url
+                }))
+            })()
+
+            const certPresets = await (() => {
+                let formData = new FormData()
+
+                return Promise.all(certImages.map(async image => {
+                    formData.append("file", image.file)
+                    formData.append("upload_preset", "realestate")
+                    const { data } = await axios.post(`https://api.cloudinary.com/v1_1/${CloudName}/image/upload`, formData)
+                    return data?.secure_url
+                }))
+            })()
+
+            return {
+                imagePresets,
+                certPresets
+            }
         } catch (error) {
             return null
         }
     }
 
-    const activeMutation = (imagePresets) => {
+    const activeMutation = (imagePresets, certPresets) => {
         if (type === "can-ho-chung-cu") {
             createApartment({
                 variables: {
@@ -111,6 +136,10 @@ const CreateRSPost = ({ type, goBack }) => {
                         media: {
                             images: imagePresets,
                             videos: []
+                        },
+                        internalInformation: {
+                            ...formData.internalInformation,
+                            certificateOfLand: certPresets
                         }
                     }
                 }
@@ -125,6 +154,10 @@ const CreateRSPost = ({ type, goBack }) => {
                         media: {
                             images: imagePresets,
                             videos: []
+                        },
+                        internalInformation: {
+                            ...formData.internalInformation,
+                            certificateOfLand: certPresets
                         }
                     }
                 }
@@ -139,6 +172,10 @@ const CreateRSPost = ({ type, goBack }) => {
                         media: {
                             images: imagePresets,
                             videos: []
+                        },
+                        internalInformation: {
+                            ...formData.internalInformation,
+                            certificateOfLand: certPresets
                         }
                     }
                 }
@@ -153,6 +190,10 @@ const CreateRSPost = ({ type, goBack }) => {
                         media: {
                             images: imagePresets,
                             videos: []
+                        },
+                        internalInformation: {
+                            ...formData.internalInformation,
+                            certificateOfLand: certPresets
                         }
                     }
                 }
@@ -168,7 +209,11 @@ const CreateRSPost = ({ type, goBack }) => {
                             images: imagePresets,
                             videos: []
                         },
-                        category: "ChoThue"
+                        category: "ChoThue",
+                        internalInformation: {
+                            ...formData.internalInformation,
+                            certificateOfLand: certPresets
+                        }
                     }
                 }
             })
@@ -178,10 +223,10 @@ const CreateRSPost = ({ type, goBack }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setIsUploading(true)
-        const imagePresets = await onUploadImage()
+        const {imagePresets, certPresets} = await onUploadImage()
 
         if (imagePresets) {
-            activeMutation(imagePresets)
+            activeMutation(imagePresets, certPresets)
         }
     }
 
@@ -833,6 +878,17 @@ const CreateRSPost = ({ type, goBack }) => {
                                             margin="normal"
                                             value={formData.code}
                                             onChange={e => setFormData(s => ({ ...s, code: e.target.value }))}
+                                            sx={{ mr: 1 }}
+                                        />
+                                        <TextField
+                                            id="commission"
+                                            name="commission"
+                                            label="Hoa hồng (VNĐ)"
+                                            variant="outlined"
+                                            type={"number"}
+                                            margin="normal"
+                                            value={formData?.internalInformation?.commission || ""}
+                                            onChange={e => setFormData(s => ({ ...s, internalInformation: { ...formData?.internalInformation, commission: Number(e.target.value) } }))}
                                         />
 
                                         <TextField
@@ -887,11 +943,69 @@ const CreateRSPost = ({ type, goBack }) => {
                 </Grid>
                 <Grid item xs={12} lg={5} >
                     <SubCard title="Hình ảnh">
-                        <Grid item sm={12} xs={12}>
+                        <Grid sx={{ maxHeight: '900px', overflowY: 'scroll', paddingRight: 2 }}>
                             <ImageUploading
                                 multiple
                                 value={images}
                                 onChange={onChange}
+                                maxNumber={maxNumber}
+                                dataURLKey="data_url"
+                            >
+                                {({
+                                    imageList,
+                                    onImageUpload,
+                                    onImageRemoveAll,
+                                    onImageUpdate,
+                                    onImageRemove,
+                                    isDragging,
+                                    dragProps,
+                                }) => (
+                                    // write your building UI
+                                    <div className="upload__image-wrapper">
+                                        <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
+                                            <Button
+                                                style={isDragging ? { color: 'red' } : undefined}
+                                                onClick={onImageUpload}
+                                                {...dragProps}
+                                                variant="contained"
+                                                color="secondary"
+                                            >
+                                                Thêm hình ảnh
+                                            </Button>
+                                            &nbsp;
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={onImageRemoveAll}
+                                            >
+                                                Reset bộ ảnh
+                                            </Button>
+                                        </ButtonGroup>
+                                        <Grid marginTop={2} container spacing={1}>
+                                            {imageList.map((image, index) => (
+                                                <Grid item xs={12} lg={6} key={index}>
+                                                    <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                                                        <img src={image['data_url']} alt="" width="100%" />
+                                                        <Box sx={{ display: "flex", justifyContent: "center", marginTop: 1 }} fullWidth>
+                                                            <Button variant="outlined" onClick={() => onImageUpdate(index)}>Sửa đổi</Button>
+                                                            <Button variant="outlined" onClick={() => onImageRemove(index)}>Loại bỏ</Button>
+                                                        </Box >
+                                                    </div>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
+                                    </div>
+                                )}
+                            </ImageUploading>
+                        </Grid>
+                    </SubCard>
+                    <Divider sx={{ marginY: 2 }} />
+                    <SubCard title="Hình ảnh sổ đất">
+                        <Grid sx={{ maxHeight: '900px', overflowY: 'scroll', paddingRight: 2 }}>
+                            <ImageUploading
+                                multiple
+                                value={certImages}
+                                onChange={onChangeCert}
                                 maxNumber={maxNumber}
                                 dataURLKey="data_url"
                             >

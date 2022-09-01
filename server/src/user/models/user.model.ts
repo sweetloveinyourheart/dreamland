@@ -1,4 +1,4 @@
-import { Field, ObjectType, registerEnumType } from "@nestjs/graphql"
+import { Field, Int, ObjectType, registerEnumType } from "@nestjs/graphql"
 import { Sex, UserRole } from "../enum/user.enum"
 
 registerEnumType(Sex, {
@@ -73,4 +73,13 @@ export class Profile {
 
     @Field(type => Date)
     createdAt: Date
+}
+
+@ObjectType()
+export class UserListResponse {
+    @Field(type => [User])
+    users: User[]
+
+    @Field(type => Int)
+    count: number
 }

@@ -78,6 +78,15 @@ export class Acreage {
     totalAcreage: number
 }
 
+@Schema({ _id: false, id: false })
+export class InternalInformation {
+    @Prop()
+    commission: number
+
+    @Prop()
+    certificateOfLand: string[]
+}
+
 @Schema()
 export class RealEstate {
     @Prop({ required: true })
@@ -106,6 +115,9 @@ export class RealEstate {
 
     @Prop()
     virtual3DLink?: string
+
+    @Prop()
+    internalInformation?: InternalInformation
 
     @Prop({ enum: PostStatus, default: PostStatus.Available })
     postStatus: PostStatus

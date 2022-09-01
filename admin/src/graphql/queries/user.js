@@ -16,14 +16,18 @@ export const GET_PROFILE = gql`
 
 export const GET_USERS = gql`
     query ($paging: FindUserInput!) {
-        users: getUsers(paging: $paging) {
-            phone
-            name
-            address
-            birthday
-            sex
-            createdAt
-            roles
+        list: getUsers(paging: $paging) {
+            users {
+                phone
+                name
+                address
+                birthday
+                sex
+                createdAt
+                roles
+            }
+
+            count
         }
     }
 `

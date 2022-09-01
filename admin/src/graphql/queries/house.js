@@ -33,6 +33,12 @@ query Houses($filter: HouseFilter!, $paging: PaginationArgs, $search: String) {
                 name
                 phone
             }
+
+            internalInformation {
+                certificateOfLand
+                commission
+            }
+
             overview {
                 doorDirection
                 legalDocuments

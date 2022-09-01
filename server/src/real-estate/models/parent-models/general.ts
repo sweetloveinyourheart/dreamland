@@ -132,6 +132,15 @@ export class Acreage {
 }
 
 @ObjectType()
+export class InternalInformation {
+    @Field(type => Float, { nullable: true })
+    commission: number
+
+    @Field(type => [String], { nullable: true })
+    certificateOfLand: string[]
+}
+
+@ObjectType()
 export class RealEstate {
     @Field(type => String)
     _id?: string
@@ -165,6 +174,9 @@ export class RealEstate {
 
     @Field(type => PostStatus)
     postStatus: PostStatus
+
+    @Field(type => InternalInformation, { nullable: true })
+    internalInformation?: InternalInformation
 
     @Field(type => Int)
     index: number

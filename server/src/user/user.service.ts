@@ -5,9 +5,9 @@ import { Model } from "mongoose"
 import { CreateUserInput } from './dto/create-user.input';
 import * as bcrypt from 'bcrypt';
 import { FindUserInput } from './dto/find-user.input';
-import { Profile } from './models/user.model';
+import { Profile, UserListResponse } from './models/user.model';
 import { UserPayload } from 'src/auth/decorators/user.decorator';
-import { UpdateDevice } from './dto/update-user.input';
+import { UpdateDevice, UpdateUserInput } from './dto/update-user.input';
 
 @Injectable()
 export class UserService {
@@ -37,7 +37,7 @@ export class UserService {
         return this.userModel.findById(id)
     }
 
-    async getUsers(paging?: FindUserInput): Promise<User[]> {
+    async getUsers(paging?: FindUserInput): Promise<UserListResponse> {
         try {
             const result = await this.userModel
                 .find({ actived: true, roles: { $not: { $in: ["admin"] } } })
@@ -46,7 +46,12 @@ export class UserService {
                 .limit(paging?.limit)
                 .sort({ createdAt: -1 })
 
-            return result
+            const count = await this.userModel.countDocuments({ actived: true, roles: { $not: { $in: ["admin"] } } })
+
+            return {
+                users: result,
+                count: count
+            }
         } catch (error) {
             throw new NotFoundException()
         }
@@ -57,6 +62,21 @@ export class UserService {
             return await this.userModel.findById(user.userId)
         } catch (error) {
             throw new NotFoundException()
+        }
+    }
+
+    async updateUser(phone: string, user: UpdateUserInput): Promise<Profile> {
+        try {
+            const salt = await bcrypt.genSalt()
+            const hashed = await bcrypt.hash(user.password, salt)
+
+            const newUser = await this.userModel.findOneAndUpdate({ phone },{
+                ...user,
+                password: hashed
+            })
+            return await newUser.save()
+        } catch (error) {
+            throw new BadRequestException()
         }
     }
 

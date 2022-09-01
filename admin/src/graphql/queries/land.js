@@ -42,6 +42,12 @@ query Lands($filter: LandFilter!, $paging: PaginationArgs, $search: String) {
               	noHau
               	frontispiece
             }
+
+            internalInformation {
+                certificateOfLand
+                commission
+            }
+
             outstanding
             virtual3DLink
             googleMapsLink

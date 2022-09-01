@@ -52,7 +52,7 @@ const CreateProject = ({ goBack }) => {
                 setIsUploading(false)
                 setModal({
                     message: 'Chưa có hình ảnh !',
-                    active: false
+                    active: true
                 })
                 return null
             }

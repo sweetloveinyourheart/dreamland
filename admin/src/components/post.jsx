@@ -16,8 +16,20 @@ const PostDetail = ({ post }) => {
                         ))}
                     </Grid>
                 </SubCard>
+
             </Grid>
-            <Grid item xs={12} lg={6}>
+            <Grid item xs={12} lg={12}>
+                <SubCard title="Hình ảnh sổ đất">
+                    <Grid marginTop={2} container spacing={1}>
+                        {post?.internalInformation?.certificateOfLand.map((image, index) => (
+                            <Grid item lg={3} key={index}>
+                                <img src={image} style={{ width: '100%' }} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </SubCard>
+            </Grid>
+            <Grid item xs={12} lg={12}>
                 <SubCard title="Thông tin căn hộ">
                     <Box margin={"12px 0"}>
                         <Typography variant='h4' marginBottom={1}>
@@ -243,7 +255,7 @@ const PostDetail = ({ post }) => {
 
                 </SubCard>
             </Grid>
-            <Grid item xs={12} lg={6}>
+            <Grid item xs={12} lg={12}>
                 <SubCard title="Chi tiết bài đăng">
                     <Box margin={"12px 0"}>
                         <Typography variant='h4' marginBottom={1}>

@@ -45,7 +45,7 @@ const Header: FunctionComponent<HeaderProps> = () => {
                             </div>
                         </div>
                     </Col>
-                    <Col xl={5}>
+                    <Col xl={6}>
                         <form className={styles['search']} onSubmit={onSubmit}>
                             <select>
                                 <option onClick={() => setSearch(s => ({ ...s, category: 'mua-ban' }))}>
@@ -61,7 +61,7 @@ const Header: FunctionComponent<HeaderProps> = () => {
                             </button>
                         </form>
                     </Col>
-                    <Col xl={5}>
+                    <Col xl={4}>
                         <nav className={`${styles['nav-menu']} ${isMobileNavActive ? styles['nav-menu--active'] : ''}`}>
                             <ul>
                                 <li onClick={() => router.push("/")}>
@@ -76,10 +76,10 @@ const Header: FunctionComponent<HeaderProps> = () => {
                                     <FaHandHoldingUsd />
                                     <span> Cho thuê </span>
                                 </li>
-                                <li onClick={() => router.push("/du-an-bat-dong-san")}>
+                                {/* <li onClick={() => router.push("/du-an-bat-dong-san")}>
                                     <FaTruckMonster />
                                     <span> Dự án </span>
-                                </li>
+                                </li> */}
                             </ul>
                         </nav>
                     </Col>

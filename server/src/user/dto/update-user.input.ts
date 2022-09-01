@@ -1,5 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { Sex } from "../enum/user.enum";
+import { Sex, UserRole } from "../enum/user.enum";
 
 @InputType()
 export class UpdateUserInput {
@@ -8,9 +8,6 @@ export class UpdateUserInput {
 
     @Field({ nullable: true })
     password?: string
-
-    @Field({ nullable: true })
-    newPassword?: string
 
     @Field({ nullable: true })
     name?: string
@@ -26,6 +23,9 @@ export class UpdateUserInput {
 
     @Field({ nullable: true })
     address?: string
+
+    @Field(type => [UserRole], { nullable: true })
+    roles: UserRole[]
 }
 
 @InputType()

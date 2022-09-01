@@ -21,7 +21,7 @@ import { BusinessPremises } from './models/business-premises.model';
 import { PostStatus, RealEstateCategory, RealEstateType, StatsTime } from './enum/real-estate.enum';
 import { RealEstateStats } from 'src/stats/models/stats.model';
 import { Cache } from 'cache-manager';
-import { RealEstatePosts } from './models/parent-models/top';
+import { RealEstatePosts } from './models/parent-models/return-type';
 import { RealEstateFilter } from './dto/inputs/general/filter.input';
 import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
 import { UserPayload } from 'src/auth/decorators/user.decorator';

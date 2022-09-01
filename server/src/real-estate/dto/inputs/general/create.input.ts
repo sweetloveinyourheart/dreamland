@@ -95,6 +95,14 @@ export class OverviewInput {
     legalDocuments?: LegalDocuments
 }
 
+@InputType()
+export class InternalInformationInput {
+    @Field(type => Float, { nullable: true })
+    commission: number
+
+    @Field(type => [String], { nullable: true })
+    certificateOfLand: string[]
+}
 
 @InputType()
 export class CreateRealEstateInput {
@@ -112,6 +120,9 @@ export class CreateRealEstateInput {
 
     @Field(type => String, { nullable: true })
     googleMapsLink?: string
+
+    @Field(type => InternalInformationInput, { nullable: true })
+    internalInformation?: InternalInformationInput
 
     @Field({ nullable: true })
     code?: string

@@ -281,6 +281,14 @@ const RealEstateProject: NextPage<RealEstateProjectPageProps> = ({ project }) =>
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
+        // === DISABLE PAGE
+        return {
+            redirect: {
+                destination: '/404',
+                permanent: false
+            }
+        }
+
         const { directLink } = context.query
         if (!directLink) {
             return {

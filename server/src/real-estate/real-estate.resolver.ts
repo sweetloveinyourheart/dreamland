@@ -12,7 +12,7 @@ import { CreateLandInput, LandFilter } from './dto/inputs/land.input';
 import { Motal } from './models/motal.model';
 import { BusinessPremisesFilter, CreateBusinessPremisesInput } from './dto/inputs/business-premises.input';
 import { CreateMotalInput, MotalFilter } from './dto/inputs/motal.input';
-import { RealEstatePosts } from './models/parent-models/top';
+import { RealEstatePosts } from './models/parent-models/return-type';
 import { UpdatePostStatusInput } from './dto/inputs/general/update.input';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/guards/graphql.guard';

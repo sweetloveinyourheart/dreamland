@@ -32,6 +32,12 @@ query BusinessPremises($filter: BusinessPremisesFilter!, $paging: PaginationArgs
                 name
                 phone
             }
+
+            internalInformation {
+                certificateOfLand
+                commission
+            }
+            
             overview {
                 doorDirection
                 legalDocuments

@@ -32,6 +32,11 @@ query Apartments($filter: ApartmentFilter!, $paging: PaginationArgs, $search: St
                 houseNumber
             }
         }
+
+        internalInformation {
+            certificateOfLand
+            commission
+        }
         
     	owner {
                 name

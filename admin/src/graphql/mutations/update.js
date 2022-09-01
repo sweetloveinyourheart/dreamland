@@ -70,3 +70,11 @@ export const UPDATE_TRANSACTION = gql`
         }
     }
 `
+
+export const UPDATE_USER = gql`
+    mutation UpdateUser($phone: String!, $data: UpdateUserInput!) {
+        updateUser(phone: $phone, data: $data) {
+            phone
+        }
+    }
+`

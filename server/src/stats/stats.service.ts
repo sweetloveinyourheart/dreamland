@@ -5,7 +5,6 @@ import { RealEstateCategory, StatsTime } from 'src/real-estate/enum/real-estate.
 import { RealEstateService } from 'src/real-estate/real-estate.service';
 import { ProjectStats, RealEstateStats } from './models/stats.model';
 import { Workbook } from 'exceljs'
-import * as tmp from 'tmp'
 import { join } from 'path';
 
 @Injectable()

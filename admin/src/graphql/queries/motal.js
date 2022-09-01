@@ -40,6 +40,12 @@ export const GET_MOTAL_POSTS = gql`
             }
             virtual3DLink
             googleMapsLink
+
+            internalInformation {
+                certificateOfLand
+                commission
+            }
+            
             outstanding
             postStatus
             code

@@ -40,6 +40,7 @@ const Home: NextPage<HomePageProps> = ({ projects, posts, outstandingPosts, temp
       <main style={{ backgroundColor: 'rgba(244,244,244, 0.8)' }}>
         <MainBanner banner={template.banner} />
         <MainCategories />
+
         <section className={styles['items-area']}>
           <Container>
             <div className={styles['stall']}>
@@ -84,7 +85,7 @@ const Home: NextPage<HomePageProps> = ({ projects, posts, outstandingPosts, temp
           </Container>
         </section>
 
-        <section className={styles['items-area']}>
+        {/* <section className={styles['items-area']}>
           <Container>
             <div className={styles['stall']}>
               <h4> Dự án được quan tâm </h4>
@@ -96,7 +97,8 @@ const Home: NextPage<HomePageProps> = ({ projects, posts, outstandingPosts, temp
               </div>
             </div>
           </Container>
-        </section>
+        </section> */}
+        
       </main>
       <Footer />
     </>
