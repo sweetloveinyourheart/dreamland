@@ -1,5 +1,5 @@
 import { useLazyQuery, useQuery } from "@apollo/client";
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -129,45 +129,57 @@ const RealEstateProjectPage: NextPage<ProjectPage> = ({ data, pagingData }) => {
     )
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-    try {
-        // === DISABLE PAGE
-        return {
-            redirect: {
-                destination: '/404',
-                permanent: false
-            }
-        }
-        
-        const client = initializeApollo()
+export const getServerSideProps: GetServerSideProps = async (context) => {
 
-        const result = await client.query<GetAllProjectsData, GetAllProjectsVars>({
-            query: GET_ALL_PROJECT_POSTS,
-            variables: {
-                paging: { cursor: INIT_CURSOR, limit: INIT_LIMIT }
-            }
-        })
-
-        const paging = await client.query<ProjectStatsData>({
-            query: PROJECT_STATS
-        })
-
-        return {
-            props: {
-                data: result?.data.getProjects ?? [],
-                pagingData: paging?.data.projectStats ?? { projects: 0 }
-            },
-            revalidate: 60
+    // === DISABLE PAGE
+    return {
+        redirect: {
+            destination: '/404',
+            permanent: false
         }
-    } catch (error) {
-        return {
-            props: {
-                data: [],
-                pagingData: { projects: 0 }
-            },
-            revalidate: 60,
-        }
+
     }
 }
+
+// export const getStaticProps: GetStaticProps = async (context) => {
+//     try {
+//         // === DISABLE PAGE
+//         return {
+//             redirect: {
+//                 destination: '/404',
+//                 permanent: false
+//             }
+//         }
+
+//         const client = initializeApollo()
+
+//         const result = await client.query<GetAllProjectsData, GetAllProjectsVars>({
+//             query: GET_ALL_PROJECT_POSTS,
+//             variables: {
+//                 paging: { cursor: INIT_CURSOR, limit: INIT_LIMIT }
+//             }
+//         })
+
+//         const paging = await client.query<ProjectStatsData>({
+//             query: PROJECT_STATS
+//         })
+
+//         return {
+//             props: {
+//                 data: result?.data.getProjects ?? [],
+//                 pagingData: paging?.data.projectStats ?? { projects: 0 }
+//             },
+//             revalidate: 60
+//         }
+//     } catch (error) {
+//         return {
+//             props: {
+//                 data: [],
+//                 pagingData: { projects: 0 }
+//             },
+//             revalidate: 60,
+//         }
+//     }
+// }
 
 export default RealEstateProjectPage
