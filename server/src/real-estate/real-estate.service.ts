@@ -1,4 +1,4 @@
-import { BadRequestException, CACHE_MANAGER, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, CACHE_MANAGER, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PaginationArgs } from './dto/inputs/general/paging.input';
@@ -166,13 +166,25 @@ export class RealEstateService {
                 code
             })
 
-            if (data)
+            if (data) {
                 updated.media.images.forEach(async (image) => {
                     const exist = data.media.images.find(img => img === image)
                     if (!exist) {
                         await this.cloudinaryService.removeFile(image)
                     }
                 })
+
+                if (data?.internalInformation?.certificateOfLand && updated?.internalInformation?.certificateOfLand) {
+                    updated?.internalInformation.certificateOfLand.forEach(async (image) => {
+                        const exist = data.internalInformation.certificateOfLand.find(img => img === image)
+                        if (!exist) {
+                            await this.cloudinaryService.removeFile(image)
+                        }
+                    })
+                }
+
+            }
+
 
             return updated
         } catch (error) {
@@ -188,13 +200,14 @@ export class RealEstateService {
                 code
             })
 
-            if (data)
-                updated.media.images.forEach(async (image) => {
-                    const exist = data.media.images.find(img => img === image)
+            if (data?.internalInformation?.certificateOfLand && updated?.internalInformation?.certificateOfLand) {
+                updated?.internalInformation.certificateOfLand.forEach(async (image) => {
+                    const exist = data.internalInformation.certificateOfLand.find(img => img === image)
                     if (!exist) {
                         await this.cloudinaryService.removeFile(image)
                     }
                 })
+            }
 
             return updated
 
@@ -211,13 +224,14 @@ export class RealEstateService {
                 code
             })
 
-            if (data)
-                updated.media.images.forEach(async (image) => {
-                    const exist = data.media.images.find(img => img === image)
+            if (data?.internalInformation?.certificateOfLand && updated?.internalInformation?.certificateOfLand) {
+                updated?.internalInformation.certificateOfLand.forEach(async (image) => {
+                    const exist = data.internalInformation.certificateOfLand.find(img => img === image)
                     if (!exist) {
                         await this.cloudinaryService.removeFile(image)
                     }
                 })
+            }
 
             return updated
         } catch (error) {
@@ -233,13 +247,14 @@ export class RealEstateService {
                 code
             })
 
-            if (data)
-                updated.media.images.forEach(async (image) => {
-                    const exist = data.media.images.find(img => img === image)
+            if (data?.internalInformation?.certificateOfLand && updated?.internalInformation?.certificateOfLand) {
+                updated?.internalInformation.certificateOfLand.forEach(async (image) => {
+                    const exist = data.internalInformation.certificateOfLand.find(img => img === image)
                     if (!exist) {
                         await this.cloudinaryService.removeFile(image)
                     }
                 })
+            }
 
             return updated
         } catch (error) {
@@ -255,13 +270,14 @@ export class RealEstateService {
                 code
             })
 
-            if (data)
-                updated.media.images.forEach(async (image) => {
-                    const exist = data.media.images.find(img => img === image)
+            if (data?.internalInformation?.certificateOfLand && updated?.internalInformation?.certificateOfLand) {
+                updated?.internalInformation.certificateOfLand.forEach(async (image) => {
+                    const exist = data.internalInformation.certificateOfLand.find(img => img === image)
                     if (!exist) {
                         await this.cloudinaryService.removeFile(image)
                     }
                 })
+            }
 
             return updated
         } catch (error) {
@@ -730,38 +746,38 @@ export class RealEstateService {
             switch (item.itemType) {
                 case RealEstateType.CanHo:
                     postStatus = (await this.apartmentModel.findById(item.itemId)).postStatus
-                    if((postStatus !== PostStatus.Available) && status === PostStatus.Lock) 
+                    if ((postStatus !== PostStatus.Available) && status === PostStatus.Lock)
                         throw new BadRequestException()
 
                     return await this.apartmentModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.NhaO:
                     postStatus = (await this.houseModel.findById(item.itemId)).postStatus
-                    if((postStatus !== PostStatus.Available) && status === PostStatus.Lock) 
+                    if ((postStatus !== PostStatus.Available) && status === PostStatus.Lock)
                         throw new BadRequestException()
 
                     return await this.houseModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.Dat:
                     postStatus = (await this.landModel.findById(item.itemId)).postStatus
-                    if((postStatus !== PostStatus.Available) && status === PostStatus.Lock) 
+                    if ((postStatus !== PostStatus.Available) && status === PostStatus.Lock)
                         throw new BadRequestException()
 
                     return await this.landModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
-                    
+
                 case RealEstateType.VanPhong:
                     postStatus = (await this.businessPremisesModel.findById(item.itemId)).postStatus
-                    if((postStatus !== PostStatus.Available) && status === PostStatus.Lock) 
+                    if ((postStatus !== PostStatus.Available) && status === PostStatus.Lock)
                         throw new BadRequestException()
 
                     return await this.businessPremisesModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 case RealEstateType.PhongTro:
                     postStatus = (await this.motalModel.findById(item.itemId)).postStatus
-                    if((postStatus !== PostStatus.Available) && status === PostStatus.Lock) 
+                    if ((postStatus !== PostStatus.Available) && status === PostStatus.Lock)
                         throw new BadRequestException()
 
-                    return await this.motalModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })              
+                    return await this.motalModel.findByIdAndUpdate(item.itemId, { postStatus: status, outstanding: false })
 
                 default:
                     return null;
@@ -779,7 +795,7 @@ export class RealEstateService {
             return new Date(date.getFullYear(), date.getMonth(), 1);
         }
 
-        const query = { 
+        const query = {
             timeStamp: { $gte: getFirstDayPreviousMonth() },
             postStatus: { $ne: PostStatus.Pending }
         }

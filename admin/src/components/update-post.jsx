@@ -40,6 +40,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
     const { provinces } = useAddress()
 
     const [images, setImages] = useState([]);
+    const [certImages, setCertImages] = useState([]);
     const maxNumber = 10;
 
     const [updateApartment, { data: updateApartmentData, error: updateApartmentErr }] = useMutation(UPDATE_APARTMENT)
@@ -58,6 +59,11 @@ const UpdateRSPost = ({ type, post, goBack }) => {
     const onChange = (imageList) => {
         // data for submit
         setImages(imageList);
+    };
+
+    const onChangeCert = (imageList) => {
+        // data for submit
+        setCertImages(imageList);
     };
 
     const resetForm = () => {
@@ -227,6 +233,15 @@ const UpdateRSPost = ({ type, post, goBack }) => {
         let items = formData.media.images
         items.splice(index, 1)
         setFormData(s => ({ ...s, media: { ...s.media, images: items } }))
+    }
+
+    const onDeleteCertImage = (index) => {
+        if (!formData?.internalInformation?.certificateOfLand)
+            return;
+
+        let items = formData.internalInformation.certificateOfLand
+        items.splice(index, 1)
+        setFormData(s => ({ ...s, internalInformation: { ...s.internalInformation, certificateOfLand: items } }))
     }
 
     const onCloseModal = () => {
@@ -811,7 +826,7 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                             id="category"
                                             name='category'
                                             select
-
+                                            fullWidth
                                             label="Danh mục"
                                             value={formData.category}
                                             onChange={e => setFormData(s => ({ ...s, category: e.target.value }))}
@@ -825,7 +840,16 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                                 </MenuItem>
                                             ))}
                                         </TextField>
-
+                                        <TextField
+                                            id="commission"
+                                            name="commission"
+                                            label="Hoa hồng (VNĐ)"
+                                            variant="outlined"
+                                            type={"number"}
+                                            margin="normal"
+                                            value={formData?.internalInformation?.commission || ""}
+                                            onChange={e => setFormData(s => ({ ...s, internalInformation: { ...formData?.internalInformation, commission: Number(e.target.value) } }))}
+                                        />
                                         <TextField
                                             fullWidth
                                             label="Link thực tế ảo 3D"
@@ -888,6 +912,79 @@ const UpdateRSPost = ({ type, post, goBack }) => {
                                 multiple
                                 value={images}
                                 onChange={onChange}
+                                maxNumber={maxNumber}
+                                dataURLKey="data_url"
+                            >
+                                {({
+                                    imageList,
+                                    onImageUpload,
+                                    onImageRemoveAll,
+                                    onImageUpdate,
+                                    onImageRemove,
+                                    isDragging,
+                                    dragProps,
+                                }) => (
+                                    // write your building UI
+                                    <div className="upload__image-wrapper">
+
+                                        <Grid marginTop={2} container spacing={1}>
+                                            {imageList.map((image, index) => (
+                                                <Grid item xs={12} lg={6} key={index}>
+                                                    <div className="image-item" style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
+                                                        <img src={image['data_url']} alt="" width="100%" />
+                                                        <Box sx={{ display: "flex", justifyContent: "center", marginBottom: 1 }} fullWidth>
+                                                            <Button variant="outlined" onClick={() => onImageUpdate(index)}>Sửa đổi</Button>
+                                                            <Button variant="outlined" onClick={() => onImageRemove(index)}>Loại bỏ</Button>
+                                                        </Box >
+                                                    </div>
+                                                </Grid>
+                                            ))}
+                                        </Grid>
+                                        <ButtonGroup sx={{ display: "flex", justifyContent: "center" }} fullWidth>
+                                            <Button
+                                                style={isDragging ? { color: 'red' } : undefined}
+                                                onClick={onImageUpload}
+                                                {...dragProps}
+                                                variant="contained"
+                                                color="secondary"
+                                            >
+                                                Thêm hình ảnh
+                                            </Button>
+                                            &nbsp;
+                                            <Button
+                                                variant="contained"
+                                                color="error"
+                                                onClick={onImageRemoveAll}
+                                            >
+                                                Reset bộ ảnh
+                                            </Button>
+                                        </ButtonGroup>
+                                    </div>
+                                )}
+                            </ImageUploading>
+                        </Grid>
+                    </SubCard>
+                    <Divider sx={{ my: 2 }} />
+                    <SubCard title="Hình ảnh sổ đất">
+                        <Typography marginBottom={1}>* Hình ảnh hiện tại</Typography>
+                        <Grid marginTop={2} container spacing={1}>
+                            {post?.internalInformation?.certificateOfLand.map((image, index) => (
+                                <Grid item lg={6} key={index}>
+                                    <Box>
+                                        <img src={image} style={{ width: '100%' }} />
+                                    </Box>
+                                    <Box sx={{ display: "flex", justifyContent: "center", marginY: 1 }} fullWidth>
+                                        <Button variant="outlined" onClick={() => onDeleteCertImage(index)}>Loại bỏ</Button>
+                                    </Box >
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Typography marginY={1}>* Hình ảnh thêm mới</Typography>
+                        <Grid item sm={12} xs={12}>
+                            <ImageUploading
+                                multiple
+                                value={certImages}
+                                onChange={onChangeCert}
                                 maxNumber={maxNumber}
                                 dataURLKey="data_url"
                             >
